@@ -1401,6 +1401,12 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;set $chargedPhone = false&gt;&gt;
 &lt;&lt;set $packedBag = false&gt;&gt;
 
+&lt;!-- 避難開始後の時間処理 --&gt;
+&lt;&lt;set $day2DeparturePrepApplied = false&gt;&gt;
+&lt;&lt;set $day2ApproachTimeApplied = false&gt;&gt;
+&lt;&lt;set $day2ReturnTimeApplied = false&gt;&gt;
+&lt;&lt;set $departureTimeDay2 = -1&gt;&gt;
+
 &lt;!-- 靴選択 --&gt;
 &lt;&lt;set $shoes = &quot;&quot;&gt;&gt;
 &lt;&lt;set $day2Shoes = &quot;&quot;&gt;&gt;
@@ -1909,6 +1915,13 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;&lt;updateRainSound&gt;&gt;
 
+&lt;!-- 荷物・靴・戸締まりを確認して家を出るまでの時間 --&gt;
+&lt;&lt;if not $day2DeparturePrepApplied&gt;&gt;
+	&lt;&lt;set $time += 5&gt;&gt;
+	&lt;&lt;set $day2DeparturePrepApplied = true&gt;&gt;
+	&lt;&lt;set $departureTimeDay2 = $time&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;video class=&quot;scene-media scene-media-window&quot;
 		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
@@ -2262,6 +2275,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;set $hasRaincoat = true&gt;&gt;
 &lt;&lt;set $bagWeight += 3&gt;&gt;
 [[戻る-&gt;2日目_バッグ画面]]</tw-passagedata><tw-passagedata pid="33" name="StoryInit" tags="" position="725,250" size="100,100">&lt;&lt;cacheaudio &quot;rain01&quot; &quot;audio/rain01.mp3&quot;&gt;&gt;
+&lt;&lt;cacheaudio &quot;rain02&quot; &quot;audio/rain02.mp3&quot;&gt;&gt;
 &lt;&lt;cacheaudio &quot;rain03&quot; &quot;audio/rain03.mp3&quot;&gt;&gt;
 &lt;&lt;cacheaudio &quot;thunder&quot; &quot;audio/thunder.mp3&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="34" name="無題のパッセージ" tags="" position="850,250" size="100,100">&lt;video
 	autoplay
@@ -2391,10 +2405,19 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="38" name="2日目_避難経路" tags="" position="1250,2250" size="100,100">&lt;&lt;if $shoes is &quot;boots&quot; and not $bootsPenaltyApplied&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="38" name="2日目_避難経路" tags="" position="1250,2250" size="100,100">&lt;!-- 自宅から分かれ道まで15分 --&gt;
+&lt;&lt;if not $day2ApproachTimeApplied&gt;&gt;
+	&lt;&lt;set $time += 15&gt;&gt;
+	&lt;&lt;set $day2ApproachTimeApplied = true&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;!-- 長靴の場合はさらに5分かかる --&gt;
+&lt;&lt;if $shoes is &quot;boots&quot; and not $bootsPenaltyApplied&gt;&gt;
 	&lt;&lt;set $time += 5&gt;&gt;
 	&lt;&lt;set $bootsPenaltyApplied = true&gt;&gt;
 &lt;&lt;/if&gt;&gt;
+
+&lt;&lt;updateRainSound&gt;&gt;
 
 &lt;&lt;audio &quot;rain01&quot; loop play&gt;&gt;
 &lt;&lt;audio &quot;rain03&quot; loop play&gt;&gt;
@@ -2467,7 +2490,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="40" name="2日目_左ルート" tags="" position="1375,2125" size="100,100">&lt;&lt;if not $leftRouteTimeApplied&gt;&gt;
-	&lt;&lt;set $time += 10&gt;&gt;
+	&lt;&lt;set $time += 20&gt;&gt;
 	&lt;&lt;set $leftRouteTimeApplied = true&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
@@ -2685,7 +2708,15 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="46" name="2日目_右ルート判断" tags="" position="1500,2250" size="100,100">&lt;&lt;audio &quot;rain03&quot; loop play&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="46" name="2日目_右ルート判断" tags="" position="1500,2250" size="100,100">&lt;!-- 右側の道から分かれ道へ戻る時間 --&gt;
+&lt;&lt;if not $day2ReturnTimeApplied&gt;&gt;
+	&lt;&lt;set $time += 10&gt;&gt;
+	&lt;&lt;set $day2ReturnTimeApplied = true&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;&lt;updateRainSound&gt;&gt;
+
+&lt;&lt;audio &quot;rain03&quot; loop play&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;video class=&quot;scene-media scene-media-full&quot;
