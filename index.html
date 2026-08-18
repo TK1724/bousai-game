@@ -134,7 +134,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 .vn-ui {
 	position: fixed;
 	left: 50%;
-	bottom: 24px;
+	bottom: 0px;
 	transform: translateX(-50%);
 
 	width: 90%;
@@ -145,7 +145,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 
 .dialogue-box {
 	width: 100%;
-	height: 200px;
+	height: 240px;
 	padding: 20px 28px;
 
 	background: rgba(0, 0, 0, 0.82);
@@ -157,7 +157,9 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 	line-height: 1.35;
 
 	box-sizing: border-box;
-	overflow: hidden;
+
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 
@@ -168,7 +170,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 #choice-after-type {
 	position: absolute;
 	right: 0;
-	bottom: 220px;
+	bottom: 270px;
 
 	width: 430px;
 	max-width: 100%;
@@ -991,18 +993,20 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 	max-width: 60vw;
 
 	object-fit: contain;
-  
-  /* =========================
+
+	z-index: 3;
+	pointer-events: none;
+}
+
+
+/* ========================================
    行動・持ち物の挿入画像
-========================= */
+======================================== */
 
 .action-illustration {
 	position: fixed;
 
-	/* 横方向は中央 */
 	left: 50%;
-
-	/* テキストボックスより上の領域の中央 */
 	top: calc((100vh - 250px) / 2);
 
 	transform: translate(-50%, -50%);
@@ -1013,12 +1017,14 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 	pointer-events: none;
 }
 
+
 /* 防災バッグ */
 .action-illustration.backpack-img {
 	width: 320px;
 	max-width: 35vw;
 	max-height: 48vh;
 }
+
 
 /* スマホ充電 */
 .action-illustration.phone-img {
@@ -1027,11 +1033,308 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 	max-height: 45vh;
 }
 
-	z-index: 3;
+
+/* ========================================
+   ゲーム内音量調整
+======================================== */
+
+#game-volume-control {
+	position: fixed !important;
+
+	top: 70px !important;
+	right: 20px !important;
+
+	left: auto !important;
+	bottom: auto !important;
+
+	width: auto !important;
+	height: auto !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	transform: none !important;
+
+	z-index: 10000 !important;
+
+	font-family: sans-serif;
+}
+
+
+/* スピーカーボタン */
+#game-volume-button {
+	width: 48px;
+	height: 48px;
+
+	padding: 0;
+	margin: 0;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background: rgba(0, 0, 0, 0.75);
+
+	border: 2px solid rgba(255, 255, 255, 0.9);
+	border-radius: 10px;
+
+	color: white;
+
+	cursor: pointer;
+
+	box-sizing: border-box;
+	line-height: 1;
+	overflow: hidden;
+}
+
+/* ボタン内のスピーカーアイコン */
+.game-volume-button-icon {
+	display: block;
+
+	width: 24px;
+	height: 24px;
+
+	flex: 0 0 auto;
+
+	fill: currentColor;
+
 	pointer-events: none;
 }
 
-</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.macros.typeSkipKey = "Enter";
+
+/* ボタンにマウスを乗せたとき */
+#game-volume-button:hover {
+	background: rgba(30, 30, 30, 0.95);
+}
+
+
+/* 音量設定パネル */
+#game-volume-panel {
+	position: absolute;
+
+	top: 54px;
+	right: 0;
+
+	width: 210px;
+	height: auto !important;
+	min-height: 0 !important;
+
+	padding: 10px 12px;
+
+	display: none;
+
+	background: rgba(0, 0, 0, 0.88);
+
+	border: 2px solid rgba(255, 255, 255, 0.85);
+	border-radius: 10px;
+
+	box-sizing: border-box;
+
+	color: white;
+}
+
+
+/* 🔊ボタンを押したときだけ表示 */
+#game-volume-panel.open {
+	display: block;
+}
+
+
+/* 「ゲーム音量」の文字 */
+.game-volume-title {
+	margin: 0 0 7px 0;
+	padding: 0;
+
+	font-size: 15px;
+	font-weight: bold;
+	line-height: 1.2;
+}
+
+
+/* スライダーの行 */
+.game-volume-row {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+
+	margin: 0;
+	padding: 0;
+}
+
+
+/* 左側のスピーカー */
+.game-volume-icon {
+	font-size: 18px;
+}
+
+
+/* 音量バー */
+#game-volume-slider {
+	flex: 1;
+
+	min-width: 0;
+
+	cursor: pointer;
+}
+
+
+/* 50%など */
+#game-volume-value {
+	width: 45px;
+
+	font-size: 14px;
+	text-align: right;
+}
+
+/* ========================================
+   2・3日目の行動選択をテキストボックスの上へ
+======================================== */
+
+#choice-after-type.action-choice-panel {
+	position: absolute;
+
+	left: 0;
+	right: 0;
+
+	width: 100%;
+	max-width: none;
+
+	bottom: 275px;
+
+	transform: none;
+
+	margin: 0;
+	box-sizing: border-box;
+}
+
+/* ========================================
+   本文中の時刻表示
+   ↓ この上の数字や色を変えるだけで全時刻に反映
+======================================== */
+
+:root {
+	/* 時刻の文字色 */
+	--story-time-color: #ffd966;
+
+	/* 時刻の文字サイズ */
+	--story-time-size: 1.2em;
+
+	/* 時刻の太さ */
+	--story-time-weight: 700;
+
+	/* 時刻のフォント */
+	--story-time-font:
+		"Hiragino Sans",
+		"Yu Gothic",
+		"Meiryo",
+		sans-serif;
+
+	/* 文字の間隔 */
+	--story-time-spacing: 0.06em;
+
+	/* 「昨日より○分早い」など比較文章の色 */
+	--time-comparison-color: #ffe599;
+}
+
+
+/* 本文中の 16:00、17:00 など */
+.story-time {
+	color: var(--story-time-color);
+	font-size: var(--story-time-size);
+	font-weight: var(--story-time-weight);
+	font-family: var(--story-time-font);
+	letter-spacing: var(--story-time-spacing);
+}
+
+
+/* 昨日より○分早い、など */
+.time-comparison {
+	color: var(--time-comparison-color);
+	font-weight: bold;
+}
+/* 音量パネル内の不要な改行を消す */
+#game-volume-control > br,
+#game-volume-panel > br,
+.game-volume-row > br {
+	display: none !important;
+}
+
+/* =====================================================
+   NPC立ち絵
+   全身PNGを、ゲーム上では上半身だけ表示する
+===================================================== */
+
+.npc-sprite {
+	position: absolute;
+
+	/* 背景画像より前、テキストボックスより後ろ */
+	z-index: 20;
+
+	/* 全身画像そのものの大きさ */
+	height: 92vh;
+	width: auto;
+	max-width: 45vw;
+
+	/* 基本位置 */
+	bottom: -4vh;
+
+	/*
+	画像の下側42%を隠す。
+	全身画像でも頭～上半身だけ見える。
+	*/
+	clip-path: inset(0 0 42% 0);
+
+	/* 立ち絵がクリックの邪魔をしない */
+	pointer-events: none;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+/* 画面右側 */
+.npc-right {
+	right: 6vw;
+}
+
+/* 画面左側 */
+.npc-left {
+	left: 6vw;
+}
+
+/* 画面中央 */
+.npc-center {
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+
+/* =====================================================
+   NPCごとの微調整
+===================================================== */
+
+/* 謎の人物 */
+.npc-mystery {
+	height: 94vh;
+	bottom: -5vh;
+	opacity: 0;
+}
+
+/* 避難所職員 */
+.npc-staff {
+	height: 92vh;
+	bottom: -4vh;
+}
+
+/* 避難所で仲良くなる人 */
+.npc-friend {
+	height: 94vh;
+	bottom: -5vh;
+}
+
+/* 土木職員 */
+.npc-publicworks {
+	height: 94vh;
+	bottom: -5vh;
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.macros.typeSkipKey = "Enter";
 
 // 選択肢のキーボード操作
 $(document).on('keydown', function (event) {
@@ -1120,7 +1423,191 @@ $(document).on('mouseenter', '#choice-after-type a', function () {
 	$(this).addClass('keyboard-selected');
 });
 
-</script><tw-tag name="widget" color="purple"></tw-tag><tw-passagedata pid="1" name="Start" tags="" position="600,250" size="100,100">&lt;&lt;set $day = 0&gt;&gt;
+/* ========================================
+   テキストボックス自動スクロール
+======================================== */
+
+(function () {
+
+	let dialogueScrollTimer = null;
+
+	/* <<type>> が文字表示を始めたとき */
+	$(document).on(':typingstart', function (event) {
+
+		/* 今文字を表示しているテキストボックスを探す */
+		const dialogueBox = $(event.target)
+			.closest('.dialogue-box')[0];
+
+		/* テキストボックスが見つからなければ何もしない */
+		if (!dialogueBox) {
+			return;
+		}
+
+		/* 古い処理が残っていたら停止 */
+		if (dialogueScrollTimer) {
+			clearInterval(dialogueScrollTimer);
+		}
+
+		/*
+		 * 文字が表示されている間、
+		 * 50ミリ秒ごとに一番下へスクロールする
+		 */
+		dialogueScrollTimer = setInterval(function () {
+
+			dialogueBox.scrollTop =
+				dialogueBox.scrollHeight;
+
+		}, 50);
+
+	});
+
+
+	/* <<type>> の文章表示が全部終わったとき */
+	$(document).on(':typingcomplete', function () {
+
+		/* 自動スクロールを停止 */
+		if (dialogueScrollTimer) {
+
+			clearInterval(dialogueScrollTimer);
+			dialogueScrollTimer = null;
+
+		}
+
+		/* 最後に一番下まで表示 */
+		const dialogueBox =
+			document.querySelector('.dialogue-box');
+
+		if (dialogueBox) {
+
+			dialogueBox.scrollTop =
+				dialogueBox.scrollHeight;
+
+		}
+
+	});
+
+})();
+/* ========================================
+   ゲーム内音量調整
+======================================== */
+
+(function () {
+
+	/*
+	 * 🔊ボタンを押したら
+	 * 音量パネルを開閉する
+	 */
+	$(document).on("click.gameVolume", "#game-volume-button", function (event) {
+
+		event.preventDefault();
+		event.stopPropagation();
+
+		$("#game-volume-panel").toggleClass("open");
+
+	});
+
+
+	/*
+	 * 音量バーを動かしたら
+	 * SugarCube全体の音量を変更する
+	 */
+	$(document).on("input.gameVolume change.gameVolume", "#game-volume-slider", function () {
+
+		var volumePercent = Number(this.value);
+
+		/*
+		 * 0～100を
+		 * SugarCube用の0～1へ変換
+		 */
+		var volume = volumePercent / 100;
+
+		/*
+		 * ゲーム全体の音量を変更
+		 */
+		SimpleAudio.volume(volume);
+
+		/*
+		 * 50%などの表示を更新
+		 */
+		$("#game-volume-value").text(volumePercent + "%");
+
+		/*
+		 * 音量をブラウザに保存
+		 */
+		localStorage.setItem(
+			"disasterGameVolume",
+			String(volumePercent)
+		);
+
+	});
+
+
+	/*
+	 * 新しいパッセージが表示されるたびに
+	 * 前回設定した音量を音量バーへ反映する
+	 */
+	$(document).on(":passagedisplay.gameVolume", function () {
+
+		var savedVolume =
+			localStorage.getItem("disasterGameVolume");
+
+		var volumePercent;
+
+		if (savedVolume !== null) {
+
+			volumePercent = Number(savedVolume);
+
+		}
+		else {
+
+			/*
+			 * 初回はStoryInitと同じ50%
+			 */
+			volumePercent = 50;
+
+		}
+
+		/*
+		 * 念のため0～100の範囲にする
+		 */
+		volumePercent =
+			Math.max(0, Math.min(100, volumePercent));
+
+		/*
+		 * 実際の音量へ反映
+		 */
+		SimpleAudio.volume(volumePercent / 100);
+
+		/*
+		 * バーと数字にも反映
+		 */
+		$("#game-volume-slider").val(volumePercent);
+
+		$("#game-volume-value")
+			.text(volumePercent + "%");
+
+	});
+
+
+	/*
+	 * 音量パネル以外をクリックしたら閉じる
+	 */
+	$(document).on("click.gameVolume", function (event) {
+
+		if (
+			!$(event.target)
+				.closest("#game-volume-control")
+				.length
+		) {
+
+			$("#game-volume-panel")
+				.removeClass("open");
+
+		}
+
+	});
+
+})();</script><tw-tag name="widget" color="purple"></tw-tag><tw-passagedata pid="1" name="Start" tags="" position="600,250" size="100,100">&lt;&lt;set $day = 0&gt;&gt;
 
 &lt;div class=&quot;title-screen&quot;&gt;
 
@@ -1138,9 +1625,59 @@ $(document).on('mouseenter', '#choice-after-type a', function () {
 
 	&lt;/div&gt;
 
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="2" name="妖精登場" tags="" position="850,1375" size="100,100">妖精登場
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="2" name="妖精登場" tags="" position="850,1375" size="100,100">&lt;&lt;audio &quot;rain01&quot; stop&gt;&gt;
+&lt;&lt;audio &quot;rain02&quot; stop&gt;&gt;
+&lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
+&lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
 
-[[2日目へ-&gt;2日目開始]]</tw-passagedata><tw-passagedata pid="3" name="1日目_情報確認1" tags="" position="475,375" size="100,100">&lt;&lt;set $time = &quot;17:10&quot;&gt;&gt;
+&lt;div class=&quot;scene&quot; style=&quot;background:#000;&quot;&gt;
+
+	&lt;!--
+		謎の人物の画像。
+		後で images フォルダに
+		mystery_person.png を追加する。
+	--&gt;
+&lt;img
+	id=&quot;mystery-person&quot;
+	class=&quot;npc-sprite npc-center npc-mystery&quot;
+	src=&quot;images/mystery_person.png&quot;
+	alt=&quot;&quot;
+	onerror=&quot;this.style.visibility=&#39;hidden&#39;;&quot;&gt;
+
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		[[もう一度やってみる-&gt;2日目開始]]
+	&lt;/div&gt;
+
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms start 2s none&gt;&gt;暗闇の中に、見覚えのない人影が立っていた。&lt;br&gt;「……誰？」&lt;br&gt;突然のことに、思わず声が漏れる。&lt;br&gt;さっきまで、自分は激しい雨の中にいたはずだ。道路は水に覆われ、避難所へ向かうこともできなくなっていた。&lt;br&gt;「ここは……？　もしかして、夢……？」&lt;br&gt;状況が飲み込めないまま、人影を見つめる。暗くて、その顔まではよく見えない。&lt;br&gt;「……大変でしたね」&lt;br&gt;見覚えのない人物が、穏やかな声で話しかけてきた。&lt;br&gt;「少しだけ、時間を戻してみましょうか」&lt;br&gt;「時間を……戻す？」&lt;br&gt;「はい。今度は、先ほどとは違う行動を試してみてください」&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+
+/*
+ * 謎の人物を2秒かけて表示する。
+ * 今は画像がなくても問題なし。
+ */
+$(&quot;#mystery-person&quot;).animate({
+	opacity: 1
+}, 2000);
+
+
+/*
+ * 文章がすべて表示されたら
+ * 選択肢を表示する。
+ */
+$(document).one(&#39;:typingcomplete&#39;, function () {
+
+	$(&#39;#choice-after-type&#39;).fadeIn(300);
+
+});
+
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="3" name="1日目_情報確認1" tags="" position="475,375" size="100,100">&lt;&lt;set $time = &quot;17:10&quot;&gt;&gt;
 &lt;&lt;set $stress += 1&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
@@ -1247,7 +1784,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;span class=&quot;choice-disabled&quot;&gt;避難する&lt;/span&gt;
 &lt;/div&gt;
 
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 60ms none&gt;&gt;スマホが、短く鋭い音を立てた。&lt;br&gt;画面には【高齢者等避難】――避難に時間のかかる人は、避難を始めるよう呼びかけている。&lt;br&gt;「高齢者等避難なら、自分はまだ対象じゃないよな」&lt;br&gt;避難という言葉は近づいた。それでも、今すぐ動くほどではない気がした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 60ms none&gt;&gt;時刻は &lt;span class=&quot;story-time&quot;&gt;17:30&lt;/span&gt;。&lt;br&gt;スマホが、短く鋭い音を立てた。&lt;br&gt;画面には【高齢者等避難】――避難に時間のかかる人は、避難を始めるよう呼びかけている。&lt;br&gt;「高齢者等避難なら、自分はまだ対象じゃないよな」&lt;br&gt;避難という言葉は近づいた。それでも、今すぐ動くほどではない気がした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -1257,6 +1794,15 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="1日目_情報確認2" tags="" position="450,775" size="100,100">&lt;&lt;set $time = &quot;17:50&quot;&gt;&gt;
 &lt;&lt;set $stress += 1&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+&lt;video class=&quot;scene-media scene-media-window&quot;
+		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
+&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
+&lt;/video&gt;
+&lt;img class=&quot;scene-room&quot; src=&quot;images/room01.png&quot;&gt;
+
+&lt;/div&gt;
 
 &lt;&lt;audio &quot;rain03&quot; loop play&gt;&gt;
 
@@ -1327,7 +1873,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;span class=&quot;choice-disabled&quot;&gt;避難する&lt;/span&gt;
 &lt;/div&gt;
 
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 60ms none&gt;&gt;雨音が、会話もかき消しそうなほど強くなっている。&lt;br&gt;窓の外では、道路の端にたまった水が、少しずつ広がり始めていた。&lt;br&gt;さっきまで見慣れていた景色が、急によそよそしく見える。&lt;br&gt;「……まだ大丈夫だ。避難するなら、今からでも間に合うはず」&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 60ms none&gt;&gt;いつの間にか、かなり時間が経っていた。&lt;br&gt;雨音が、会話もかき消しそうなほど強くなっている。&lt;br&gt;窓の外では、道路の端にたまった水が、少しずつ広がり始めていた。&lt;br&gt;さっきまで見慣れていた景色が、急によそよそしく見える。&lt;br&gt;「……まだ大丈夫だ。避難するなら、今からでも間に合うはず」&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -1358,7 +1904,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 [[避難する-&gt;1日目_避難開始]]
 &lt;/div&gt;
 
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 70ms none&gt;&gt;突然、スマホがけたたましい音を立てた。&lt;br&gt;画面には【避難指示】――危険な場所にいる人は、ただちに避難するよう呼びかけている。&lt;br&gt;外はすでに暗く、激しい雨で道路の様子もよく見えない。&lt;br&gt;「……まずい。今すぐ避難しないと」&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 70ms none&gt;&gt;時刻は &lt;span class=&quot;story-time&quot;&gt;19:20&lt;/span&gt;。&lt;br&gt;突然、スマホがけたたましい音を立てた。&lt;br&gt;画面には【避難指示】――危険な場所にいる人は、ただちに避難するよう呼びかけている。&lt;br&gt;外はすでに暗く、激しい雨で道路の様子もよく見えない。&lt;br&gt;「……まずい。今すぐ避難しないと」&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -1383,7 +1929,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 [[右側の道へ進む-&gt;1日目_右の道][$day1Route = &quot;right&quot;]]
 &lt;/div&gt;
 
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 70ms none&gt;&gt;玄関を飛び出し、傘を開く。&lt;br&gt;激しい雨で視界は白くかすみ、足元では水が勢いよく流れている。&lt;br&gt;避難所へ向かう道は、少し先で左右に分かれていた。&lt;br&gt;どちらへ進むべきか、立ち止まって考えている余裕はない。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 70ms none&gt;&gt;時計を見る。時刻は &lt;span class=&quot;story-time&quot;&gt;19:40&lt;/span&gt;。&lt;br&gt;
+「もう行かないと」&lt;br&gt;玄関を飛び出し、傘を開く。&lt;br&gt;激しい雨で視界は白くかすみ、足元では水が勢いよく流れている。&lt;br&gt;避難所へ向かう道は、少し先で左右に分かれていた。&lt;br&gt;どちらへ進むべきか、立ち止まって考えている余裕はない。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -1535,8 +2082,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[行動を選ぶ-&gt;2日目_行動選択]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;雨の音が聞こえる。&lt;br&gt;昨日と同じ時間に戻ってきたようだ。&lt;br&gt;まだ外は明るい。&lt;br&gt;今度は、昨日とは違う行動ができるかもしれない。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;雨の音が聞こえる。&lt;br&gt;目を開けると、そこは見慣れた自分の部屋だった。&lt;br&gt;「……戻ってきた？」&lt;br&gt;時計を見る。時刻は &lt;span class=&quot;story-time&quot;&gt;17:00&lt;/span&gt;。外はまだ明るく、昨日と同じように雨が降っている。&lt;br&gt;さっきの出来事が頭をよぎる。あの人影は、「先ほどとは違う行動を試してみてください」と言っていた。&lt;br&gt;昨日は様子を見ているうちに、避難を始めるのが遅くなってしまった。&lt;br&gt;何が起きているのかは分からない。それでも、同じ結果を繰り返すわけにはいかない。&lt;br&gt;「今度は、今のうちにできることを考えてみよう」&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -1703,8 +2249,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		&lt;/div&gt;
 
 	&lt;/div&gt;
-
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;&lt;&lt;if $actions &lt;= 0&gt;&gt;3回の行動を終えた。準備をしている間にも、雨は強くなっていた。&lt;br&gt;これ以上、家にとどまっている余裕はなさそうだ。&lt;&lt;elseif $time &gt;= 19 * 60&gt;&gt;【避難指示】が出ている。&lt;br&gt;雨音が強く、外の様子もよく見えない。今すぐ避難した方がよさそうだ。&lt;&lt;elseif $time &gt;= 18 * 60 + 30&gt;&gt;【高齢者等避難】が発令されている。&lt;br&gt;外は少し暗くなり、雨音も強くなってきた。残り&lt;&lt;print $actions&gt;&gt;回、何を優先しよう。&lt;&lt;elseif $time &gt;= 18 * 60&gt;&gt;【高齢者等避難】が発令されている。&lt;br&gt;雨は弱まる気配がない。残り&lt;&lt;print $actions&gt;&gt;回、行動できる。&lt;&lt;else&gt;&gt;雨は降り続いている。まだ外は明るい。&lt;br&gt;できる行動はあと&lt;&lt;print $actions&gt;&gt;回。何を優先しよう。&lt;&lt;/if&gt;&gt;&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;時計を見る。現在の時刻は &lt;span class=&quot;story-time&quot;&gt;&lt;&lt;print Math.floor($time / 60)&gt;&gt;:&lt;&lt;if $time % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $time % 60&gt;&gt;&lt;/span&gt;。&lt;br&gt;&lt;&lt;if $actions &lt;= 0&gt;&gt;3回の行動を終えた。準備をしている間にも、雨は強くなっていた。&lt;br&gt;これ以上、家にとどまっている余裕はなさそうだ。&lt;&lt;elseif $time &gt;= 19 * 60&gt;&gt;【避難指示】が出ている。雨音が強く、外の様子もよく見えない。&lt;br&gt;今すぐ避難した方がよさそうだ。&lt;&lt;elseif $time &gt;= 18 * 60 + 30&gt;&gt;【高齢者等避難】が発令されている。外は少し暗くなり、雨音も強くなってきた。&lt;br&gt;残り&lt;&lt;print $actions&gt;&gt;回、何を優先しよう。&lt;&lt;elseif $time &gt;= 18 * 60&gt;&gt;【高齢者等避難】が発令されている。雨は弱まる気配がない。&lt;br&gt;残り&lt;&lt;print $actions&gt;&gt;回、行動できる。&lt;&lt;else&gt;&gt;雨は降り続いている。まだ外は明るい。&lt;br&gt;できる行動はあと&lt;&lt;print $actions&gt;&gt;回。何を優先しよう。&lt;&lt;/if&gt;&gt;&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -2029,7 +2574,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[玄関へ向かう-&gt;2日目_靴選択]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;玄関で靴を履き、家を出る準備を整える。&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;&lt;&lt;if $bagWeight &gt;= 7&gt;&gt;防災バッグは必要な物でいっぱいになっている。&lt;br&gt;かなり重いが、背負って歩けないほどではない。&lt;&lt;elseif $bagWeight &gt;= 4&gt;&gt;防災バッグには、選んだ持ち物が入っている。&lt;br&gt;少し重さはあるが、問題なく背負えそうだ。&lt;&lt;else&gt;&gt;防災バッグは軽く、動きやすそうだ。&lt;br&gt;その一方で、持ち物が十分か少し不安が残る。&lt;&lt;/if&gt;&gt;&lt;&lt;else&gt;&gt;防災バッグは用意していない。&lt;br&gt;身軽ではあるが、避難先で必要な物が足りないかもしれない。。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $hasRaincoat&gt;&gt;レインコートを取り出して身につける。&lt;br&gt;これなら、雨の中でも多少は濡れずに歩けそうだ。&lt;&lt;else&gt;&gt;雨を防げる物は持っていない。&lt;br&gt;外へ出れば、すぐに服が濡れてしまいそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $chargedPhone&gt;&gt;スマートフォンは出発前に充電してある。&lt;&lt;elseif $hasBattery&gt;&gt;スマートフォンの電池は少ないが、モバイルバッテリーを持っている。&lt;&lt;else&gt;&gt;スマートフォンの電池残量が心細い。&lt;&lt;/if&gt;&gt;&lt;br&gt;玄関の扉を開ける。&lt;br&gt;外では、強い雨が降り続いている。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;時計を見る。時刻は
+&lt;span class=&quot;story-time&quot;&gt;
+&lt;&lt;print Math.floor($evacuationTimeDay2 / 60)&gt;&gt;:&lt;&lt;if $evacuationTimeDay2 % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $evacuationTimeDay2 % 60&gt;&gt;
+&lt;/span&gt;。&lt;br&gt;玄関で靴を履き、家を出る準備を整える。&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;&lt;&lt;if $bagWeight &gt;= 7&gt;&gt;防災バッグは必要な物でいっぱいになっている。&lt;br&gt;かなり重いが、背負って歩けないほどではない。&lt;&lt;elseif $bagWeight &gt;= 4&gt;&gt;防災バッグには、選んだ持ち物が入っている。&lt;br&gt;少し重さはあるが、問題なく背負えそうだ。&lt;&lt;else&gt;&gt;防災バッグは軽く、動きやすそうだ。&lt;br&gt;その一方で、持ち物が十分か少し不安が残る。&lt;&lt;/if&gt;&gt;&lt;&lt;else&gt;&gt;防災バッグは用意していない。&lt;br&gt;身軽ではあるが、避難先で必要な物が足りないかもしれない。。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $hasRaincoat&gt;&gt;レインコートを取り出して身につける。&lt;br&gt;これなら、雨の中でも多少は濡れずに歩けそうだ。&lt;&lt;else&gt;&gt;雨を防げる物は持っていない。&lt;br&gt;外へ出れば、すぐに服が濡れてしまいそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $chargedPhone&gt;&gt;スマートフォンは出発前に充電してある。&lt;&lt;elseif $hasBattery&gt;&gt;スマートフォンの電池は少ないが、モバイルバッテリーを持っている。&lt;&lt;else&gt;&gt;スマートフォンの電池残量が心細い。&lt;&lt;/if&gt;&gt;&lt;br&gt;玄関の扉を開ける。&lt;br&gt;外では、強い雨が降り続いている。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -2365,7 +2913,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 [[戻る-&gt;2日目_バッグ画面]]</tw-passagedata><tw-passagedata pid="33" name="StoryInit" tags="" position="725,250" size="100,100">&lt;&lt;cacheaudio &quot;rain01&quot; &quot;audio/rain01.mp3&quot;&gt;&gt;
 &lt;&lt;cacheaudio &quot;rain02&quot; &quot;audio/rain02.mp3&quot;&gt;&gt;
 &lt;&lt;cacheaudio &quot;rain03&quot; &quot;audio/rain03.mp3&quot;&gt;&gt;
-&lt;&lt;cacheaudio &quot;thunder&quot; &quot;audio/thunder.mp3&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="34" name="無題のパッセージ" tags="" position="850,250" size="100,100">&lt;video
+&lt;&lt;cacheaudio &quot;thunder&quot; &quot;audio/thunder.mp3&quot;&gt;&gt;
+&lt;&lt;run SimpleAudio.volume(0.5)&gt;&gt;</tw-passagedata><tw-passagedata pid="34" name="無題のパッセージ" tags="" position="850,250" size="100,100">&lt;video
 	autoplay
 	loop
 	muted
@@ -2514,7 +3063,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;video class=&quot;scene-media scene-media-full&quot;
 		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/rainroad12.mp4&quot; type=&quot;video/mp4&quot;&gt;
+		&lt;source src=&quot;images/rainroad2.mp4&quot; type=&quot;video/mp4&quot;&gt;
 	&lt;/video&gt;
 &lt;/div&gt;
 
@@ -2540,7 +3089,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;scene&quot;&gt;
 &lt;video class=&quot;scene-media scene-media-full&quot; autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/LR.mp4&quot; type=&quot;video/mp4&quot;&gt;
+		&lt;source src=&quot;images/LR2.mp4&quot; type=&quot;video/mp4&quot;&gt;
 	&lt;/video&gt;
 &lt;/div&gt;
 &lt;div id=&quot;clock-box&quot;&gt;
@@ -2701,16 +3250,16 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;/div&gt;
 
 &lt;div id=&quot;clock-box&quot;&gt;
-時刻：&lt;&lt;print Math.floor($time / 60)&gt;&gt;:&lt;&lt;if $time % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $time % 60&gt;&gt;
+	時刻：&lt;&lt;print Math.floor($time / 60)&gt;&gt;:&lt;&lt;if $time % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $time % 60&gt;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
-	&lt;div id=&quot;choice-after-type&quot; style=&quot;display: none;&quot;&gt;
-		[[目を閉じる-&gt;3日目_開始]]
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		[[目を閉じる-&gt;謎の人物_2回目]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;持ってきた物は、確かに役に立った。&lt;br&gt;けれど、避難所へ着いた頃には外は暗く、服も靴も雨で濡れていた。&lt;br&gt;避難所の中も混雑し、落ち着ける場所を探すだけで時間がかかった。&lt;br&gt;「準備する時間が、もっと欲しかったな……」&lt;br&gt;そう考えてから、少し違う気もした。&lt;br&gt;時間がなかったのではなく、動き始めるのが遅かったのかもしれない。&lt;br&gt;雨が強くなる前から準備していれば、必要な物をもっと落ち着いて選べた。&lt;br&gt;そして、外が暗くなる前に家を出ることもできたはずだ。&lt;br&gt;次は、もう少し早く動こう。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;持ってきた物は、確かに役に立った。&lt;br&gt;昨日のように、何もできないまま避難することにはならなかった。&lt;br&gt;それでも、避難所へ着いた頃には外は暗く、服も靴も雨で濡れていた。体育館にも多くの人が集まり、落ち着ける場所を探すのにも時間がかかった。&lt;br&gt;「準備しておいてよかった。でも……まだ余裕があったとは言えないな」&lt;br&gt;昨日よりは、うまく行動できたと思う。&lt;br&gt;それでも、まだ何か変えられることがあるのかもしれない。&lt;br&gt;そんなことを考えながら、ゆっくりと目を閉じた。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -2719,9 +3268,11 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="45" name="3日目_開始" tags="" position="1375,2625" size="100,100">&lt;&lt;set $day = 3&gt;&gt;
-&lt;&lt;set $time = 16 * 60&gt;&gt;
+&lt;&lt;set $time = 15 * 60 + 30&gt;&gt;
 &lt;&lt;set $maxActions = 3&gt;&gt;
 &lt;&lt;set $actions = $maxActions&gt;&gt;
+
+&lt;&lt;set $day3RainPhase = &quot;silent&quot;&gt;&gt;
 
 &lt;!-- 三日目の情報確認・準備 --&gt;
 &lt;&lt;set $checkedOutside = false&gt;&gt;
@@ -2793,10 +3344,9 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;video class=&quot;scene-media scene-media-window&quot;
-		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-	&lt;/video&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
@@ -2813,7 +3363,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[行動を選ぶ-&gt;3日目_行動選択]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;再び、雨の降り始めた時間に戻ってきた。&lt;br&gt;時刻は午後4時。昨日よりもさらに早い。&lt;br&gt;外はまだ明るく、道路に水もたまっていない。&lt;br&gt;今なら、慌てずに準備や情報確認ができそうだ。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;雨の音で目を開ける。&lt;br&gt;そこは、また見慣れた自分の部屋だった。&lt;br&gt;「……また戻ってきたんだ」&lt;br&gt;時計を見る。時刻は &lt;span class=&quot;story-time&quot;&gt;15:30&lt;/span&gt;。昨日よりも1時間30分早い。&lt;br&gt;外はまだ明るく、道路にも水はたまっていない。雨も昨日ほど強くはない。&lt;br&gt;あの人影の言葉を思い出す。「準備をしたうえで時間にも余裕があると、何が変わるのか確かめてみてください」&lt;br&gt;昨日は準備をしたことで、無事に避難することができた。それでも、避難所に着いた頃には外は暗く、あまり余裕は残っていなかった。&lt;br&gt;「今日は、準備も怠らず、時間に余裕を持って動いてみよう」&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -2858,26 +3408,62 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="47" name="音声管理" tags="widget" position="975,250" size="100,100">&lt;&lt;widget &quot;updateRainSound&quot;&gt;&gt;
 
-	&lt;&lt;if $time &lt; 18 * 60&gt;&gt;
+	&lt;!-- =========================
+	     3日目専用の雨音
+	========================= --&gt;
+	&lt;&lt;if $day is 3&gt;&gt;
 
-		/* 弱い雨 */
-		&lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
-		&lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
-		&lt;&lt;audio &quot;rain01&quot; loop play&gt;&gt;
+		&lt;!-- 準備中：雨音なし --&gt;
+		&lt;&lt;if $day3RainPhase is &quot;silent&quot;&gt;&gt;
 
-	&lt;&lt;elseif $time &lt; 18 * 60 + 40&gt;&gt;
+			&lt;&lt;audio &quot;rain01&quot; stop&gt;&gt;
+			&lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
+			&lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
 
-		/* 雨が強くなる */
-		&lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
-		&lt;&lt;audio &quot;rain01&quot; loop play&gt;&gt;
-		&lt;&lt;audio &quot;rain03&quot; loop play&gt;&gt;
+		&lt;!-- 避難開始～後着避難者まで：小さな雨音 --&gt;
+		&lt;&lt;elseif $day3RainPhase is &quot;quiet&quot;&gt;&gt;
 
+			&lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
+			&lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
+			&lt;&lt;audio &quot;rain01&quot; volume 0.35 loop play&gt;&gt;
+
+		&lt;!-- 後着避難者以降：普通の雨音 --&gt;
+		&lt;&lt;elseif $day3RainPhase is &quot;normal&quot;&gt;&gt;
+
+			&lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
+			&lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
+			&lt;&lt;audio &quot;rain01&quot; volume 1 loop play&gt;&gt;
+
+		&lt;&lt;/if&gt;&gt;
+
+
+	&lt;!-- =========================
+	     1・2日目は今まで通り
+	========================= --&gt;
 	&lt;&lt;else&gt;&gt;
 
-		/* 終盤の激しい雨と雷 */
-		&lt;&lt;audio &quot;rain01&quot; loop play&gt;&gt;
-		&lt;&lt;audio &quot;rain03&quot; loop play&gt;&gt;
-		&lt;&lt;audio &quot;thunder&quot; loop play&gt;&gt;
+		&lt;&lt;if $time &lt; 18 * 60&gt;&gt;
+
+			/* 弱い雨 */
+			&lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
+			&lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
+			&lt;&lt;audio &quot;rain01&quot; volume 1 loop play&gt;&gt;
+
+		&lt;&lt;elseif $time &lt; 18 * 60 + 40&gt;&gt;
+
+			/* 雨が強くなる */
+			&lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
+			&lt;&lt;audio &quot;rain01&quot; volume 1 loop play&gt;&gt;
+			&lt;&lt;audio &quot;rain03&quot; volume 1 loop play&gt;&gt;
+
+		&lt;&lt;else&gt;&gt;
+
+			/* 終盤の激しい雨と雷 */
+			&lt;&lt;audio &quot;rain01&quot; volume 1 loop play&gt;&gt;
+			&lt;&lt;audio &quot;rain03&quot; volume 1 loop play&gt;&gt;
+			&lt;&lt;audio &quot;thunder&quot; volume 1 loop play&gt;&gt;
+
+		&lt;&lt;/if&gt;&gt;
 
 	&lt;&lt;/if&gt;&gt;
 
@@ -2947,25 +3533,25 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;&lt;if $time &gt;= 18 * 60 + 30&gt;&gt;
 
-		&lt;video class=&quot;scene-media scene-media-window&quot;
-			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-			&lt;source src=&quot;images/outside_rain03.mp4&quot; type=&quot;video/mp4&quot;&gt;
-		&lt;/video&gt;
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
-		&lt;img class=&quot;scene-room&quot;
-			src=&quot;images/room02.png&quot;
-			alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-room&quot;
+		src=&quot;images/room01.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;&lt;else&gt;&gt;
 
-		&lt;video class=&quot;scene-media scene-media-window&quot;
-			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-			&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-		&lt;/video&gt;
+		&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
-		&lt;img class=&quot;scene-room&quot;
-			src=&quot;images/room01.png&quot;
-			alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-room&quot;
+		src=&quot;images/room01.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;&lt;/if&gt;&gt;
 
@@ -3103,8 +3689,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;&lt;&lt;if $actions &lt;= 0&gt;&gt;3回の行動を終えた。まだ外は明るいが、これ以上準備を続けることはできない。&lt;br&gt;今のうちに避難を始めよう。&lt;&lt;elseif $time &gt;= 18 * 60 + 30&gt;&gt;雨がかなり強くなっている。残りの行動回数も考えながら、何を優先するか決めよう。&lt;&lt;elseif $time &gt;= 18 * 60&gt;&gt;雨音が少しずつ強くなっている。&lt;br&gt;残り&lt;&lt;print $actions&gt;&gt;回、行動できる。&lt;&lt;else&gt;&gt;まだ外は明るく、雨もそれほど強くない。&lt;br&gt;できる行動はあと&lt;&lt;print $actions&gt;&gt;回。何を優先しよう。&lt;&lt;/if&gt;&gt;&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;時計を見る。現在の時刻は &lt;span class=&quot;story-time&quot;&gt;&lt;&lt;print Math.floor($time / 60)&gt;&gt;:&lt;&lt;if $time % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $time % 60&gt;&gt;&lt;/span&gt;。&lt;br&gt;&lt;&lt;if $actions &lt;= 0&gt;&gt;3回の行動を終えた。準備もできた。まだ外は明るい。&lt;br&gt;今のうちに避難を始めよう。&lt;&lt;elseif $time &gt;= 18 * 60 + 30&gt;&gt;雨がかなり強くなっている。&lt;br&gt;残りの行動回数も考えながら、何を優先するか決めよう。&lt;&lt;elseif $time &gt;= 18 * 60&gt;&gt;雨音が少しずつ強くなっている。&lt;br&gt;残り&lt;&lt;print $actions&gt;&gt;回、行動できる。何を優先しよう。&lt;&lt;else&gt;&gt;まだ外は明るく、雨もそれほど強くない。&lt;br&gt;できる行動はあと&lt;&lt;print $actions&gt;&gt;回。何を優先しよう。&lt;&lt;/if&gt;&gt;&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -3125,10 +3710,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;video class=&quot;scene-media scene-media-full&quot;
-		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/rainzoom.mp4&quot; type=&quot;video/mp4&quot;&gt;
-	&lt;/video&gt;
+&lt;img
+	class=&quot;scene-media scene-media-full&quot;
+	src=&quot;images/rainzoom3day.png&quot;
+	alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div id=&quot;clock-box&quot;&gt;
@@ -3141,7 +3726,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[次に何をするか考える-&gt;3日目_行動後判定]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;窓辺に近づき、家の周りを確認する。&lt;br&gt;雨は降っているが、道路に水はたまっておらず、側溝にもまだ余裕がある。&lt;br&gt;昨日よりも早い時間だからか、周囲の状況はまだ落ち着いている。&lt;br&gt;今のうちなら、安全に準備や避難ができそうだ。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;窓辺に近づき、家の周りを確認する。&lt;br&gt;雨はほとんど降っておらず側溝にもまだ余裕がある。&lt;br&gt;昨日よりも早い時間だからか、周囲の状況はまだ落ち着いている。&lt;br&gt;今のうちなら、安全に準備や避難ができそうだ。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -3163,10 +3748,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;video class=&quot;scene-media scene-media-window&quot;
-		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-	&lt;/video&gt;
+	&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
@@ -3223,10 +3808,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;video class=&quot;scene-media scene-media-window&quot;
-		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-	&lt;/video&gt;
+	&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
@@ -3284,10 +3869,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;video class=&quot;scene-media scene-media-window&quot;
-		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-	&lt;/video&gt;
+	&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
@@ -3326,10 +3911,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;video class=&quot;scene-media scene-media-window&quot;
-		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-	&lt;/video&gt;
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
@@ -3340,6 +3925,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 時刻：&lt;&lt;print Math.floor($time / 60)&gt;&gt;:&lt;&lt;if $time % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $time % 60&gt;&gt;
 &lt;/div&gt;
 
+&lt;!-- スマホ充電の挿入画像 --&gt;
+&lt;img class=&quot;action-illustration phone-img&quot;
+src=&quot;images/smartphone_juuden.png&quot;
+alt=&quot;&quot;&gt;
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
@@ -3381,10 +3970,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;scene&quot;&gt;
 
-	&lt;video class=&quot;scene-media scene-media-window&quot;
-		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-	&lt;/video&gt;
+	&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
@@ -3411,10 +4000,13 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="56" name="3日目_避難開始" tags="" position="1375,3000" size="100,100">&lt;!-- 避難開始時の研究用記録 --&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="56" name="3日目_避難開始" tags="" position="1375,3000" size="100,100">&lt;!-- ========================================
+     3日目：避難を決めた時刻を記録
+======================================== --&gt;
+
 &lt;&lt;if $evacuationTimeDay3 is -1&gt;&gt;
 
-	&lt;!-- 避難を決めた時刻 --&gt;
+	&lt;!-- 避難すると決めた瞬間の時刻 --&gt;
 	&lt;&lt;set $evacuationTimeDay3 = $time&gt;&gt;
 
 	&lt;!-- 避難までに行った行動数 --&gt;
@@ -3429,8 +4021,37 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;&lt;/if&gt;&gt;
 
 &lt;&lt;/if&gt;&gt;
+&lt;!-- 2日目との避難開始時刻の差 --&gt;
+&lt;&lt;set $day3EvacuationDifference = $evacuationTimeDay2 - $evacuationTimeDay3&gt;&gt;
 
+
+&lt;!-- ========================================
+     2日目と3日目の避難開始時刻を比較
+======================================== --&gt;
+
+&lt;&lt;if $evacuationTimeDay2 &gt;= 0&gt;&gt;
+
+	&lt;!--
+		2日目の時刻 − 3日目の時刻
+		プラスなら3日目の方が早い
+	--&gt;
+	&lt;&lt;set $day3EvacuationDifference =
+		$evacuationTimeDay2 - $evacuationTimeDay3&gt;&gt;
+
+&lt;&lt;else&gt;&gt;
+
+	&lt;!-- 念のため、2日目の記録がない場合 --&gt;
+	&lt;&lt;set $day3EvacuationDifference = 0&gt;&gt;
+
+&lt;&lt;/if&gt;&gt;
+
+&lt;&lt;set $day3RainPhase = &quot;quiet&quot;&gt;&gt;
 &lt;&lt;updateRainSound&gt;&gt;
+
+
+&lt;!-- ========================================
+     背景
+======================================== --&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
 
@@ -3438,7 +4059,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 		&lt;video class=&quot;scene-media scene-media-window&quot;
 			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-			&lt;source src=&quot;images/outside_rain03.mp4&quot; type=&quot;video/mp4&quot;&gt;
+			&lt;source src=&quot;images/outside_rain03.mp4&quot;
+				type=&quot;video/mp4&quot;&gt;
 		&lt;/video&gt;
 
 		&lt;img class=&quot;scene-room&quot;
@@ -3447,22 +4069,26 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;&lt;else&gt;&gt;
 
-		&lt;video class=&quot;scene-media scene-media-window&quot;
-			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-			&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-		&lt;/video&gt;
+	&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
-		&lt;img class=&quot;scene-room&quot;
-			src=&quot;images/room01.png&quot;
-			alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-room&quot;
+		src=&quot;images/room01.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;&lt;/if&gt;&gt;
 
 &lt;/div&gt;
 
+
+&lt;!-- 右上の時計 --&gt;
 &lt;div id=&quot;clock-box&quot;&gt;
-時刻：&lt;&lt;print Math.floor($time / 60)&gt;&gt;:&lt;&lt;if $time % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $time % 60&gt;&gt;
+	時刻：
+	&lt;&lt;print Math.floor($time / 60)&gt;&gt;:&lt;&lt;if $time % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $time % 60&gt;&gt;
 &lt;/div&gt;
+
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
@@ -3470,39 +4096,44 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[玄関へ向かう-&gt;3日目_靴選択]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;避難することを決め、玄関へ向かう。&lt;br&gt;&lt;&lt;if $day3ActionsBeforeEvacuation is 0&gt;&gt;まだ十分な準備はしていないが、雨が弱いうちに家を出ることを優先した。&lt;&lt;elseif $day3ActionsBeforeEvacuation &lt; $maxActions&gt;&gt;必要だと思った確認や準備を済ませた。外はまだ明るく、落ち着いて出発できそうだ。&lt;&lt;else&gt;&gt;できる準備を終えた。それでも、昨日より早く動き始めたため、雨が強くなる前に出発できそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;準備した防災バッグを手に取り、肩にかける。&lt;&lt;else&gt;&gt;持ち物は少ないが、その分すぐに動き始められる。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $hasRaincoat&gt;&gt;バッグからレインコートを取り出し、身につける。&lt;&lt;else&gt;&gt;雨具は用意していないが、今ならまだ雨はそれほど強くない。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $contactedFamily&gt;&gt;家族にも、これから避難を始めることを伝えてある。&lt;&lt;else&gt;&gt;スマートフォンを持ち、戸締まりを確認する。&lt;&lt;/if&gt;&gt;&lt;br&gt;玄関に着いた。雨の中を歩くための靴を選ぼう。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;避難することを決め、時計を確認する。&lt;br&gt;時刻は &lt;span class=&quot;story-time&quot;&gt;&lt;&lt;print Math.floor($evacuationTimeDay3 / 60)&gt;&gt;:&lt;&lt;if $evacuationTimeDay3 % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $evacuationTimeDay3 % 60&gt;&gt;&lt;/span&gt;。&lt;br&gt;&lt;&lt;if $day3EvacuationDifference &gt; 0&gt;&gt;&lt;span class=&quot;time-comparison&quot;&gt;昨日より&lt;&lt;print $day3EvacuationDifference&gt;&gt;分早い。&lt;/span&gt;&lt;br&gt;昨日より早い時間に避難を始めることができそうだ。&lt;br&gt;&lt;&lt;elseif $day3EvacuationDifference is 0&gt;&gt;&lt;span class=&quot;time-comparison&quot;&gt;昨日と同じ時刻だ。&lt;/span&gt;&lt;br&gt;&lt;&lt;else&gt;&gt;&lt;span class=&quot;time-comparison&quot;&gt;昨日より&lt;&lt;print Math.abs($day3EvacuationDifference)&gt;&gt;分遅い。&lt;/span&gt;&lt;br&gt;&lt;&lt;/if&gt;&gt;玄関へ向かう。&lt;br&gt;&lt;&lt;if $day3ActionsBeforeEvacuation is 0&gt;&gt;まだ十分な準備はしていないが、雨が弱いうちに家を出ることを優先した。&lt;&lt;elseif $day3ActionsBeforeEvacuation &lt; $maxActions&gt;&gt;必要だと思った確認や準備を済ませた。外はまだ明るく、落ち着いて出発できそうだ。&lt;&lt;else&gt;&gt;できる準備を終えた。外はまだ明るく、雨が強くなる前に出発できそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;準備した防災バッグを手に取り、肩にかける。&lt;&lt;else&gt;&gt;持ち物は少ないが、その分すぐに動き始められる。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $hasRaincoat&gt;&gt;バッグからレインコートを取り出し、身につける。&lt;&lt;else&gt;&gt;雨具は用意していないが、今ならまだ雨はそれほど強くない。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $contactedFamily&gt;&gt;家族にも、これから避難を始めることを伝えてある。&lt;&lt;else&gt;&gt;スマートフォンを持ち、戸締まりを確認する。&lt;&lt;/if&gt;&gt;&lt;br&gt;玄関に着いた。雨の中を歩くための靴を選ぼう。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
+
 &lt;&lt;script&gt;&gt;
+
 $(document).one(&#39;:typingcomplete&#39;, function () {
+
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
+
 });
+
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="57" name="3日目_行動後判定" tags="" position="1550,2875" size="100,100">&lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
 
 	&lt;&lt;if $time &gt;= 18 * 60 + 30&gt;&gt;
 
-		&lt;video class=&quot;scene-media scene-media-window&quot;
-			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-			&lt;source src=&quot;images/outside_rain03.mp4&quot; type=&quot;video/mp4&quot;&gt;
-		&lt;/video&gt;
+		&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
-		&lt;img class=&quot;scene-room&quot;
-			src=&quot;images/room02.png&quot;
-			alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-room&quot;
+		src=&quot;images/room01.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;&lt;else&gt;&gt;
 
-		&lt;video class=&quot;scene-media scene-media-window&quot;
-			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-			&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-		&lt;/video&gt;
+		&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
-		&lt;img class=&quot;scene-room&quot;
-			src=&quot;images/room01.png&quot;
-			alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-room&quot;
+		src=&quot;images/room01.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;&lt;/if&gt;&gt;
 
@@ -3542,10 +4173,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;nobr&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;video class=&quot;scene-media scene-media-window&quot;
-		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-	&lt;/video&gt;
+	&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
@@ -3826,10 +4457,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/nobr&gt;&gt;</tw-passagedata><tw-passagedata pid="59" name="3日目_バッグ確認" tags="" position="1250,3250" size="100,100">&lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;video class=&quot;scene-media scene-media-window&quot;
-		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-	&lt;/video&gt;
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
@@ -3866,14 +4497,14 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;&lt;if $time &gt;= 18 * 60 + 30&gt;&gt;
 
-		&lt;video class=&quot;scene-media scene-media-window&quot;
-			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-			&lt;source src=&quot;images/outside_rain03.mp4&quot; type=&quot;video/mp4&quot;&gt;
-		&lt;/video&gt;
+	&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
-		&lt;img class=&quot;scene-room&quot;
-			src=&quot;images/room02.png&quot;
-			alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-room&quot;
+		src=&quot;images/room01.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;&lt;else&gt;&gt;
 
@@ -3942,26 +4573,25 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;&lt;if $time &gt;= 18 * 60 + 30&gt;&gt;
 
-		&lt;video class=&quot;scene-media scene-media-window&quot;
-			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-			&lt;source src=&quot;images/outside_rain03.mp4&quot; type=&quot;video/mp4&quot;&gt;
-		&lt;/video&gt;
+	&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
-		&lt;img class=&quot;scene-room&quot;
-			src=&quot;images/room02.png&quot;
-			alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-room&quot;
+		src=&quot;images/room01.png&quot;
+		alt=&quot;&quot;&gt;
 
 	&lt;&lt;else&gt;&gt;
 
-		&lt;video class=&quot;scene-media scene-media-window&quot;
-			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-			&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-		&lt;/video&gt;
+	&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot;
+		src=&quot;images/outside_day3.png&quot;
+		alt=&quot;&quot;&gt;
 
-		&lt;img class=&quot;scene-room&quot;
-			src=&quot;images/room01.png&quot;
-			alt=&quot;&quot;&gt;
-
+	&lt;img class=&quot;scene-room&quot;
+		src=&quot;images/room01.png&quot;
+		alt=&quot;&quot;&gt;
 	&lt;&lt;/if&gt;&gt;
 
 &lt;/div&gt;
@@ -4124,7 +4754,9 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[避難所の中へ入る-&gt;3日目_避難所到着]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;避難所の入口が見えてきた。&lt;br&gt;外はまだ明るく、建物へ向かう人の姿もはっきりと確認できる。&lt;br&gt;受付の前に長い列はなく、入口の周囲にも十分な余裕があるようだ。&lt;br&gt;&lt;&lt;if $day3CorrectedRoute&gt;&gt;途中で進路を変えたため少し遠回りになったが、危険な場所へ踏み込まずに到着できた。&lt;&lt;elseif $day3SelectedRoute is &quot;left&quot;&gt;&gt;安全な道を選んだことで、足元を確認しながら落ち着いてここまで来ることができた。&lt;&lt;else&gt;&gt;雨が強くなる前に出発したため、危険な状況になる前にここまで来ることができた。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $contactedFamily&gt;&gt;スマートフォンを確認すると、家族から「こちらも避難所へ向かっている」と連絡が届いていた。&lt;&lt;else&gt;&gt;スマートフォンはすぐに取り出せる場所にある。必要になれば、家族へ連絡できそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;防災バッグを背負い直し、入口へ向かう。準備した物も、避難所の中で役に立つかもしれない。&lt;&lt;else&gt;&gt;荷物は少ないが、その分早く移動することができた。&lt;&lt;/if&gt;&gt;&lt;br&gt;雨音を背中に聞きながら、避難所の扉へ手を伸ばした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;避難所の入口が見えてきた。&lt;br&gt;時刻は&lt;span class=&quot;story-time&quot;&gt;&lt;&lt;print Math.floor($day3ArrivalTime / 60)&gt;&gt;:&lt;&lt;if $day3ArrivalTime % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $day3ArrivalTime % 60&gt;&gt;&lt;/span&gt;。&lt;br&gt;
+外はまだ明るく、建物へ向かう人の姿もはっきりと確認できる。&lt;br&gt;
+受付の前に長い列はなく、入口の周囲にも十分な余裕があるようだ。&lt;br&gt;。&lt;br&gt;&lt;&lt;if $day3CorrectedRoute&gt;&gt;途中で進路を変えたため少し遠回りになったが、危険な場所へ踏み込まずに到着できた。&lt;&lt;elseif $day3SelectedRoute is &quot;left&quot;&gt;&gt;安全な道を選んだことで、足元を確認しながら落ち着いてここまで来ることができた。&lt;&lt;else&gt;&gt;雨が強くなる前に出発したため、危険な状況になる前にここまで来ることができた。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $contactedFamily&gt;&gt;スマートフォンを確認すると、家族から「こちらも避難所へ向かっている」と連絡が届いていた。&lt;&lt;else&gt;&gt;スマートフォンはすぐに取り出せる場所にある。必要になれば、家族へ連絡できそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;防災バッグを背負い直し、入口へ向かう。準備した物も、避難所の中で役に立つかもしれない。&lt;&lt;else&gt;&gt;荷物は少ないが、その分早く移動することができた。&lt;&lt;/if&gt;&gt;&lt;br&gt;雨音を背中に聞きながら、避難所の扉へ手を伸ばした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -4169,7 +4801,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;scene&quot;&gt;
 &lt;video class=&quot;scene-media scene-media-full&quot; autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/LRday3..mp4&quot; type=&quot;video/mp4&quot;&gt;
+		&lt;source src=&quot;images/LRday3.mp4&quot; type=&quot;video/mp4&quot;&gt;
 	&lt;/video&gt;
 &lt;/div&gt;
 
@@ -4202,7 +4834,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_mae_day3.png&quot;
+		src=&quot;images/shelter_mae_day32.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -4252,9 +4884,73 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="70" name="3日目_受付" tags="" position="1625,3500" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;/if&gt;&gt;
+&lt;div id=&quot;game-volume-control&quot;&gt;
+
+&lt;button
+	id=&quot;game-volume-button&quot;
+	type=&quot;button&quot;
+	aria-label=&quot;ゲーム音量を調整&quot;&gt;
+
+	&lt;svg
+		class=&quot;game-volume-button-icon&quot;
+		viewBox=&quot;0 0 24 24&quot;
+		aria-hidden=&quot;true&quot;&gt;
+
+		&lt;path d=&quot;M4 9v6h4l5 4V5L8 9H4z&quot;&gt;&lt;/path&gt;
+
+		&lt;path
+			d=&quot;M16 8.5c1.3 1.1 2 2.2 2 3.5s-.7 2.4-2 3.5&quot;
+			fill=&quot;none&quot;
+			stroke=&quot;currentColor&quot;
+			stroke-width=&quot;2&quot;
+			stroke-linecap=&quot;round&quot;&gt;
+		&lt;/path&gt;
+
+		&lt;path
+			d=&quot;M18.5 6c2 1.7 3 3.7 3 6s-1 4.3-3 6&quot;
+			fill=&quot;none&quot;
+			stroke=&quot;currentColor&quot;
+			stroke-width=&quot;2&quot;
+			stroke-linecap=&quot;round&quot;&gt;
+		&lt;/path&gt;
+
+	&lt;/svg&gt;
+
+&lt;/button&gt;
+
+	&lt;div id=&quot;game-volume-panel&quot;&gt;
+
+		&lt;div class=&quot;game-volume-title&quot;&gt;
+			ゲーム音量
+		&lt;/div&gt;
+
+		&lt;div class=&quot;game-volume-row&quot;&gt;
+
+			&lt;span class=&quot;game-volume-icon&quot;&gt;
+				🔈
+			&lt;/span&gt;
+
+			&lt;input
+				id=&quot;game-volume-slider&quot;
+				type=&quot;range&quot;
+				min=&quot;0&quot;
+				max=&quot;100&quot;
+				step=&quot;5&quot;
+				value=&quot;50&quot;&gt;
+
+			&lt;span id=&quot;game-volume-value&quot;&gt;
+				50%
+			&lt;/span&gt;
+
+		&lt;/div&gt;
+
+	&lt;/div&gt;
+
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="70" name="3日目_受付" tags="" position="1625,3500" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_mae_day3.png&quot;
+		src=&quot;images/shelter_mae_day32.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -4311,7 +5007,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="72" name="3日目_場所確保" tags="" position="1500,3625" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="72" name="3日目_場所確保" tags="" position="1500,3625" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3.png&quot;
 		alt=&quot;&quot;&gt;
@@ -4331,50 +5028,20 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="73" name="3日目_避難所イベント開始" tags="" position="1500,3750" size="100,100">&lt;!-- 抽選は最初の1回だけ --&gt;
-&lt;&lt;if not $day3ShelterEventsPrepared&gt;&gt;
-
-	&lt;!-- 現在存在する通常イベント --&gt;
-	&lt;&lt;set _candidates = [
-		&quot;meal_help&quot;,
-		&quot;late_arrivals&quot;,
-		&quot;talk&quot;
-	]&gt;&gt;
-
-	&lt;!-- 研究記録用：抽選候補を保存 --&gt;
-	&lt;&lt;set $day3ShelterEventCandidates = _candidates.slice()&gt;&gt;
-
-	&lt;!-- 候補から最大2個をランダム抽選 --&gt;
-	&lt;&lt;set $day3SelectedShelterEvents =
-		_candidates.randomMany(
-			Math.min($day3ShelterRandomMax, _candidates.length)
-		)
-	&gt;&gt;
-
-	&lt;&lt;set $day3ShelterEventIndex = 0&gt;&gt;
-	&lt;&lt;set $day3ShelterEventsPrepared = true&gt;&gt;
-
-&lt;&lt;/if&gt;&gt;
-
-&lt;&lt;goto &quot;3日目_避難所イベント戻り&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="74" name="3日目_炊き出し発見" tags="" position="1625,3850" size="100,100">&lt;div class=&quot;scene&quot;&gt;
-
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="73" name="3日目_避難所イベント開始" tags="" position="1500,3750" size="100,100">&lt;&lt;goto &quot;3日目_炊き出し発見&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="74" name="3日目_炊き出し発見" tags="" position="1625,3850" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3.png&quot;
 		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;npc-sprite npc-right&quot;
-		src=&quot;images/npc_cooking_woman.png&quot;
-		alt=&quot;&quot;&gt;
-
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[炊き出しの方へ行く-&gt;3日目_炊き出し受取]]
+		[[配布場所へ行く-&gt;3日目_炊き出し受取]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;しばらく座っていると、体育館の入口付近が少しにぎやかになってきた。&lt;br&gt;そちらを見ると、何人かの人が机を並べ、大きな鍋から湯気の立つ料理を器によそっている。&lt;br&gt;ふわりと温かい匂いが漂ってきた。&lt;br&gt;「炊き出しできたよー！　温かいうちにどうぞー！」&lt;br&gt;明るい声で呼びかけているのは、エプロン姿の女性だった。&lt;br&gt;そういえば、避難してから何も食べていない。少しお腹も空いてきた。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で休んでいると、体育館の入口付近が少しにぎやかになってきた。&lt;br&gt;見ると、職員たちが段ボール箱をいくつも運び込み、机の上に並べている。&lt;br&gt;箱の中には、個包装されたパンや保存食が入っていた。&lt;br&gt;「避難されている方に食料を配ります。必要な方はこちらへどうぞ」&lt;br&gt;館内に案内の声が響く。どうやら、避難所に備蓄されていた食料を配るらしい。&lt;br&gt;「避難所って、食べ物も用意されているんだ……」&lt;br&gt;少し意外に思いながら、配布場所の方を見る。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -4382,25 +5049,20 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="75" name="3日目_炊き出し受取" tags="" position="1625,3975" size="100,100">&lt;div class=&quot;scene&quot;&gt;
-
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="75" name="3日目_炊き出し受取" tags="" position="1625,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3.png&quot;
 		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;npc-sprite npc-right&quot;
-		src=&quot;images/npc_cooking_woman.png&quot;
-		alt=&quot;&quot;&gt;
-
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[受け取って食べる-&gt;3日目_炊き出し食事]]
+		[[食料を受け取る-&gt;3日目_炊き出し食事]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;炊き出しの机へ向かう。&lt;br&gt;まだ避難者が少ないため、ほとんど待つことなく順番が回ってきた。&lt;br&gt;「はい、お待たせ。熱いから気をつけてね」&lt;br&gt;女性が、湯気の立つ器を手渡してくれる。&lt;br&gt;「いっぱいあるから、足りなかったらまた来ていいからね」&lt;br&gt;受け取った器からは、だしの香りが立ち上っている。&lt;br&gt;避難所での食事ということで簡単なものを想像していたが、見た目からして思ったよりずっとおいしそうだ。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;食料の配布場所へ向かう。&lt;br&gt;まだ避難者が少ないため、ほとんど並ぶことなく順番が回ってきた。&lt;br&gt;「こちら、備蓄しているパンです。どうぞ」&lt;br&gt;職員から、個包装されたパンと飲み物を受け取る。賞味期限が長く、災害時のために保管されていたものらしい。&lt;br&gt;避難所に来たら、食事もすべて自分で用意しなければならないと思っていた。&lt;br&gt;けれど、こうして非常時のための食料も準備されているようだ。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -4408,25 +5070,20 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="76" name="3日目_炊き出し食事" tags="" position="1625,4100" size="100,100">&lt;div class=&quot;scene&quot;&gt;
-
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="76" name="3日目_炊き出し食事" tags="" position="1625,4100" size="100,100">&lt;&lt;set $time += 10&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3.png&quot;
 		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;npc-sprite npc-right&quot;
-		src=&quot;images/npc_cooking_woman.png&quot;
-		alt=&quot;&quot;&gt;
-
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[食器を返しに行く-&gt;3日目_配膳手伝い]]
+		[[食べ終える-&gt;3日目_配膳手伝い]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所へ戻り、まだ温かい料理を一口食べる。&lt;br&gt;「……おいしい」&lt;br&gt;思わず声が出た。身体の中からじんわりと温まっていく。&lt;br&gt;避難所で食べるものだからとあまり期待していなかったが、だしがよく効いていて、思っていた以上においしい。&lt;br&gt;近くを通りかかった先ほどの女性がこちらを見て、にこっと笑った。&lt;br&gt;「どう？　お口に合った？」&lt;br&gt;「はい。すごくおいしいです」&lt;br&gt;「ほんと？　よかったー。朝から仕込んだ甲斐があったわ！」&lt;br&gt;嬉しそうに笑う姿を見ていると、こちらまで少し気持ちが明るくなる。&lt;br&gt;やがて料理を食べ終え、空になった器を返しに立ち上がった。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所へ戻り、受け取ったパンの袋を開ける。&lt;br&gt;一口食べると、少し気になっていた空腹が落ち着いていく。&lt;br&gt;特別な食事というわけではない。それでも、安全な場所で落ち着いて食べられるだけで、ずいぶん安心する。&lt;br&gt;避難所には、寝る場所だけではなく、災害に備えた食料も用意されている。&lt;br&gt;「避難してきても、ちゃんと食べられるんだな」&lt;br&gt;避難所に来る前に思っていたよりも、ここで過ごすことへの不安が少し小さくなった。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -4434,25 +5091,20 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="77" name="3日目_配膳手伝い" tags="" position="1625,4225" size="100,100">&lt;div class=&quot;scene&quot;&gt;
-
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="77" name="3日目_配膳手伝い" tags="" position="1625,4225" size="100,100">&lt;&lt;set $time += 10&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3.png&quot;
 		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;npc-sprite npc-right&quot;
-		src=&quot;images/npc_cooking_woman.png&quot;
-		alt=&quot;&quot;&gt;
-
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[配膳を手伝う-&gt;3日目_配膳感謝]]
+		[[食料の配布を手伝う-&gt;3日目_配膳感謝]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;空になった器を返しに炊き出しの机へ向かう。&lt;br&gt;さっきより避難してきた人が増えたのか、炊き出しの周りも少し慌ただしくなっていた。&lt;br&gt;先ほどの女性が、料理をよそいながら別の机へ器を運んでいる。&lt;br&gt;「あっ、ごちそうさまでした。すごくおいしかったです」&lt;br&gt;「よかった！　……あら、ちょっと待ってね。今そっちにも運ばないと――」&lt;br&gt;どうやら人手が足りなくなってきたようだ。&lt;br&gt;今は特に急いですることもない。少しくらいなら手伝えそうだ。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;食べ終わったあと、もう一度入口の方を見る。&lt;br&gt;先ほどよりも避難してきた人が増え、食料の配布場所にも少しずつ人が集まり始めていた。&lt;br&gt;職員たちは段ボール箱を開けたり、パンを並べたり、避難者へ渡したりと忙しそうに動いている。&lt;br&gt;「すみません、こっちの箱も開けてもらえますか！」&lt;br&gt;「はい、今行きます！」&lt;br&gt;どうやら少し人手が足りないようだ。&lt;br&gt;自分はすでに受付も終わり、落ち着ける場所も確保している。今すぐしなければならないこともない。&lt;br&gt;少しくらいなら、手伝えるかもしれない。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -4460,30 +5112,25 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="78" name="3日目_配膳感謝" tags="" position="1625,4350" size="100,100">&lt;!-- 炊き出し＋配膳イベントを一度だけ記録 --&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="78" name="3日目_配膳感謝" tags="" position="1625,4350" size="100,100">&lt;!-- 備蓄食料配布イベントを一度だけ記録 --&gt;
 &lt;&lt;if $day3CompletedEvents.indexOf(&quot;meal_help&quot;) === -1&gt;&gt;
 	&lt;&lt;run $day3CompletedEvents.push(&quot;meal_help&quot;)&gt;&gt;
 	&lt;&lt;set $day3GoodEventCount += 1&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3.png&quot;
 		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;npc-sprite npc-right&quot;
-		src=&quot;images/npc_cooking_woman.png&quot;
-		alt=&quot;&quot;&gt;
-
 &lt;/div&gt;
+
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[手伝いを終える-&gt;3日目_避難所イベント戻り]]
+		[[手伝いを終える-&gt;3日目_後着避難者]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;料理の入った器を受け取り、待っている人たちへ順番に渡していく。&lt;br&gt;「どうぞ。熱いので気をつけてください」&lt;br&gt;「ありがとう、助かります」&lt;br&gt;何人かに声をかけられながら配っていると、小さな子どもがこちらへ両手を伸ばした。&lt;br&gt;「ぼくのもある？」&lt;br&gt;「もちろん。はい、どうぞ」&lt;br&gt;「わあ！　ありがとう！」&lt;br&gt;隣にいた保護者も、ほっとしたように頭を下げる。&lt;br&gt;「ありがとうございます。この子、お腹が空いたってずっと言っていて……」&lt;br&gt;その後も何人かへ料理を渡し、気がつけば「ありがとう」という言葉を何度も聞いていた。&lt;br&gt;一段落したところで、炊き出しの女性がこちらへやってくる。&lt;br&gt;「いやー、本当に助かったわ！　ありがとうね」&lt;br&gt;「いえ、おいしいご飯もいただいたので」&lt;br&gt;「そう言ってもらえると嬉しいわ。またお腹空いたら食べに来てね！」&lt;br&gt;避難してきただけのつもりだったのに、思いがけず誰かの役に立つことができた。&lt;br&gt;少しだけ、ここへ来たときよりも気分が軽くなった気がする。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;職員からパンの入った箱を受け取り、避難してきた人たちへ順番に渡していく。&lt;br&gt;「どうぞ。お一人一つずつです」&lt;br&gt;「ありがとう」&lt;br&gt;何人かへ渡していると、小さな子どもを連れた人がやってきた。&lt;br&gt;「これ、子どもの分もいただいていいですか？」&lt;br&gt;「はい。どうぞ」&lt;br&gt;パンを渡すと、子どもが嬉しそうに受け取った。&lt;br&gt;「ありがとう！」&lt;br&gt;隣にいた保護者も、ほっとした表情で頭を下げる。&lt;br&gt;「助かりました。ありがとうございます」&lt;br&gt;その後も何人かへ食料を渡し、気がつけば何度も「ありがとう」と声をかけられていた。&lt;br&gt;一段落したところで、職員がこちらへやってくる。&lt;br&gt;「手伝ってくれてありがとうございました。本当に助かりました」&lt;br&gt;「いえ、時間もあったので」&lt;br&gt;そう答えながら、少しだけ嬉しくなる。&lt;br&gt;早く避難してきたことで、自分にはこうして周りを見る余裕があった。避難してきただけのつもりだったが、思いがけず誰かの役に立つことができた。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -4520,9 +5167,14 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;&lt;/if&gt;&gt;
 
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="80" name="3日目_後着避難者" tags="" position="1750,3850" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="80" name="3日目_後着避難者" tags="" position="1750,3850" size="100,100">&lt;&lt;set $time += 10&gt;&gt;
+
+&lt;&lt;set $day3RainPhase = &quot;normal&quot;&gt;&gt;
+&lt;&lt;updateRainSound&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -4542,7 +5194,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="81" name="3日目_受付混雑" tags="" position="1750,3975" size="100,100">&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -4567,14 +5219,14 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[少し休む-&gt;3日目_避難所イベント戻り]]
+		[[少し休む-&gt;3日目_避難者交流開始]]
 	&lt;/div&gt;
 
 	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所へ戻り、改めて服や荷物を確認する。&lt;br&gt;&lt;&lt;if $hasRaincoat&gt;&gt;レインコートのおかげもあり、服はほとんど濡れていない。&lt;&lt;else&gt;&gt;多少雨には当たったが、後から来た人たちと比べればほとんど濡れずに済んでいる。&lt;&lt;/if&gt;&gt;&lt;br&gt;受付にも並ばず、自分が落ち着ける場所を選ぶこともできた。&lt;br&gt;ほんの少し早く家を出ただけでも、避難所に着いてからの状況はこんなに違うらしい。&lt;br&gt;入口では、また新しい避難者を案内する職員の声が聞こえている。&lt;br&gt;外の雨音は、ここへ来たときよりも明らかに強くなっていた。&lt;br&gt;早いうちに動いておいてよかった。そう思いながら、もう一度腰を下ろした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
@@ -4585,7 +5237,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="83" name="3日目_避難者交流開始" tags="" position="1875,3850" size="100,100">&lt;!-- このイベントで登場するNPCの性別を最初の1回だけ決める --&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="83" name="3日目_避難者交流開始" tags="" position="1875,3850" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;!-- このイベントで登場するNPCの性別を最初の1回だけ決める --&gt;
 &lt;&lt;if $day3TalkNpcGender is &quot;&quot;&gt;&gt;
 	&lt;&lt;set $day3TalkNpcGender = either(&quot;male&quot;, &quot;female&quot;)&gt;&gt;
 &lt;&lt;/if&gt;&gt;
@@ -4593,7 +5246,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;scene&quot;&gt;
 
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 
 	&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;
@@ -4626,9 +5279,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="84" name="3日目_避難者交流会話" tags="" position="1875,3975" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="84" name="3日目_避難者交流会話" tags="" position="1875,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -4646,9 +5300,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="85" name="3日目_避難者交流趣味" tags="" position="1875,4100" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="85" name="3日目_避難者交流趣味" tags="" position="1875,4100" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -4674,14 +5329,14 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[自分の場所で休む-&gt;3日目_避難所イベント戻り]]
+[[自分の場所で休む-&gt;3日目_持ち物イベント開始]]
 	&lt;/div&gt;
 
 	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;しばらく話していると、館内放送が流れ、二人ともふと顔を上げた。&lt;br&gt;「……結構しゃべっちゃいましたね」&lt;br&gt;「ですね」&lt;br&gt;「でも、よかったです。さっきまでちょっと不安だったので」&lt;br&gt;相手はそう言って笑った。&lt;br&gt;考えてみれば、自分も同じだった。&lt;br&gt;ここへ来たばかりのころは外の雨やこれからのことばかり考えていたのに、誰かと話しているうちに肩の力が抜けていた。&lt;br&gt;「またあとで話しましょう」&lt;br&gt;「はい」&lt;br&gt;思いがけず気の合う人と出会えたことに、少し嬉しくなる。&lt;br&gt;早めに避難してできた余裕のある時間は、ただ雨が過ぎるのを待つだけの時間ではなかった。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
@@ -4728,9 +5383,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;&lt;/if&gt;&gt;
 
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="88" name="3日目_持ち物_水" tags="" position="2000,3975" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="88" name="3日目_持ち物_水" tags="" position="2000,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -4750,10 +5406,11 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="89" name="3日目_持ち物_タオル" tags="" position="2125,3975" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="89" name="3日目_持ち物_タオル" tags="" position="2125,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;npc-sprite npc-parent&quot;
@@ -4788,7 +5445,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 </tw-passagedata><tw-passagedata pid="90" name="3日目_持ち物_タオル渡す" tags="" position="2125,4100" size="100,100">&lt;div class=&quot;scene&quot;&gt;
 
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;npc-sprite npc-parent&quot;
@@ -4824,7 +5481,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;scene&quot;&gt;
 
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;npc-sprite npc-parent&quot;
@@ -4851,14 +5508,15 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="92" name="3日目_持ち物_水使用" tags="" position="2000,4100" size="100,100">&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_water&quot;) === -1&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="92" name="3日目_持ち物_水使用" tags="" position="2000,4100" size="100,100">
+&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_water&quot;) === -1&gt;&gt;
 	&lt;&lt;run $day3CompletedEvents.push(&quot;item_water&quot;)&gt;&gt;
 	&lt;&lt;set $day3ItemHelpfulCount += 1&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -4876,9 +5534,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="93" name="3日目_持ち物_非常食" tags="" position="2250,3975" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="93" name="3日目_持ち物_非常食" tags="" position="2250,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -4905,7 +5564,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 &lt;div class=&quot;vn-ui&quot;&gt;
@@ -4922,9 +5581,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="95" name="3日目_持ち物_バッテリー" tags="" position="2375,3975" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="95" name="3日目_持ち物_バッテリー" tags="" position="2375,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -4951,7 +5611,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -4969,7 +5629,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="97" name="3日目_持ち物_常備薬" tags="" position="2500,3975" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="97" name="3日目_持ち物_常備薬" tags="" position="2500,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3.png&quot;
 		alt=&quot;&quot;&gt;
@@ -5061,7 +5722,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;goto &quot;3日目_持ち物イベント次へ&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="100" name="3日目_土木職員登場" tags="" position="2025,4475" size="100,100">&lt;div class=&quot;scene&quot;&gt;
 
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 
 	&lt;img class=&quot;npc-sprite npc-right&quot;
@@ -5085,7 +5746,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="101" name="3日目_土木職員道路情報" tags="" position="2025,4600" size="100,100">&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -5105,7 +5766,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="102" name="3日目_土木職員会話" tags="" position="2025,4725" size="100,100">&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -5131,7 +5792,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -5149,7 +5810,32 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="104" name="3日目_避難所終盤" tags="" position="2025,4975" size="100,100"></tw-passagedata><tw-passagedata pid="105" name="3日目_持ち物イベント終了" tags="" position="2000,4225" size="100,100">&lt;&lt;goto &quot;3日目_土木職員登場&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="106" name="1日目_開始" tags="" position="625,375" size="100,100">&lt;&lt;set $day = 1&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="104" name="3日目_避難所終盤" tags="" position="2025,4975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;&lt;set $day3RainPhase = &quot;quiet&quot;&gt;&gt;
+&lt;&lt;updateRainSound&gt;&gt;
+&lt;&lt;audio &quot;rain01&quot; volume 0.15&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
+		alt=&quot;&quot;&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		[[外の様子を見に行く-&gt;3日目_雨上がり]]
+	&lt;/div&gt;
+
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所へ戻り、しばらく腰を下ろす。&lt;br&gt;避難所の中には、落ち着いた時間が流れていた。&lt;br&gt;ふと顔を上げる。&lt;br&gt;さっきまで体育館の屋根を叩いていた雨音が、いつの間にかずいぶん小さくなっている。&lt;br&gt;耳を澄ませても、聞こえるのは遠くで降る雨の音くらいだ。&lt;br&gt;窓の外も、先ほどより少し明るく見える。&lt;br&gt;「……雨、止んできたのかな」&lt;br&gt;少し気になって、外の様子を見に行くことにした。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(300);
+});
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="105" name="3日目_持ち物イベント終了" tags="" position="2000,4225" size="100,100">&lt;&lt;goto &quot;3日目_土木職員登場&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="106" name="1日目_開始" tags="" position="625,375" size="100,100">&lt;&lt;set $day = 1&gt;&gt;
 &lt;&lt;set $time = &quot;17:00&quot;&gt;&gt;
 &lt;&lt;set $stress = 0&gt;&gt;
 &lt;&lt;set $rainLevel = 1&gt;&gt;
@@ -5177,7 +5863,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 [[テレビを見る-&gt;1日目_情報確認1]]
 &lt;span class=&quot;choice-disabled&quot;&gt;避難する&lt;/span&gt;
 &lt;/div&gt;
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;朝から雨が降っている。&lt;br&gt;けれど、家の中にいる限り、そこまで危険な感じはしない。&lt;br&gt;テレビからは、大雨に関するニュースが流れている。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;朝から雨が降っている。&lt;br&gt;けれど、家の中にいる限り、そこまで危険な感じはしない。&lt;br&gt;テレビからは、大雨に関するニュースが流れている。&lt;br&gt;時計を見る。時刻は &lt;span class=&quot;story-time&quot;&gt;17:00&lt;/span&gt;。&lt;br&gt;
+まだ外は明るく、雨もそれほど強くない。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5350,6 +6037,189 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="112" name="謎の人物_2回目" tags="" position="1500,2625" size="100,100">&lt;&lt;audio &quot;rain01&quot; stop&gt;&gt;
+&lt;&lt;audio &quot;rain02&quot; stop&gt;&gt;
+&lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
+&lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
+
+&lt;div class=&quot;scene&quot; style=&quot;background:#000;&quot;&gt;
+
+	&lt;!--
+		謎の人物の画像。
+		終盤で images フォルダに
+		mystery_person.png を追加する。
+	--&gt;
+	&lt;img
+	id=&quot;mystery-person&quot;
+	class=&quot;npc-sprite npc-center npc-mystery&quot;
+	src=&quot;images/mystery_person.png&quot;
+	alt=&quot;&quot;
+	onerror=&quot;this.style.visibility=&#39;hidden&#39;;&quot;&gt;
+
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		[[もう一度やってみる-&gt;3日目_開始]]
+	&lt;/div&gt;
+
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms start 2s none&gt;&gt;気がつくと、再びあの暗闇の中にいた。&lt;br&gt;目の前には、あの人影が立っている。&lt;br&gt;「……また、あなた？」&lt;br&gt;「前より、うまくできたようですね」&lt;br&gt;人影が穏やかな声で話しかける。&lt;br&gt;「準備したものも、役に立ったのではないでしょうか」&lt;br&gt;確かにその通りだった。準備をしていたからこそ、昨日よりは落ち着いて行動することができた。&lt;br&gt;「それでも、少し大変だったようですね」&lt;br&gt;雨の中を歩いたことや、人で混み始めていた避難所の様子を思い出す。&lt;br&gt;「……確かに」&lt;br&gt;人影は少し間を置いて、こちらを見る。&lt;br&gt;「それなら今度は、これまでの準備も活かしながら、もう少し早い時間からやり直してみましょうか」&lt;br&gt;「もう少し早い時間から……？」&lt;br&gt;「はい。準備をしたうえで時間にも余裕があると、何が変わるのか確かめてみてください」&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+
+/*
+ * 後で mystery_person.png を追加すると、
+ * ここで2秒かけて人物が現れる。
+ */
+$(&quot;#mystery-person&quot;).animate({
+	opacity: 1
+}, 2000);
+
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(300);
+});
+
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="113" name="3日目_雨上がり" tags="" position="2025,5100" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;&lt;set $day3RainPhase = &quot;silent&quot;&gt;&gt;
+&lt;&lt;updateRainSound&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot;
+		src=&quot;images/day3_after_rain.png&quot;
+		alt=&quot;&quot;
+		onerror=&quot;this.onerror=null;this.src=&#39;images/shelter_mae_day3.png&#39;;&quot;&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		[[空を見上げる-&gt;3日目_陽射し]]
+	&lt;/div&gt;
+
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;体育館の扉を開けると、ひんやりとした空気が頬に触れた。&lt;br&gt;雨は、もうほとんど止んでいた。&lt;br&gt;濡れた地面には小さな水たまりが残っているが、雨粒が落ちる音は聞こえない。&lt;br&gt;さっきまで空一面を覆っていた雲にも、ところどころ切れ間ができている。&lt;br&gt;避難してきたときとは、ずいぶん違う景色だ。&lt;br&gt;「……止んだんだ」&lt;br&gt;しばらく立ち止まり、静かになった外を眺める。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(300);
+});
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="114" name="3日目_陽射し" tags="" position="2025,5225" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot;
+		src=&quot;images/sky.png&quot;
+		alt=&quot;&quot;
+		onerror=&quot;this.onerror=null;this.src=&#39;images/day3_after_rain.png&#39;;&quot;&gt;
+
+	&lt;div style=&quot;
+		position:absolute;
+		inset:0;
+		background:linear-gradient(
+			135deg,
+			rgba(255,245,190,0.20) 0%,
+			rgba(255,245,190,0.05) 45%,
+			rgba(255,255,255,0) 70%
+		);
+		z-index:3;
+		pointer-events:none;
+	&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		[[今日のことを思い返す-&gt;3日目_早く出てよかった]]
+	&lt;/div&gt;
+
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 65ms none&gt;&gt;空を見上げる。&lt;br&gt;そのとき、雲の切れ間から光が差し込んだ。&lt;br&gt;濡れた道路や木々が、その光を反射して静かに輝いている。&lt;br&gt;雨の中では灰色に見えていた景色が、少しずつ色を取り戻していく。&lt;br&gt;暖かな光が顔に当たる。&lt;br&gt;思わず目を細めながら、しばらく何も言わずにその景色を眺めていた。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(500);
+});
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="115" name="3日目_早く出てよかった" tags="" position="2025,5350" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot;
+		src=&quot;images/sky.png&quot;
+		alt=&quot;&quot;
+		onerror=&quot;this.onerror=null;this.src=&#39;images/day3_after_rain.png&#39;;&quot;&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		[[もう少し景色を眺める-&gt;3日目_交流の約束]]
+	&lt;/div&gt;
+
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;今日のことを思い返す。&lt;br&gt;家を出たとき、外はまだ明るかった。道路にも水はたまっておらず、落ち着いて避難所まで歩くことができた。&lt;br&gt;避難所に着いてからも、受付に長い列はなかった。落ち着ける場所を選び、食料を受け取り、周りの人を手伝う余裕まであった。&lt;br&gt;避難所で話せる人もできた。&lt;br&gt;そのあとになって雨は強くなり、遅れて避難してきた人たちは濡れた服のまま体育館へ入ってきた。&lt;br&gt;もし自分もあの時間まで家に残っていたら、今日の過ごし方はまったく違っていたかもしれない。&lt;br&gt;「……早く出てきて、よかった」&lt;br&gt;口にしてみると、その言葉がすっと胸に落ちた。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(400);
+});
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="116" name="3日目_三日間の振り返り" tags="" position="1750,5400" size="100,100">&lt;&lt;set $time += 10&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot;
+		src=&quot;images/day3_sunshine.png&quot;
+		alt=&quot;&quot;
+		onerror=&quot;this.onerror=null;this.src=&#39;images/day3_after_rain.png&#39;;&quot;&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+	[[もう少し外にいる-&gt;3日目_交流の約束]]
+	&lt;/div&gt;
+
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 55ms none&gt;&gt;最初のときのことを思い出す。&lt;br&gt;雨が強くなっても、「まだ大丈夫だろう」と様子を見続けた。避難しようと決めた頃には道路に水が広がり、安全に進むこともできなくなっていた。&lt;br&gt;あのときは、「もっと早く避難していれば」と後悔した。&lt;br&gt;二度目はその経験を思い出して準備をした。情報を確認し、必要なものを用意したことで今度は無事に避難所までたどり着くことができた。&lt;br&gt;けれど家を出る頃には雨も強く、避難所もすでに混み始めていた。準備はできても余裕があったとは言えなかった。&lt;br&gt;そして今度は準備をした上で、もっと早い時間から動いた。&lt;br&gt;同じ避難なのに今日はここまで違った。&lt;br&gt;危険になる前に道を歩けた。落ち着いて場所を選べた。誰かを手伝うことも、人と話すこともできた。&lt;br&gt;「次に同じような雨が降ったら……」&lt;br&gt;少し考えてから、もう一度空を見る。&lt;br&gt;「情報を確認して必要な準備をして、迷う前に動こう」&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(400);
+});
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="117" name="3日目_交流の約束" tags="" position="2025,5600" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot;
+		src=&quot;images/day3_sunshine.png&quot;
+		alt=&quot;&quot;
+		onerror=&quot;this.onerror=null;this.src=&#39;images/day3_after_rain.png&#39;;&quot;&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		[[空を見上げる-&gt;3日目_エンディング]]
+	&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;もう少しだけ雨上がりの景色を眺めている。&lt;br&gt;その時、後ろで体育館の扉が開く音がした。&lt;br&gt;振り返るとさっき避難所で話していた人が外へ出てきたところだった。&lt;br&gt;「あ、ここにいたんですね」&lt;br&gt;「うん。雨が止んできたから、ちょっと外を見に」&lt;br&gt;その人も隣まで来て、同じように空を見上げる。&lt;br&gt;「本当だ。だいぶ明るくなりましたね」&lt;br&gt;「さっきまで、あんなに降ってたのにね」&lt;br&gt;しばらく二人で、雲の切れ間から差す光を眺める。&lt;br&gt;すると、その人がふと思い出したようにこちらを向いた。&lt;br&gt;「そういえばさっき話してたゲームのことなんですけど、災害が落ち着いたら、一緒にプレイしませんか？」&lt;br&gt;思いがけない言葉に、少しだけ驚く。&lt;br&gt;けれど、すぐに笑って答えた。&lt;br&gt;「……うん。ぜひ」&lt;br&gt;「じゃあ、約束ですね」&lt;br&gt;避難してきたときには、こんなことが起こるなんて思ってもいなかった。&lt;br&gt;早くここへ来たからこそ生まれた時間の中で、こんな出会いまであった。&lt;br&gt;「じゃあ、そろそろ戻りましょうか」&lt;br&gt;「うん。でももう少しだけ見てから行くよ」&lt;br&gt;「分かりました。」&lt;br&gt;そう言ってその人は体育館の中へ戻っていった。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(400);
+});
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="3日目_エンディング" tags="" position="2025,5725" size="100,100">&lt;&lt;set $day3RainPhase = &quot;silent&quot;&gt;&gt;
+&lt;&lt;updateRainSound&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot;
+		src=&quot;images/day3_sunshine.png&quot;
+		alt=&quot;&quot;&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 60ms none&gt;&gt;その人が体育館へ戻ったあと、もう一度空を見上げる。&lt;br&gt;&lt;br&gt;最初は避難が遅れて後悔した。次は準備をした。そして今日は、準備をしたうえで早く動くことができた。&lt;br&gt;そのおかげで、落ち着いて避難し、人を手伝ったり、新しい出会いを楽しんだりする余裕まであった。&lt;br&gt;&lt;br&gt;「……早く避難して、よかった」&lt;br&gt;&lt;br&gt;ふと、あの暗闇の中にいた人影を思い出す。&lt;br&gt;「これなら、あの人も満足してくれるかな」&lt;br&gt;雨上がりの風が、静かに吹き抜けた。&lt;br&gt;&lt;br&gt;次に同じようなことが起きたら、今日のことを思い出そう。&lt;br&gt;「次は、きっと大丈夫」&lt;br&gt;&lt;br&gt;&lt;span style=&quot;display:block;text-align:center;font-size:1.5em;font-weight:bold;&quot;&gt;END&lt;/span&gt;&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;</tw-passagedata></tw-storydata>
 	<script id="script-sugarcube" type="text/javascript">
 	/*! SugarCube JS */
