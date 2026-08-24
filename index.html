@@ -2406,6 +2406,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;!-- 情報確認・準備 --&gt;
 &lt;&lt;set $checkedOutside = false&gt;&gt;
 &lt;&lt;set $checkedMap = false&gt;&gt;
+&lt;&lt;set $checkedMapDay2 = false&gt;&gt;
 &lt;&lt;set $checkedRadar = false&gt;&gt;
 &lt;&lt;set $chargedPhone = false&gt;&gt;
 &lt;&lt;set $packedBag = false&gt;&gt;
@@ -2749,6 +2750,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;&lt;set $time += 10&gt;&gt;
 	&lt;&lt;set $actions = Math.max(0, $actions - 1)&gt;&gt;
 	&lt;&lt;set $checkedMap = true&gt;&gt;
+    &lt;&lt;set $checkedMapDay2 = true&gt;&gt;
 
 	&lt;&lt;run $day2ActionOrder.push(&quot;map&quot;)&gt;&gt;
 
@@ -4076,22 +4078,27 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 				&lt;&lt;/if&gt;&gt;
 			&lt;/div&gt;
 
-			&lt;!-- ハザードマップ --&gt;
-			&lt;div class=&quot;action-choice-slot&quot;&gt;
-				&lt;&lt;if $checkedMap&gt;&gt;
-					&lt;span class=&quot;action-choice-done&quot;&gt;
-						ハザードマップを見る
-						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
-					&lt;/span&gt;
-				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[ハザードマップを見る(10分)-&gt;3日目_ハザードマップ]]
-				&lt;&lt;else&gt;&gt;
-					&lt;span class=&quot;action-choice-limit&quot;&gt;
-						ハザードマップを見る
-						&lt;span class=&quot;action-choice-status&quot;&gt;回数上限&lt;/span&gt;
-					&lt;/span&gt;
-				&lt;&lt;/if&gt;&gt;
-			&lt;/div&gt;
+		&lt;!-- ハザードマップ --&gt;
+&lt;div class=&quot;action-choice-slot&quot;&gt;
+	&lt;&lt;if $checkedMapDay2&gt;&gt;
+		&lt;span class=&quot;action-choice-done&quot;&gt;
+			ハザードマップを見る
+			&lt;span class=&quot;action-choice-status&quot;&gt;昨日確認済み&lt;/span&gt;
+		&lt;/span&gt;
+	&lt;&lt;elseif $checkedMap&gt;&gt;
+		&lt;span class=&quot;action-choice-done&quot;&gt;
+			ハザードマップを見る
+			&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
+		&lt;/span&gt;
+	&lt;&lt;elseif $actions &gt; 0&gt;&gt;
+		[[ハザードマップを見る(10分)-&gt;3日目_ハザードマップ]]
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;action-choice-limit&quot;&gt;
+			ハザードマップを見る
+			&lt;span class=&quot;action-choice-status&quot;&gt;回数上限&lt;/span&gt;
+		&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+&lt;/div&gt;
 
 			&lt;!-- 家族への連絡 --&gt;
 			&lt;div class=&quot;action-choice-slot&quot;&gt;
@@ -4235,7 +4242,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		&lt;/div&gt;
 
 		&lt;img class=&quot;radar-image&quot;
-			src=&quot;images/radar01.png&quot;
+			src=&quot;images/radar02.png&quot;
 			alt=&quot;雨雲レーダー&quot;&gt;
 
 		&lt;div class=&quot;radar-caption&quot;&gt;
@@ -4259,7 +4266,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="52" name="3日目_ハザードマップ" tags="" position="1000,3000" size="100,100">&lt;&lt;if not $checkedMap&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="52" name="3日目_ハザードマップ" tags="" position="1000,3000" size="100,100">&lt;&lt;if not $checkedMap and not $checkedMapDay2&gt;&gt;
 	&lt;&lt;set $time += 10&gt;&gt;
 	&lt;&lt;set $actions = Math.max(0, $actions - 1)&gt;&gt;
 	&lt;&lt;set $checkedMap = true&gt;&gt;
@@ -4273,14 +4280,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-window&quot;
-		src=&quot;images/outside_day3.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;scene-room&quot;
-		src=&quot;images/room01.png&quot;
-		alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-window&quot; src=&quot;images/outside_day3.png&quot; alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-room&quot; src=&quot;images/room01.png&quot; alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div id=&quot;clock-box&quot;&gt;
@@ -4289,31 +4290,23 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;map-overlay&quot;&gt;
 	&lt;div class=&quot;map-panel&quot;&gt;
+		&lt;div class=&quot;map-title&quot;&gt;洪水ハザードマップ&lt;/div&gt;
 
-		&lt;div class=&quot;map-title&quot;&gt;
-			洪水ハザードマップ
-		&lt;/div&gt;
-
-		&lt;img class=&quot;hazard-map-image&quot;
-			src=&quot;images/hazardmap01.png&quot;
-			alt=&quot;洪水ハザードマップ&quot;&gt;
+		&lt;img class=&quot;hazard-map-image&quot; src=&quot;images/hazardmap01.png&quot; alt=&quot;洪水ハザードマップ&quot;&gt;
 
 		&lt;div class=&quot;map-legend&quot;&gt;
 			&lt;span class=&quot;legend-safe&quot;&gt;■&lt;/span&gt; 浸水想定区域外
 			&lt;span class=&quot;legend-flood&quot;&gt;■&lt;/span&gt; 浸水想定区域
 		&lt;/div&gt;
-
 	&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
 		[[地図を閉じる-&gt;3日目_行動後判定]]
 	&lt;/div&gt;
 
 	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;市の洪水ハザードマップを確認する。&lt;br&gt;自宅は浸水想定区域にあり、避難所へ向かう途中の右側の道も浸水しやすい区域に含まれている。&lt;br&gt;左側の道は少し遠回りになるが、比較的安全に避難できそうだ。&lt;br&gt;雨が強くなる前に、左側の道を通って避難しよう。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -6644,7 +6637,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[もう一度やってみる-&gt;3日目_開始]]
 	&lt;/div&gt;
 
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms start 2s none&gt;&gt;気がつくと、再びあの暗闇の中にいた。&lt;br&gt;目の前には、あの人影が立っている。&lt;br&gt;「……また、あなた？」&lt;br&gt;「前より、うまくできたようですね」&lt;br&gt;人影が穏やかな声で話しかける。&lt;br&gt;「準備したものも、役に立ったのではないでしょうか」&lt;br&gt;確かにその通りだった。準備をしていたからこそ、昨日よりは落ち着いて行動することができた。&lt;br&gt;「それでも、少し大変だったようですね」&lt;br&gt;雨の中を歩いたことや、人で混み始めていた避難所の様子を思い出す。&lt;br&gt;「……確かに」&lt;br&gt;人影は少し間を置いて、こちらを見る。&lt;br&gt;「それなら今度は、これまでの準備も活かしながら、もう少し早い時間からやり直してみましょうか」&lt;br&gt;「もう少し早い時間から……？」&lt;br&gt;「はい。準備をしたうえで時間にも余裕があると、何が変わるのか確かめてみてください」&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms start 2s none&gt;&gt;気がつくと、再びあの暗闇の中にいた。&lt;br&gt;目の前には、あの人影が立っている。&lt;br&gt;「前よりうまくできたようですね。準備したものも、役に立ったのではないでしょうか」&lt;br&gt;確かにその通りだった。準備をしていたからこそ、昨日よりは落ち着いて行動することができた。&lt;br&gt;それでも雨の中を歩いたことや、人で混み始めていた避難所の様子を思い出す。&lt;&lt;br&gt;人影は少し間を置いてこちらを見る。&lt;br&gt;「それなら今度は、これまでの準備も活かしながら、もう少し早い時間からやり直してみましょうか」&lt;br&gt;「もう少し早い時間から……？」&lt;br&gt;「はい。準備をしたうえで時間にも余裕があると、何が変わるのか確かめてみてください」&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
