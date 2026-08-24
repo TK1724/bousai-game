@@ -1334,6 +1334,393 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 .npc-publicworks {
 	height: 94vh;
 	bottom: -5vh;
+}
+
+/* =====================================================
+   雨雲レーダー
+   テキストボックスより上のスペースに表示
+===================================================== */
+
+.radar-overlay {
+	position: fixed;
+
+	/* 画面中央より少し上 */
+	top: 28vh;
+	left: 45%;
+
+	transform: translate(-50%, -50%);
+
+	z-index: 60;
+	pointer-events: none;
+}
+
+.radar-panel {
+	width: 360px;
+	max-width: 38vw;
+
+	padding: 12px;
+
+	background: rgba(10, 20, 35, 0.94);
+	border: 2px solid rgba(255, 255, 255, 0.9);
+	border-radius: 12px;
+
+	box-sizing: border-box;
+	text-align: center;
+
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
+}
+
+.radar-title {
+	margin-bottom: 8px;
+
+	color: white;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.radar-image {
+	display: block;
+
+	width: auto;
+	max-width: 100%;
+	height: auto;
+
+	/* 大きくなりすぎない */
+	max-height: 40vh;
+
+	margin: 0 auto;
+
+	object-fit: contain;
+}
+
+.radar-caption {
+	margin-top: 6px;
+
+	color: rgba(255, 255, 255, 0.85);
+	font-size: 15px;
+}
+
+
+/* =====================================================
+   ハザードマップ
+   テキストボックスより上のスペースに表示
+===================================================== */
+
+.map-overlay {
+	position: fixed;
+
+	/* 画面中央より少し上 */
+	top: 28vh;
+	left: 45%;
+
+	transform: translate(-50%, -50%);
+
+	z-index: 60;
+	pointer-events: none;
+}
+
+.map-panel {
+	width: 650px;
+	max-width: 55vw;
+
+	padding: 12px;
+
+	background: rgba(10, 20, 35, 0.94);
+	border: 2px solid rgba(255, 255, 255, 0.9);
+	border-radius: 12px;
+
+	box-sizing: border-box;
+	text-align: center;
+
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
+}
+
+.map-title {
+	margin-bottom: 8px;
+
+	color: white;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.hazard-map-image {
+	display: block;
+
+	width: 100%;
+	height: auto;
+
+	/* 今よりかなり小さめ */
+	max-height: 36vh;
+
+	margin: 0 auto;
+
+	object-fit: contain;
+}
+
+.map-legend {
+	margin-top: 6px;
+
+	color: white;
+	font-size: 14px;
+}
+
+.legend-safe {
+	margin-right: 4px;
+}
+
+.legend-flood {
+	margin-left: 16px;
+	margin-right: 4px;
+}
+
+/* ========================================
+   防災バッグ選択画面：アイテム画像
+======================================== */
+
+.bag-choice-image-area {
+	flex: 1;
+	min-height: 0;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 100%;
+	padding: 8px 4px;
+
+	box-sizing: border-box;
+
+	pointer-events: none;
+}
+
+.bag-choice-image {
+	display: block;
+
+	width: auto;
+	height: auto;
+
+	max-width: 80%;
+	max-height: 150px;
+
+	object-fit: contain;
+
+	pointer-events: none;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+/* 高さの小さい画面では画像も少し小さくする */
+@media screen and (max-height: 750px) {
+	.bag-choice-image {
+		max-height: 95px;
+	}
+}
+
+/* ========================================
+   3日間の振り返り画面
+======================================== */
+
+.recap-screen {
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 35px;
+	box-sizing: border-box;
+	background: rgba(10, 10, 10, 0.94);
+	color: white;
+}
+
+.recap-panel {
+	width: min(1050px, 92vw);
+	max-height: 90vh;
+	overflow-y: auto;
+	padding: 35px 50px;
+	box-sizing: border-box;
+	border: 2px solid rgba(255,255,255,0.7);
+	border-radius: 15px;
+	background: rgba(20,20,20,0.96);
+}
+
+.recap-title {
+	margin: 0 0 25px;
+	text-align: center;
+	font-size: 34px;
+	letter-spacing: 0.12em;
+}
+
+.recap-day {
+	margin: 18px 0;
+	padding: 0 0 16px;
+	border-bottom: 1px solid rgba(255,255,255,0.22);
+}
+
+.recap-day h3 {
+	margin: 0 0 8px;
+	font-size: 25px;
+}
+
+.recap-day ul {
+	margin: 0;
+	padding-left: 1.5em;
+	font-size: 20px;
+	line-height: 1.7;
+}
+
+.recap-time {
+	font-size: 1.08em;
+	font-weight: bold;
+}
+
+.recap-comparison {
+	margin: 24px auto 8px;
+	padding: 16px 22px;
+	max-width: 720px;
+	text-align: center;
+	font-size: 22px;
+	line-height: 1.6;
+	background: rgba(255,255,255,0.10);
+	border-radius: 10px;
+}
+
+.recap-next {
+	margin-top: 25px;
+	text-align: center;
+}
+
+.recap-next a {
+	display: inline-block;
+	min-width: 220px;
+	padding: 12px 25px;
+	border: 2px solid white;
+	border-radius: 8px;
+	color: white;
+	text-decoration: none;
+	font-size: 20px;
+}
+
+.recap-next a:hover {
+	background: rgba(255,255,255,0.15);
+}
+
+/* 振り返り画面のスクロールを分かりやすくする */
+
+.recap-panel {
+	scrollbar-width: auto;
+	scrollbar-color: rgba(255,255,255,0.85) rgba(255,255,255,0.15);
+}
+
+/* Chrome / Safari */
+.recap-panel::-webkit-scrollbar {
+	width: 14px;
+}
+
+.recap-panel::-webkit-scrollbar-track {
+	background: rgba(255,255,255,0.12);
+	border-radius: 10px;
+}
+
+.recap-panel::-webkit-scrollbar-thumb {
+	background: rgba(255,255,255,0.8);
+	border-radius: 10px;
+	border: 3px solid rgba(20,20,20,0.96);
+}
+
+.recap-panel::-webkit-scrollbar-thumb:hover {
+	background: white;
+}
+
+/* スクロール案内 */
+.recap-scroll-guide {
+	margin: -10px 0 20px;
+	text-align: center;
+	font-size: 18px;
+	color: rgba(255,255,255,0.8);
+	letter-spacing: 0.05em;
+}
+
+.recap-scroll-arrow {
+	display: inline-block;
+	margin-left: 6px;
+	font-size: 22px;
+	animation: recapArrow 1.3s ease-in-out infinite;
+}
+
+@keyframes recapArrow {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(5px); }
+}
+
+/* =====================================================
+   雨雲レーダー・ハザードマップ
+   テキストボックス上の空きスペース中央に配置
+===================================================== */
+
+.radar-overlay,
+.map-overlay {
+	position: fixed;
+
+	top: 5vh;
+	bottom: 340px;
+	left: 0;
+	right: 0;
+
+	width: 100vw;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	transform: none;
+
+	z-index: 60;
+	pointer-events: none;
+}
+
+
+/* =====================================================
+   雨雲レーダー
+===================================================== */
+
+.radar-panel {
+	width: 360px;
+	max-width: 38vw;
+}
+
+
+/* =====================================================
+   ハザードマップ
+   外側の濃紺の枠をなくす
+===================================================== */
+
+.map-panel {
+	width: 650px;
+	max-width: 60vw;
+
+	padding: 0;
+
+	background: transparent;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+
+	text-align: center;
+}
+
+.hazard-map-image {
+	display: block;
+
+	width: auto;
+	height: auto;
+
+	max-width: 60vw;
+	max-height: 44vh;
+
+	margin: 0 auto;
+
+	object-fit: contain;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.macros.typeSkipKey = "Enter";
 
 // 選択肢のキーボード操作
@@ -2145,7 +2532,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[家の周りを見る-&gt;2日目_家の周り]]
+					[[家の周りを見る(5分)-&gt;2日目_家の周り]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						家の周りを見る
@@ -2162,7 +2549,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[雨雲レーダーを見る-&gt;2日目_雨雲レーダー]]
+					[[雨雲レーダーを見る(5分)-&gt;2日目_雨雲レーダー]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						雨雲レーダーを見る
@@ -2179,7 +2566,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[ハザードマップを見る-&gt;2日目_ハザードマップ]]
+					[[ハザードマップを見る(10分)-&gt;2日目_ハザードマップ]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						ハザードマップを見る
@@ -2196,7 +2583,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[家族に連絡する-&gt;2日目_家族に連絡]]
+					[[家族に連絡する(10分)-&gt;2日目_家族に連絡]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						家族に連絡する
@@ -2213,7 +2600,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[スマホを充電する-&gt;2日目_スマホ充電]]
+					[[スマホを充電する(20分)-&gt;2日目_スマホ充電]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						スマホを充電する
@@ -2230,7 +2617,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[防災バッグを準備する-&gt;2日目_防災バッグ]]
+					[[防災バッグを準備する(20分)-&gt;2日目_防災バッグ]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						防災バッグを準備する
@@ -2240,9 +2627,9 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 			&lt;/div&gt;
 
 			&lt;!-- 避難 --&gt;
-			&lt;div class=&quot;action-choice-slot action-evacuate-slot&quot;&gt;
-				[[今のうちに避難する-&gt;2日目_避難開始]]
-			&lt;/div&gt;
+		&lt;div class=&quot;action-choice-slot action-evacuate-slot&quot;&gt;
+[[今のうちに避難する-&gt;2日目_避難判断]]
+&lt;/div&gt;
 
 			&lt;&lt;/nobr&gt;&gt;
 
@@ -2258,7 +2645,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="17" name="2日目_家の周り" tags="" position="537.5,1750" size="100,100">&lt;&lt;if not $checkedOutside&gt;&gt;
-	&lt;&lt;set $time += 10&gt;&gt;
+	&lt;&lt;set $time += 5&gt;&gt;
 	&lt;&lt;set $actions = Math.max(0, $actions - 1)&gt;&gt;
 	&lt;&lt;set $checkedOutside = true&gt;&gt;
 
@@ -2297,7 +2684,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="18" name="2日目_雨雲レーダー" tags="" position="662.5,1750" size="100,100">&lt;&lt;if not $checkedRadar&gt;&gt;
-	&lt;&lt;set $time += 10&gt;&gt;
+	&lt;&lt;set $time += 5&gt;&gt;
 	&lt;&lt;set $actions = Math.max(0, $actions - 1)&gt;&gt;
 	&lt;&lt;set $checkedRadar = true&gt;&gt;
 	&lt;&lt;run $day2ActionOrder.push(&quot;radar&quot;)&gt;&gt;
@@ -2359,7 +2746,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="19" name="2日目_ハザードマップ" tags="" position="787.5,1750" size="100,100">&lt;&lt;if not $checkedMap&gt;&gt;
-	&lt;&lt;set $time += 15&gt;&gt;
+	&lt;&lt;set $time += 10&gt;&gt;
 	&lt;&lt;set $actions = Math.max(0, $actions - 1)&gt;&gt;
 	&lt;&lt;set $checkedMap = true&gt;&gt;
 
@@ -2422,7 +2809,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="20" name="2日目_スマホ充電" tags="" position="912.5,1750" size="100,100">&lt;&lt;if not $chargedPhone&gt;&gt;
-	&lt;&lt;set $time += 10&gt;&gt;
+	&lt;&lt;set $time += 20&gt;&gt;
 	&lt;&lt;set $actions = Math.max(0, $actions - 1)&gt;&gt;
 	&lt;&lt;set $chargedPhone = true&gt;&gt;
 
@@ -2656,16 +3043,12 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display: none;&quot;&gt;
 
-		&lt;&lt;if $actions &lt;= 0&gt;&gt;
-
-			[[避難する-&gt;2日目_避難開始]]
-
-		&lt;&lt;else&gt;&gt;
-
-			[[次の行動を選ぶ-&gt;2日目_行動選択]]
-			[[もう避難する-&gt;2日目_避難開始]]
-
-		&lt;&lt;/if&gt;&gt;
+&lt;&lt;if $actions &lt;= 0&gt;&gt;
+[[避難する-&gt;2日目_避難判断]]
+&lt;&lt;else&gt;&gt;
+[[次の行動を選ぶ-&gt;2日目_行動選択]]
+[[もう避難する-&gt;2日目_避難判断]]
+&lt;&lt;/if&gt;&gt;
 
 	&lt;/div&gt;
 
@@ -2710,185 +3093,268 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		&lt;/p&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;bag-choice-grid&quot;&gt;
+&lt;div class=&quot;bag-choice-grid&quot;&gt;
 
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				飲み水
-				&lt;span&gt;容量3&lt;/span&gt;
-			&lt;/div&gt;
+&lt;!-- =========================
+     飲み水
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
 
-			&lt;&lt;if $hasWater&gt;&gt;
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasWater = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 3)&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;elseif $bagWeight + 3 &lt;= $bagLimit&gt;&gt;
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasWater = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 3&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;else&gt;&gt;
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-			&lt;&lt;/if&gt;&gt;
-		&lt;/div&gt;
-
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				非常食
-				&lt;span&gt;容量2&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasFood&gt;&gt;
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasFood = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasFood = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 2&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;else&gt;&gt;
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-			&lt;&lt;/if&gt;&gt;
-		&lt;/div&gt;
-
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				懐中電灯
-				&lt;span&gt;容量1&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasLight&gt;&gt;
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasLight = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasLight = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 1&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;else&gt;&gt;
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-			&lt;&lt;/if&gt;&gt;
-		&lt;/div&gt;
-
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				モバイルバッテリー
-				&lt;span&gt;容量2&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasBattery&gt;&gt;
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasBattery = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasBattery = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 2&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;else&gt;&gt;
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-			&lt;&lt;/if&gt;&gt;
-		&lt;/div&gt;
-
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				タオル
-				&lt;span&gt;容量1&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasTowel&gt;&gt;
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasTowel = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasTowel = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 1&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;else&gt;&gt;
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-			&lt;&lt;/if&gt;&gt;
-		&lt;/div&gt;
-
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				常備薬
-				&lt;span&gt;容量1&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasMedicine&gt;&gt;
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasMedicine = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasMedicine = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 1&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;else&gt;&gt;
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-			&lt;&lt;/if&gt;&gt;
-		&lt;/div&gt;
-
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				レインコート
-				&lt;span&gt;容量2&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasRaincoat&gt;&gt;
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasRaincoat = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasRaincoat = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 2&gt;&gt;
-					&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-			&lt;&lt;else&gt;&gt;
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-			&lt;&lt;/if&gt;&gt;
-		&lt;/div&gt;
-
-		&lt;div class=&quot;bag-choice-empty&quot;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		飲み水
+		&lt;span&gt;容量3&lt;/span&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;bag-select-finish&quot;&gt;
-		&lt;&lt;if $bagWeight &lt;= 0&gt;&gt;
-			&lt;span class=&quot;bag-select-finish-disabled&quot;&gt;
-				まだ何も選んでいません
-			&lt;/span&gt;
-		&lt;&lt;else&gt;&gt;
-			[[この内容で準備を終える-&gt;2日目_バッグ確認]]
-		&lt;&lt;/if&gt;&gt;
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_water.png&quot;
+			alt=&quot;飲み水&quot;&gt;
 	&lt;/div&gt;
+
+	&lt;&lt;if $hasWater&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasWater = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 3)&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 3 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasWater = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 3&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
 
 &lt;/div&gt;
 
+
+&lt;!-- =========================
+     非常食
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		非常食
+		&lt;span&gt;容量2&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_food.png&quot;
+			alt=&quot;非常食&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasFood&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasFood = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasFood = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 2&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- =========================
+     懐中電灯
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		懐中電灯
+		&lt;span&gt;容量1&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_light.png&quot;
+			alt=&quot;懐中電灯&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasLight&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasLight = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasLight = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 1&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- =========================
+     モバイルバッテリー
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		モバイルバッテリー
+		&lt;span&gt;容量2&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_battery.png&quot;
+			alt=&quot;モバイルバッテリー&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasBattery&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasBattery = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasBattery = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 2&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- =========================
+     タオル
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		タオル
+		&lt;span&gt;容量1&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_towel.png&quot;
+			alt=&quot;タオル&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasTowel&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasTowel = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasTowel = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 1&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- =========================
+     常備薬
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		常備薬
+		&lt;span&gt;容量1&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_medicine.png&quot;
+			alt=&quot;常備薬&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasMedicine&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasMedicine = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasMedicine = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 1&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- =========================
+     レインコート
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		レインコート
+		&lt;span&gt;容量2&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_raincoat.png&quot;
+			alt=&quot;レインコート&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasRaincoat&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasRaincoat = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasRaincoat = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 2&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 8個目の空きマス --&gt;
+&lt;div class=&quot;bag-choice-empty&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;bag-select-finish&quot;&gt;
+	&lt;&lt;if $bagWeight &lt;= 0&gt;&gt;
+		&lt;span class=&quot;bag-select-finish-disabled&quot;&gt;まだ何も選んでいません&lt;/span&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;&lt;link &quot;この内容を確認する&quot;&gt;&gt;
+			&lt;&lt;goto &quot;2日目_バッグ確認&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 &lt;&lt;/nobr&gt;&gt;</tw-passagedata><tw-passagedata pid="26" name="2日目_水追加" tags="" position="662.5,2000" size="100,100">:: 2日目_水追加
 &lt;&lt;set $hasWater = true&gt;&gt;
 &lt;&lt;set $bagWeight += 5&gt;&gt;
@@ -3425,7 +3891,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 			&lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
 			&lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
-			&lt;&lt;audio &quot;rain01&quot; volume 0.35 loop play&gt;&gt;
+			&lt;&lt;audio &quot;rain01&quot; volume 0.6 loop play&gt;&gt;
 
 		&lt;!-- 後着避難者以降：普通の雨音 --&gt;
 		&lt;&lt;elseif $day3RainPhase is &quot;normal&quot;&gt;&gt;
@@ -3584,7 +4050,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[家の周りを見る-&gt;3日目_家の周り]]
+					[[家の周りを見る(5分)-&gt;3日目_家の周り]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						家の周りを見る
@@ -3601,7 +4067,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[雨雲レーダーを見る-&gt;3日目_雨雲レーダー]]
+					[[雨雲レーダーを見る(5分)-&gt;3日目_雨雲レーダー]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						雨雲レーダーを見る
@@ -3618,7 +4084,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[ハザードマップを見る-&gt;3日目_ハザードマップ]]
+					[[ハザードマップを見る(10分)-&gt;3日目_ハザードマップ]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						ハザードマップを見る
@@ -3635,7 +4101,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[家族に連絡する-&gt;3日目_家族に連絡]]
+					[[家族に連絡する(10分)-&gt;3日目_家族に連絡]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						家族に連絡する
@@ -3652,7 +4118,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[スマホを充電する-&gt;3日目_スマホ充電]]
+					[[スマホを充電する(20分)-&gt;3日目_スマホ充電]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						スマホを充電する
@@ -3669,7 +4135,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 						&lt;span class=&quot;action-choice-status&quot;&gt;選択済み&lt;/span&gt;
 					&lt;/span&gt;
 				&lt;&lt;elseif $actions &gt; 0&gt;&gt;
-					[[防災バッグを準備する-&gt;3日目_防災バッグ]]
+					[[防災バッグを準備する(20分)-&gt;3日目_防災バッグ]]
 				&lt;&lt;else&gt;&gt;
 					&lt;span class=&quot;action-choice-limit&quot;&gt;
 						防災バッグを準備する
@@ -3697,7 +4163,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="50" name="3日目_家の周り" tags="" position="1000,2875" size="100,100">&lt;&lt;if not $checkedOutside&gt;&gt;
-	&lt;&lt;set $time += 10&gt;&gt;
+	&lt;&lt;set $time += 5&gt;&gt;
 	&lt;&lt;set $actions = Math.max(0, $actions - 1)&gt;&gt;
 	&lt;&lt;set $checkedOutside = true&gt;&gt;
 	&lt;&lt;run $day3ActionOrder.push(&quot;outside&quot;)&gt;&gt;
@@ -3735,7 +4201,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="51" name="3日目_雨雲レーダー" tags="" position="1125,2875" size="100,100">&lt;&lt;if not $checkedRadar&gt;&gt;
-	&lt;&lt;set $time += 10&gt;&gt;
+	&lt;&lt;set $time += 5&gt;&gt;
 	&lt;&lt;set $actions = Math.max(0, $actions - 1)&gt;&gt;
 	&lt;&lt;set $checkedRadar = true&gt;&gt;
 	&lt;&lt;run $day3ActionOrder.push(&quot;radar&quot;)&gt;&gt;
@@ -3747,7 +4213,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;&lt;updateRainSound&gt;&gt;
 
-&lt;div class=&quot;scene&quot;&gt;
 	&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-window&quot;
 		src=&quot;images/outside_day3.png&quot;
@@ -3795,7 +4260,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="52" name="3日目_ハザードマップ" tags="" position="1000,3000" size="100,100">&lt;&lt;if not $checkedMap&gt;&gt;
-	&lt;&lt;set $time += 15&gt;&gt;
+	&lt;&lt;set $time += 10&gt;&gt;
 	&lt;&lt;set $actions = Math.max(0, $actions - 1)&gt;&gt;
 	&lt;&lt;set $checkedMap = true&gt;&gt;
 	&lt;&lt;run $day3ActionOrder.push(&quot;map&quot;)&gt;&gt;
@@ -3868,7 +4333,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;&lt;updateRainSound&gt;&gt;
 
-&lt;div class=&quot;scene&quot;&gt;
 	&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-window&quot;
 		src=&quot;images/outside_day3.png&quot;
@@ -3898,7 +4362,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="54" name="3日目_スマホ充電" tags="" position="1250,2875" size="100,100">&lt;&lt;if not $chargedPhone&gt;&gt;
-	&lt;&lt;set $time += 10&gt;&gt;
+	&lt;&lt;set $time += 20&gt;&gt;
 	&lt;&lt;set $actions = Math.max(0, $actions - 1)&gt;&gt;
 	&lt;&lt;set $chargedPhone = true&gt;&gt;
 	&lt;&lt;run $day3ActionOrder.push(&quot;charge&quot;)&gt;&gt;
@@ -3910,7 +4374,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;&lt;updateRainSound&gt;&gt;
 
-&lt;div class=&quot;scene&quot;&gt;
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-window&quot;
 		src=&quot;images/outside_day3.png&quot;
@@ -4201,254 +4664,266 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
-	&lt;div class=&quot;bag-choice-grid&quot;&gt;
-
-		&lt;!-- 飲み水 --&gt;
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				飲み水
-				&lt;span&gt;容量3&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasWater&gt;&gt;
-
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasWater = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 3)&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;elseif $bagWeight + 3 &lt;= $bagLimit&gt;&gt;
-
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasWater = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 3&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;else&gt;&gt;
-
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-
-			&lt;&lt;/if&gt;&gt;
-
-		&lt;/div&gt;
-
-		&lt;!-- 非常食 --&gt;
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				非常食
-				&lt;span&gt;容量2&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasFood&gt;&gt;
-
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasFood = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
-
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasFood = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 2&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;else&gt;&gt;
-
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-
-			&lt;&lt;/if&gt;&gt;
-
-		&lt;/div&gt;
-
-		&lt;!-- 懐中電灯 --&gt;
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				懐中電灯
-				&lt;span&gt;容量1&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasLight&gt;&gt;
-
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasLight = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
-
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasLight = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 1&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;else&gt;&gt;
-
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-
-			&lt;&lt;/if&gt;&gt;
-
-		&lt;/div&gt;
-
-		&lt;!-- モバイルバッテリー --&gt;
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				モバイルバッテリー
-				&lt;span&gt;容量2&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasBattery&gt;&gt;
-
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasBattery = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
-
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasBattery = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 2&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;else&gt;&gt;
-
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-
-			&lt;&lt;/if&gt;&gt;
-
-		&lt;/div&gt;
-
-		&lt;!-- タオル --&gt;
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				タオル
-				&lt;span&gt;容量1&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasTowel&gt;&gt;
-
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasTowel = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
-
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasTowel = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 1&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;else&gt;&gt;
-
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-
-			&lt;&lt;/if&gt;&gt;
-
-		&lt;/div&gt;
-
-		&lt;!-- 常備薬 --&gt;
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				常備薬
-				&lt;span&gt;容量1&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasMedicine&gt;&gt;
-
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasMedicine = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
-
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasMedicine = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 1&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;else&gt;&gt;
-
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-
-			&lt;&lt;/if&gt;&gt;
-
-		&lt;/div&gt;
-
-		&lt;!-- レインコート --&gt;
-		&lt;div class=&quot;bag-choice-card&quot;&gt;
-
-			&lt;div class=&quot;bag-choice-name&quot;&gt;
-				レインコート
-				&lt;span&gt;容量2&lt;/span&gt;
-			&lt;/div&gt;
-
-			&lt;&lt;if $hasRaincoat&gt;&gt;
-
-				&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
-					&lt;&lt;set $hasRaincoat = false&gt;&gt;
-					&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
-
-				&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
-					&lt;&lt;set $hasRaincoat = true&gt;&gt;
-					&lt;&lt;set $bagWeight += 2&gt;&gt;
-					&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
-				&lt;&lt;/link&gt;&gt;
-
-			&lt;&lt;else&gt;&gt;
-
-				&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
-
-			&lt;&lt;/if&gt;&gt;
-
-		&lt;/div&gt;
-
-		&lt;div class=&quot;bag-choice-empty&quot;&gt;&lt;/div&gt;
-
+&lt;div class=&quot;bag-choice-grid&quot;&gt;
+
+&lt;!-- =========================
+     飲み水
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		飲み水
+		&lt;span&gt;容量3&lt;/span&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;bag-select-finish&quot;&gt;
-
-		&lt;&lt;if $bagWeight &lt;= 0&gt;&gt;
-
-			&lt;span class=&quot;bag-select-finish-disabled&quot;&gt;
-				まだ何も選んでいません
-			&lt;/span&gt;
-
-		&lt;&lt;else&gt;&gt;
-
-			[[この内容を確認する-&gt;3日目_バッグ確認]]
-
-		&lt;&lt;/if&gt;&gt;
-
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_water.png&quot;
+			alt=&quot;飲み水&quot;&gt;
 	&lt;/div&gt;
+
+	&lt;&lt;if $hasWater&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasWater = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 3)&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 3 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasWater = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 3&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
 
 &lt;/div&gt;
 
+
+&lt;!-- =========================
+     非常食
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		非常食
+		&lt;span&gt;容量2&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_food.png&quot;
+			alt=&quot;非常食&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasFood&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasFood = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasFood = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 2&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- =========================
+     懐中電灯
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		懐中電灯
+		&lt;span&gt;容量1&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_light.png&quot;
+			alt=&quot;懐中電灯&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasLight&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasLight = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasLight = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 1&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- =========================
+     モバイルバッテリー
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		モバイルバッテリー
+		&lt;span&gt;容量2&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_battery.png&quot;
+			alt=&quot;モバイルバッテリー&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasBattery&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasBattery = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasBattery = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 2&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- =========================
+     タオル
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		タオル
+		&lt;span&gt;容量1&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_towel.png&quot;
+			alt=&quot;タオル&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasTowel&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasTowel = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasTowel = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 1&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- =========================
+     常備薬
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		常備薬
+		&lt;span&gt;容量1&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_medicine.png&quot;
+			alt=&quot;常備薬&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasMedicine&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasMedicine = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 1)&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 1 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasMedicine = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 1&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- =========================
+     レインコート
+========================= --&gt;
+&lt;div class=&quot;bag-choice-card&quot;&gt;
+
+	&lt;div class=&quot;bag-choice-name&quot;&gt;
+		レインコート
+		&lt;span&gt;容量2&lt;/span&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;bag-choice-image-area&quot;&gt;
+		&lt;img class=&quot;bag-choice-image&quot;
+			src=&quot;images/item_raincoat.png&quot;
+			alt=&quot;レインコート&quot;&gt;
+	&lt;/div&gt;
+
+	&lt;&lt;if $hasRaincoat&gt;&gt;
+		&lt;&lt;link &quot;バッグから外す&quot;&gt;&gt;
+			&lt;&lt;set $hasRaincoat = false&gt;&gt;
+			&lt;&lt;set $bagWeight = Math.max(0, $bagWeight - 2)&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;elseif $bagWeight + 2 &lt;= $bagLimit&gt;&gt;
+		&lt;&lt;link &quot;バッグに入れる&quot;&gt;&gt;
+			&lt;&lt;set $hasRaincoat = true&gt;&gt;
+			&lt;&lt;set $bagWeight += 2&gt;&gt;
+			&lt;&lt;goto &quot;3日目_バッグ画面&quot;&gt;&gt;
+		&lt;&lt;/link&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;span class=&quot;bag-choice-disabled&quot;&gt;容量不足&lt;/span&gt;
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 8個目の空きマス --&gt;
+&lt;div class=&quot;bag-choice-empty&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;bag-select-finish&quot;&gt;
+	&lt;&lt;if $bagWeight &lt;= 0&gt;&gt;
+		&lt;span class=&quot;bag-select-finish-disabled&quot;&gt;まだ何も選んでいません&lt;/span&gt;
+	&lt;&lt;else&gt;&gt;
+		[[この内容を確認する-&gt;3日目_バッグ確認]]
+	&lt;&lt;/if&gt;&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 &lt;&lt;/nobr&gt;&gt;</tw-passagedata><tw-passagedata pid="59" name="3日目_バッグ確認" tags="" position="1250,3250" size="100,100">&lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
@@ -4734,7 +5209,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;video class=&quot;scene-media scene-media-full&quot;
 		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/road_rain_safe.mp4&quot; type=&quot;video/mp4&quot;&gt;
+		&lt;source src=&quot;images/road_rain_safe3.mp4&quot; type=&quot;video/mp4&quot;&gt;
 	&lt;/video&gt;
 &lt;/div&gt;
 
@@ -5086,19 +5561,31 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="77" name="3日目_配膳手伝い" tags="" position="1625,4225" size="100,100">&lt;&lt;set $time += 10&gt;&gt;
+
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[食料の配布を手伝う-&gt;3日目_配膳感謝]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+
+			[[食料を配るのを手伝う-&gt;3日目_配膳感謝]]
+
+			[[箱を開けたり、食料を並べたりするのを手伝う-&gt;3日目_配膳感謝]]
+
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;食べ終わったあと、もう一度入口の方を見る。&lt;br&gt;先ほどよりも避難してきた人が増え、食料の配布場所にも少しずつ人が集まり始めていた。&lt;br&gt;職員たちは段ボール箱を開けたり、パンを並べたり、避難者へ渡したりと忙しそうに動いている。&lt;br&gt;「すみません、こっちの箱も開けてもらえますか！」&lt;br&gt;「はい、今行きます！」&lt;br&gt;どうやら少し人手が足りないようだ。&lt;br&gt;自分はすでに受付も終わり、落ち着ける場所も確保している。今すぐしなければならないこともない。&lt;br&gt;少しくらいなら、手伝えるかもしれない。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;
+		&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;
+食べ終わったあと、もう一度入口の方を見る。&lt;br&gt;先ほどよりも避難してきた人が増え、食料の配布場所にも少しずつ人が集まり始めていた。&lt;br&gt;職員たちは段ボール箱を開けたり、パンを並べたり、避難者へ渡したりと忙しそうに動いている。&lt;br&gt;「すみません、こっちの箱もお願いします！」&lt;br&gt;「はい、今行きます！」&lt;br&gt;
+どうやら少し人手が足りないようだ。&lt;br&gt;自分はすでに受付も終わり、落ち着ける場所も確保している。&lt;br&gt;今すぐしなければならないこともない。少しくらいなら手伝えそうだ。
+		&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;
+	&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5123,8 +5610,11 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
 		[[手伝いを終える-&gt;3日目_後着避難者]]
 	&lt;/div&gt;
-
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;職員からパンの入った箱を受け取り、避難してきた人たちへ順番に渡していく。&lt;br&gt;「どうぞ。お一人一つずつです」&lt;br&gt;「ありがとう」&lt;br&gt;何人かへ渡していると、小さな子どもを連れた人がやってきた。&lt;br&gt;「これ、子どもの分もいただいていいですか？」&lt;br&gt;「はい。どうぞ」&lt;br&gt;パンを渡すと、子どもが嬉しそうに受け取った。&lt;br&gt;「ありがとう！」&lt;br&gt;隣にいた保護者も、ほっとした表情で頭を下げる。&lt;br&gt;「助かりました。ありがとうございます」&lt;br&gt;その後も何人かへ食料を渡し、気がつけば何度も「ありがとう」と声をかけられていた。&lt;br&gt;一段落したところで、職員がこちらへやってくる。&lt;br&gt;「手伝ってくれてありがとうございました。本当に助かりました」&lt;br&gt;「いえ、時間もあったので」&lt;br&gt;そう答えながら、少しだけ嬉しくなる。&lt;br&gt;早く避難してきたことで、自分にはこうして周りを見る余裕があった。避難してきただけのつもりだったが、思いがけず誰かの役に立つことができた。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;職員のところへ行き、食料の準備を手伝い始める。&lt;br&gt;段ボール箱を開け、パンを並べ、必要なところへ運んでいく。&lt;br&gt;人が集まってくると食料を一つずつ手渡すのも手伝った。&lt;br&gt;
+「ありがとうございます」&lt;br&gt;「助かります」&lt;br&gt;
+食料を受け取った人や職員から、何度か声をかけられる。&lt;br&gt;
+&lt;br&gt;しばらくすると、慌ただしかった配布場所も少し落ち着いてきた。&lt;br&gt;職員がこちらへやってくる。&lt;br&gt;「本当に助かりました。ありがとうございます」&lt;br&gt;
+こうして誰かの役に立てたことを、少し嬉しく感じた。&lt;br&gt;早めに避難してきてよかったのかもしれない。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5132,7 +5622,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="79" name="3日目_避難所イベント戻り" tags="" position="1875,4475" size="100,100">&lt;!-- 抽選されたイベントを全部見終えたか確認 --&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="79" name="3日目_避難所イベント戻り" tags="" position="1875,4350" size="100,100">&lt;!-- 抽選されたイベントを全部見終えたか確認 --&gt;
 &lt;&lt;if $day3ShelterEventIndex &gt;= $day3SelectedShelterEvents.length&gt;&gt;
 
 	&lt;!-- 通常イベント終了 → 持ち物イベントへ --&gt;
@@ -5162,24 +5652,22 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;&lt;/if&gt;&gt;
 
 &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="80" name="3日目_後着避難者" tags="" position="1750,3850" size="100,100">&lt;&lt;set $time += 10&gt;&gt;
-
 &lt;&lt;set $day3RainPhase = &quot;normal&quot;&gt;&gt;
 &lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[入口の様子を見る-&gt;3日目_受付混雑]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[入口の方を見てみる-&gt;3日目_受付混雑]]
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で休んでいると、体育館の入口の方が急に騒がしくなった。&lt;br&gt;扉が開くたびに、強くなった雨の音が中まで聞こえてくる。&lt;br&gt;見ると、さっきまで少なかった避難者が次々と入ってきていた。&lt;br&gt;傘を差していたはずなのに、肩やズボンまで濡れている人もいる。&lt;br&gt;髪から水を滴らせながら、タオルで顔を拭いている人。濡れた荷物を抱えたまま、空いている場所を探している人。&lt;br&gt;自分がここへ着いたときとは、ずいぶん様子が違っていた。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で休んでいると、体育館の入口の方が急に騒がしくなった。職員の案内する声や、何人もの話し声も聞こえてきた。&lt;br&gt;どうやら新しく避難してきた人が一気に増えたようだ。&lt;br&gt;&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -5187,19 +5675,23 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="81" name="3日目_受付混雑" tags="" position="1750,3975" size="100,100">&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[自分の場所へ戻る-&gt;3日目_早期避難実感]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[自分の場所へ戻る-&gt;3日目_早期避難実感]]
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;受付の方を見ると、すでに何人もの避難者が列を作っていた。&lt;br&gt;「受付はこちらです！　順番にお願いします！」&lt;br&gt;職員が声をかけながら、一人ずつ対応している。&lt;br&gt;濡れたまま列の最後尾に並ぶ人もいれば、受付を終えてから空いている場所を探して体育館の中を歩き回っている人もいる。&lt;br&gt;さっきまで空いていた壁際にも、いつの間にか人や荷物が増えていた。&lt;br&gt;&lt;&lt;if $day3ShelterSpot is &quot;wall&quot;&gt;&gt;自分が確保した壁際の場所を見る。今から同じような場所を探そうとしても、もう簡単には見つからなさそうだ。&lt;&lt;elseif $day3ShelterSpot is &quot;quiet&quot;&gt;&gt;出入口から離れた静かな場所にも、少しずつ人が増えている。早いうちに場所を選べたのは大きかったようだ。&lt;&lt;else&gt;&gt;体育館の端にも人が集まり始めていた。自分が来たときのように、広いスペースを自由に選ぶ余裕はもうあまりなさそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;自分はほとんど待つことなく受付を済ませ、落ち着ける場所まで選ぶことができた。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;受付の方を見ると、すでに何人もの避難者が列を作っていた。&lt;br&gt;
+「受付はこちらです！　順番にお願いします！」&lt;br&gt;
+職員が声をかけながら、一人ずつ対応している。&lt;br&gt;雨に濡れたまま列の最後尾に並ぶ人や、受付を終えて空いている場所を探す人の姿も見える。&lt;br&gt;さっきまで空いていた体育館にも、いつの間にか人や荷物が増えていた。&lt;br&gt;
+&lt;&lt;if $day3ShelterSpot is &quot;wall&quot;&gt;&gt;自分が確保した壁際を見る。&lt;br&gt;周囲にも人が増え、今から同じような場所を探すのは難しそうだ。&lt;&lt;elseif $day3ShelterSpot is &quot;quiet&quot;&gt;&gt;自分が選んだ出入口から離れた場所にも、少しずつ人が増えている。&lt;br&gt;今から来た人は空いている場所を探すだけでも苦労しそうだ。&lt;&lt;else&gt;&gt;体育館の端にも人が集まり始めている。&lt;br&gt;自分が来たときのように、場所を自由に選ぶ余裕はもうあまりなさそうだ。
+&lt;&lt;/if&gt;&gt;&lt;br&gt;自分が受付を済ませたときは、待っている人もほとんどいなかった。&lt;br&gt;それからそれほど経っていないのに、避難所の様子はずいぶん変わっていた。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -5212,19 +5704,19 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/if&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[少し休む-&gt;3日目_避難者交流開始]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[少し休む-&gt;3日目_避難所イベント戻り]]
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所へ戻り、改めて服や荷物を確認する。&lt;br&gt;&lt;&lt;if $hasRaincoat&gt;&gt;レインコートのおかげもあり、服はほとんど濡れていない。&lt;&lt;else&gt;&gt;多少雨には当たったが、後から来た人たちと比べればほとんど濡れずに済んでいる。&lt;&lt;/if&gt;&gt;&lt;br&gt;受付にも並ばず、自分が落ち着ける場所を選ぶこともできた。&lt;br&gt;ほんの少し早く家を出ただけでも、避難所に着いてからの状況はこんなに違うらしい。&lt;br&gt;入口では、また新しい避難者を案内する職員の声が聞こえている。&lt;br&gt;外の雨音は、ここへ来たときよりも明らかに強くなっていた。&lt;br&gt;早いうちに動いておいてよかった。そう思いながら、もう一度腰を下ろした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所へ戻り、腰を下ろす。&lt;br&gt;自分がここへ着いた頃は、まだ雨もそれほど強くなかった。&lt;br&gt;服も少し濡れた程度で済んでいる。&lt;br&gt;受付でもほとんど待たず、落ち着ける場所を自分で選ぶことができた。&lt;br&gt;今は入口に列ができ、体育館の中にも人が増えている。&lt;br&gt;外から聞こえてくる雨音も、自分がここへ来たときよりずっと強い。&lt;br&gt;もう少し家にいたら、自分もあの列に並んでいたのかもしれない。&lt;br&gt;早めに出てきてよかった。&lt;br&gt;そう思いながら、少し肩の力を抜いた。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -5232,116 +5724,127 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="83" name="3日目_避難者交流開始" tags="" position="1875,3850" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
-&lt;!-- このイベントで登場するNPCの性別を最初の1回だけ決める --&gt;
+
+&lt;!-- NPCの性別を最初の1回だけ決める --&gt;
 &lt;&lt;if $day3TalkNpcGender is &quot;&quot;&gt;&gt;
-	&lt;&lt;set $day3TalkNpcGender = either(&quot;male&quot;, &quot;female&quot;)&gt;&gt;
+	&lt;&lt;if $participantGender is &quot;male&quot;&gt;&gt;
+		&lt;&lt;set $day3TalkNpcGender = &quot;female&quot;&gt;&gt;
+	&lt;&lt;elseif $participantGender is &quot;female&quot;&gt;&gt;
+		&lt;&lt;set $day3TalkNpcGender = &quot;male&quot;&gt;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;&lt;set $day3TalkNpcGender = either(&quot;male&quot;, &quot;female&quot;)&gt;&gt;
+	&lt;&lt;/if&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
 
 	&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;
-
-		&lt;img class=&quot;npc-sprite npc-right&quot;
-			src=&quot;images/npc_talk_male.png&quot;
-			alt=&quot;&quot;&gt;
-
+		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_male.png&quot; alt=&quot;&quot;&gt;
 	&lt;&lt;else&gt;&gt;
-
-		&lt;img class=&quot;npc-sprite npc-right&quot;
-			src=&quot;images/npc_talk_female.png&quot;
-			alt=&quot;&quot;&gt;
-
+		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_female.png&quot; alt=&quot;&quot;&gt;
 	&lt;&lt;/if&gt;&gt;
-
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[話を続ける-&gt;3日目_避難者交流会話]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[「ここまで来るのは大変でしたか？」と聞いてみる-&gt;3日目_避難者交流会話]]
+			[[「確かにだんだん強くなってきましたね」と返す-&gt;3日目_避難者交流会話]]
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で休んでいると、近くに座っていた&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;男性&lt;&lt;else&gt;&gt;女性&lt;&lt;/if&gt;&gt;とふと目が合った。&lt;br&gt;&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;年齢は自分とそれほど変わらないだろうか。かなり整った顔立ちをしている。……いわゆる、かなりのイケメンだ。&lt;&lt;else&gt;&gt;年齢は自分とそれほど変わらないだろうか。かなり整った顔立ちをした、目を引くような美人だ。&lt;&lt;/if&gt;&gt;&lt;br&gt;相手は少しだけ会釈すると、外から聞こえてくる雨音に目を向けた。&lt;br&gt;「……避難、大変ですね」&lt;br&gt;突然話しかけられ、一瞬だけ驚く。&lt;br&gt;「そうですね。雨もだんだん強くなってきましたし」&lt;br&gt;「ですよね。自分も、ここまで来るだけで結構緊張しました」&lt;br&gt;どうやら向こうも、少し誰かと話したかったようだ。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;
+		&lt;&lt;type 50ms none&gt;&gt;
+自分の場所で休んでいると、近くに座っていた&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;男性&lt;&lt;else&gt;&gt;女性&lt;&lt;/if&gt;&gt;とふと目が合った。&lt;br&gt;
+&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;
+年齢は自分とそれほど変わらないだろうか。かなり整った顔立ちをしている。……いわゆる、かなりのイケメンだ。
+&lt;&lt;else&gt;&gt;
+年齢は自分とそれほど変わらないだろうか。かなり整った顔立ちをした、目を引くような美人だ。
+&lt;&lt;/if&gt;&gt;&lt;br&gt;
+相手は少しだけ会釈すると、外から聞こえてくる雨音に目を向けた。&lt;br&gt;
+「……雨、大変ですね」&lt;br&gt;突然話しかけられ、一瞬だけ驚く。&lt;br&gt;相手はこちらの返事を待っているようだ。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="84" name="3日目_避難者交流会話" tags="" position="1875,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="84" name="3日目_避難者交流趣味" tags="" position="1875,4100" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
+
+	&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;
+		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_male_smile.png&quot; alt=&quot;&quot;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_female_smile.png&quot; alt=&quot;&quot;&gt;
+	&lt;&lt;/if&gt;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[もう少し話す-&gt;3日目_避難者交流趣味]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[しばらく会話を楽しむ-&gt;3日目_避難者交流終了]]
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;話をしてみると、思っていたよりも気さくな人だった。&lt;br&gt;「自分、もう少し家にいようかと思ってたんですけど……雨雲レーダー見たら、これ絶対ひどくなるなって」&lt;br&gt;「分かります。家を出るタイミング、迷いますよね」&lt;br&gt;「そうなんですよ。避難所に来るのもちょっと大げさかなって思ってたんですけど、来たら少し安心しました」&lt;br&gt;その言葉を聞いて、少しだけ共感する。&lt;br&gt;外では雨が降り続いているが、安全な建物の中で誰かと話していると、不思議とさっきまでより雨音が気にならなくなっていた。&lt;br&gt;そのまま、避難とは関係のない話も少しずつ混ざり始める。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;
+		&lt;&lt;type 50ms none&gt;&gt;
+話題は自然と、お互いの趣味の話へ移っていった。&lt;br&gt;最近見たものや、普段何をして過ごしているのか。そんな他愛のない話をしているうちに、ふとゲームの話題になる。&lt;br&gt;「えっ、それやってるんですか？」&lt;br&gt;
+相手が驚いたようにこちらを見る。&lt;br&gt;「自分もやってます！　周りにやってる人、全然いなくて」&lt;br&gt;
+思いがけない共通点が見つかり、二人とも笑う。&lt;br&gt;
+好きなキャラクターや最近のゲームの話をしているうちに、会話はどんどん弾んでいった。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="85" name="3日目_避難者交流趣味" tags="" position="1875,4100" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
-&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;vn-ui&quot;&gt;
-
-	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[話を続ける-&gt;3日目_避難者交流終了]]
-	&lt;/div&gt;
-
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;気がつけば、話題はすっかり雨から離れていた。&lt;br&gt;最近見たものや、普段何をして過ごしているのか。そんな他愛のない話をしているうちに、ふとゲームの話題になる。&lt;br&gt;「えっ、それやってるんですか？」&lt;br&gt;相手が少し身を乗り出した。&lt;br&gt;「やってますけど……もしかして？」&lt;br&gt;「自分もです！　周りにやってる人全然いなくて」&lt;br&gt;思いがけない共通点に、二人とも少し笑う。&lt;br&gt;そこからは早かった。好きなキャラクターや最近の展開、遊び始めたきっかけまで、話題が次々と出てくる。&lt;br&gt;&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;最初は「すごいイケメンがいる」と少し緊張していたはずなのに、気づけば普通の友人のように話していた。&lt;&lt;else&gt;&gt;最初は「すごい美人がいる」と少し緊張していたはずなのに、気づけば普通の友人のように話していた。&lt;&lt;/if&gt;&gt;&lt;br&gt;いつの間にか、外の雨のことを忘れるくらい話に夢中になっていた。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;&lt;script&gt;&gt;
-$(document).one(&#39;:typingcomplete&#39;, function () {
-	$(&#39;#choice-after-type&#39;).fadeIn(300);
-});
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="86" name="3日目_避難者交流終了" tags="" position="1875,4225" size="100,100">&lt;!-- 男性版・女性版どちらでも「交流イベント1回」として記録 --&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="85" name="3日目_避難者交流終了" tags="" position="1875,4225" size="100,100">&lt;!-- 男性版・女性版どちらでも「交流イベント1回」として記録 --&gt;
 &lt;&lt;if $day3CompletedEvents.indexOf(&quot;talk&quot;) === -1&gt;&gt;
 	&lt;&lt;run $day3CompletedEvents.push(&quot;talk&quot;)&gt;&gt;
 	&lt;&lt;set $day3GoodEventCount += 1&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
+
+	&lt;!-- 交流が落ち着いたので通常表情に戻す --&gt;
+	&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;
+		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_male.png&quot; alt=&quot;&quot;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_female.png&quot; alt=&quot;&quot;&gt;
+	&lt;&lt;/if&gt;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-[[自分の場所で休む-&gt;3日目_持ち物イベント開始]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[「はい、またあとで」と返す-&gt;3日目_避難所イベント戻り]]
+			[[笑ってうなずく-&gt;3日目_避難所イベント戻り]]
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;しばらく話していると、館内放送が流れ、二人ともふと顔を上げた。&lt;br&gt;「……結構しゃべっちゃいましたね」&lt;br&gt;「ですね」&lt;br&gt;「でも、よかったです。さっきまでちょっと不安だったので」&lt;br&gt;相手はそう言って笑った。&lt;br&gt;考えてみれば、自分も同じだった。&lt;br&gt;ここへ来たばかりのころは外の雨やこれからのことばかり考えていたのに、誰かと話しているうちに肩の力が抜けていた。&lt;br&gt;「またあとで話しましょう」&lt;br&gt;「はい」&lt;br&gt;思いがけず気の合う人と出会えたことに、少し嬉しくなる。&lt;br&gt;早めに避難してできた余裕のある時間は、ただ雨が過ぎるのを待つだけの時間ではなかった。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;
+	&lt;&lt;type 50ms none&gt;&gt;
+しばらく話したあと、ふと時計を確認する。思っていたよりも時間が経っていた。&lt;br&gt;
+「あ、もうこんな時間なんですね」&lt;br&gt;「ほんとだ。つい話し込んじゃいました」&lt;br&gt;
+相手は少し笑いながら時計を見る。&lt;br&gt;
+&lt;br&gt;「でも、話せてよかったです。楽しかったです」&lt;br&gt;
+こちらも楽しい時間を過ごせたことに、少し嬉しくなる。&lt;br&gt;
+「またあとで話しましょう」
+	&lt;&lt;/type&gt;&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="87" name="3日目_持ち物イベント次へ" tags="" position="2000,3850" size="100,100">&lt;!-- 抽選されたイベントを全部見終わったか --&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="86" name="3日目_持ち物イベント次へ" tags="" position="2000,3850" size="100,100">&lt;!-- 抽選されたイベントを全部見終わったか --&gt;
 &lt;&lt;if $day3ItemEventIndex &gt;= $day3SelectedItemEvents.length&gt;&gt;
 
 	&lt;&lt;goto &quot;3日目_持ち物イベント終了&quot;&gt;&gt;
@@ -5357,62 +5860,32 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;!-- 持ち物に対応したパッセージへ移動 --&gt;
 	&lt;&lt;if _itemEvent is &quot;water&quot;&gt;&gt;
 
-		&lt;&lt;goto &quot;3日目_持ち物_水&quot;&gt;&gt;
+	&lt;&lt;goto &quot;3日目_持ち物_水&quot;&gt;&gt;
 
-	&lt;&lt;elseif _itemEvent is &quot;food&quot;&gt;&gt;
+&lt;&lt;elseif _itemEvent is &quot;food&quot;&gt;&gt;
 
-		&lt;&lt;goto &quot;3日目_持ち物_非常食&quot;&gt;&gt;
+	&lt;&lt;goto &quot;3日目_持ち物_非常食&quot;&gt;&gt;
 
-	&lt;&lt;elseif _itemEvent is &quot;battery&quot;&gt;&gt;
+&lt;&lt;elseif _itemEvent is &quot;battery&quot;&gt;&gt;
 
-		&lt;&lt;goto &quot;3日目_持ち物_バッテリー&quot;&gt;&gt;
+	&lt;&lt;goto &quot;3日目_持ち物_バッテリー&quot;&gt;&gt;
 
-	&lt;&lt;elseif _itemEvent is &quot;towel&quot;&gt;&gt;
+&lt;&lt;elseif _itemEvent is &quot;towel&quot;&gt;&gt;
 
-		&lt;&lt;goto &quot;3日目_持ち物_タオル&quot;&gt;&gt;
+	&lt;&lt;goto &quot;3日目_持ち物_タオル&quot;&gt;&gt;
 
-	&lt;&lt;elseif _itemEvent is &quot;medicine&quot;&gt;&gt;
+&lt;&lt;/if&gt;&gt;
 
-		&lt;&lt;goto &quot;3日目_持ち物_常備薬&quot;&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="87" name="3日目_持ち物_水" tags="" position="2000,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 
-	&lt;&lt;/if&gt;&gt;
-
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="88" name="3日目_持ち物_水" tags="" position="2000,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
-&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;vn-ui&quot;&gt;
-
-	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		&lt;div class=&quot;choice-list&quot;&gt;
-			[[水を飲む-&gt;3日目_持ち物_水使用]]
-		&lt;/div&gt;
-	&lt;/div&gt;
-
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所に戻って一息つく。&lt;br&gt;落ち着いた途端、急に喉が渇いていることに気づいた。&lt;br&gt;家を出てから避難所まで歩いてきたうえ、避難してからも何かと動き回っていた。&lt;br&gt;思っていた以上に身体が水分を欲しがっているようだ。&lt;br&gt;……そういえば、防災バッグに飲み水を入れてきた。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;&lt;script&gt;&gt;
-$(document).one(&#39;:typingcomplete&#39;, function () {
-	$(&#39;#choice-after-type&#39;).fadeIn(300);
-});
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="89" name="3日目_持ち物_タオル" tags="" position="2125,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 &lt;div class=&quot;scene&quot;&gt;
 
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 
-	&lt;img class=&quot;npc-sprite npc-parent&quot;
-		src=&quot;images/npc_parent.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;npc-sprite npc-child&quot;
-		src=&quot;images/npc_child.png&quot;
+	&lt;img class=&quot;npc-sprite&quot;
+		src=&quot;images/npc_evacuee_worried.png&quot;
 		alt=&quot;&quot;&gt;
 
 &lt;/div&gt;
@@ -5420,14 +5893,20 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-
 		&lt;div class=&quot;choice-list&quot;&gt;
-			[[タオルを渡す-&gt;3日目_持ち物_タオル渡す]]
-		&lt;/div&gt;
 
+			[[「よかったら、水ありますよ」と声をかける-&gt;3日目_持ち物_水使用]]
+
+			[[バッグから水を取り出して見せる-&gt;3日目_持ち物_水使用]]
+
+			[[「飲み物、必要ですか？」と尋ねる-&gt;3日目_持ち物_水使用]]
+
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;入口の方が少し騒がしくなり、新しく親子が避難してきた。&lt;br&gt;雨が強くなってから家を出たのか、二人ともかなり濡れている。&lt;br&gt;特に子どもの髪や服からは、まだ水が滴っていた。&lt;br&gt;保護者がハンカチで子どもの髪を拭いているが、とても追いつきそうにない。&lt;br&gt;一方、自分は雨が強くなる前に避難してきたため、ほとんど濡れずに済んでいる。&lt;br&gt;……そういえば、防災バッグにタオルを入れてきた。&lt;br&gt;自分はほとんど使わずに済みそうだし、あの親子に使ってもらおうかな。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;少し離れたところに、先ほど避難してきた人が座って困ったように周囲を見回している。&lt;br&gt;「しまった、飲み物を持ってくるのを忘れてしまった……」&lt;br&gt;そういえば、防災バッグには未開封の水を入れてきた。&lt;br&gt;どうしよう。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5435,19 +5914,16 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;
-</tw-passagedata><tw-passagedata pid="90" name="3日目_持ち物_タオル渡す" tags="" position="2125,4100" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="88" name="3日目_持ち物_タオル" tags="" position="2125,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
 
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 
-	&lt;img class=&quot;npc-sprite npc-parent&quot;
-		src=&quot;images/npc_parent.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;npc-sprite npc-child&quot;
-		src=&quot;images/npc_child.png&quot;
+	&lt;img class=&quot;npc-sprite&quot;
+		src=&quot;images/npc_evacuee_worried.png&quot;
 		alt=&quot;&quot;&gt;
 
 &lt;/div&gt;
@@ -5455,10 +5931,22 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[親子の様子を見る-&gt;3日目_持ち物_タオルお礼]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+
+			[[「よかったらタオル使いますか？」と声をかける-&gt;3日目_持ち物_タオル渡す]]
+
+			[[バッグからタオルを取り出して見せる-&gt;3日目_持ち物_タオル渡す]]
+
+			[[「かなり濡れてますけど大丈夫ですか？」と声をかける-&gt;3日目_持ち物_タオル渡す]]
+
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;防災バッグからタオルを取り出し、親子のところへ向かう。&lt;br&gt;「あの、よかったらこれ使ってください」&lt;br&gt;保護者が驚いたようにこちらを見る。&lt;br&gt;「えっ、いいんですか？」&lt;br&gt;「はい。自分はそんなに濡れていないので」&lt;br&gt;「……ありがとうございます。本当に助かります」&lt;br&gt;タオルを渡すと、保護者はすぐに子どもの濡れた髪を拭き始めた。&lt;br&gt;子どももタオルにくるまりながら、こちらを見上げる。&lt;br&gt;「ありがとう！」&lt;br&gt;持ってきたタオルがちゃんと役に立った。&lt;br&gt;それも、自分が早めに避難してほとんど濡れずに済んだからこそだろう。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;入口の方から、新しく避難してきた人が入ってくる。&lt;br&gt;雨が強くなってから家を出たのか、髪や服がかなり濡れているようだ。&lt;br&gt;避難者は服についた水滴を払いながら、困ったように周囲を見回している。&lt;br&gt;「こんなに降るとは思わなかった……びしょ濡れだ……」&lt;br&gt;
+&lt;br&gt;自分は雨が強くなる前に避難してきたため、ほとんど濡れずに済んでいる。&lt;br&gt;
+そういえば、防災バッグにはタオルを入れてきたな。&lt;br&gt;どうしよう。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5466,8 +5954,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="91" name="3日目_持ち物_タオルお礼" tags="" position="2125,4225" size="100,100">&lt;!-- タオルイベント完了 --&gt;
-&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_towel&quot;) === -1&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="89" name="3日目_持ち物_タオル渡す" tags="" position="2125,4100" size="100,100">&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_towel&quot;) === -1&gt;&gt;
 	&lt;&lt;run $day3CompletedEvents.push(&quot;item_towel&quot;)&gt;&gt;
 	&lt;&lt;set $day3ItemHelpfulCount += 1&gt;&gt;
 &lt;&lt;/if&gt;&gt;
@@ -5478,12 +5965,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
 
-	&lt;img class=&quot;npc-sprite npc-parent&quot;
-		src=&quot;images/npc_parent.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;npc-sprite npc-child&quot;
-		src=&quot;images/npc_child.png&quot;
+	&lt;img class=&quot;npc-sprite&quot;
+		src=&quot;images/npc_evacuee_smile.png&quot;
 		alt=&quot;&quot;&gt;
 
 &lt;/div&gt;
@@ -5491,10 +5974,23 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[お礼を受け取る-&gt;3日目_持ち物イベント次へ]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+
+			[[「どういたしまして」と返す-&gt;3日目_持ち物イベント次へ]]
+
+			[[「風邪に気をつけてくださいね」と返す-&gt;3日目_持ち物イベント次へ]]
+
+			[[笑ってうなずく-&gt;3日目_持ち物イベント次へ]]
+
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;しばらくして、先ほどの親子がこちらへやってきた。&lt;br&gt;「先ほどはありがとうございました」&lt;br&gt;保護者が、小さな使い捨てカイロを差し出す。&lt;br&gt;「これ、余分に持ってきていたので。よかったら使ってください」&lt;br&gt;「でも……」&lt;br&gt;「タオルのお礼です。受け取ってもらえると嬉しいです」&lt;br&gt;隣で子どもも「どうぞ！」と笑っている。&lt;br&gt;「……ありがとうございます」&lt;br&gt;カイロを受け取る。&lt;br&gt;自分が持ってきた物が誰かの役に立って、今度はその人から少し助けてもらった。&lt;br&gt;思いがけないやり取りに、なんだか少し嬉しくなった。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;防災バッグからタオルを取り出してその人に渡した。&lt;br&gt;「えっ、いいんですか？」&lt;br&gt;
+避難者は少し驚いたあと、ありがたそうにタオルを受け取った。&lt;br&gt;濡れた髪や顔を拭くと、ほっとしたように息をつく。&lt;br&gt;「ありがとうございます。本当に助かりました」&lt;br&gt;
+先ほどまで困っていた表情が、安心した笑顔に変わっている。&lt;br&gt;早めに避難してきたことで、持ってきたものを誰かのために使う余裕もできたのかもしれない。&lt;br&gt;
+そう思うと、少し嬉しくなった。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5502,48 +5998,45 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="92" name="3日目_持ち物_水使用" tags="" position="2000,4100" size="100,100">
-&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_water&quot;) === -1&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="90" name="3日目_持ち物_水使用" tags="" position="2000,4100" size="100,100">&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_water&quot;) === -1&gt;&gt;
 	&lt;&lt;run $day3CompletedEvents.push(&quot;item_water&quot;)&gt;&gt;
 	&lt;&lt;set $day3ItemHelpfulCount += 1&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
+
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
-&lt;/div&gt;
 
-&lt;div class=&quot;vn-ui&quot;&gt;
-
-	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[水をしまう-&gt;3日目_持ち物イベント次へ]]
-	&lt;/div&gt;
-
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;防災バッグから水を取り出し、ふたを開ける。&lt;br&gt;一口飲むと、乾いていた喉が潤っていく。&lt;br&gt;「……生き返る」&lt;br&gt;思わず小さく息をついた。&lt;br&gt;避難所に着いたことで気が抜けていたが、ここまで来るだけでもそれなりに疲れていたらしい。&lt;br&gt;好きなときにすぐ水分を取れるだけでも、ずいぶん楽だ。&lt;br&gt;荷物に入れたときは少し重いと思ったけれど、持ってきてよかった。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;&lt;script&gt;&gt;
-$(document).one(&#39;:typingcomplete&#39;, function () {
-	$(&#39;#choice-after-type&#39;).fadeIn(300);
-});
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="93" name="3日目_持ち物_非常食" tags="" position="2250,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
-&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
+	&lt;img class=&quot;npc-sprite&quot;
+		src=&quot;images/npc_evacuee_smile.png&quot;
 		alt=&quot;&quot;&gt;
+
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
 		&lt;div class=&quot;choice-list&quot;&gt;
-			[[非常食を食べる-&gt;3日目_持ち物_非常食使用]]
+
+			[[「どういたしまして」と返す-&gt;3日目_持ち物イベント次へ]]
+
+			[[「余分に持ってきていたので大丈夫ですよ」と返す-&gt;3日目_持ち物イベント次へ]]
+
+			[[笑ってうなずく-&gt;3日目_持ち物イベント次へ]]
+
 		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;避難所で過ごしているうちに、少しお腹が空いてきた。&lt;br&gt;まだしっかり食事を取るほどではないが、何か少し口にしたい。&lt;br&gt;いつ家へ戻れるのかも、今のところは分からない。&lt;br&gt;そんなことを考えていると、防災バッグに入れてきた非常食を思い出した。&lt;br&gt;こういうときのために、すぐ食べられるものを持ってきたんだった。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;
+		&lt;&lt;type 50ms none&gt;&gt;
+防災バッグから未開封の水を取り出して渡す。&lt;br&gt;
+「えっ、いいんですか？」&lt;br&gt;その人は少し驚き、水を受け取った。&lt;br&gt;水を一口飲むと、ほっとしたように息をつく。&lt;br&gt;「助かりました。本当にありがとうございます」&lt;br&gt;先ほどまで困っていた表情が、安心した笑顔に変わっている。
+準備して持ってきたものが、誰かの役に立った。&lt;br&gt;
+そう思うと、少し嬉しくなった。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5551,46 +6044,84 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="94" name="3日目_持ち物_非常食使用" tags="" position="2250,4100" size="100,100">&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_food&quot;) === -1&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="91" name="3日目_持ち物_非常食" tags="" position="2250,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+
+	&lt;img class=&quot;scene-media scene-media-full&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
+		alt=&quot;&quot;&gt;
+
+	&lt;img class=&quot;npc-sprite&quot;
+		src=&quot;images/npc_child_disappointed.png&quot;
+		alt=&quot;&quot;&gt;
+
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		&lt;div class=&quot;choice-list&quot;&gt;
+
+			[[「ビスケットならありますよ」と保護者に声をかける-&gt;3日目_持ち物_非常食使用]]
+
+			[[バッグから非常食を取り出し、保護者に見せる-&gt;3日目_持ち物_非常食使用]]
+
+			[[「お子さん、これなら食べられそうですか？」と尋ねる-&gt;3日目_持ち物_非常食使用]]
+
+		&lt;/div&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;dialogue-box&quot;&gt;
+		&lt;&lt;type 50ms none&gt;&gt;
+近くに座っている親子の声が聞こえてきた。&lt;br&gt;子どもは先ほど配られたパンを食べ終えたようだが、少し物足りなさそうにしている。&lt;br&gt;「お菓子食べたい……」&lt;br&gt;
+「持ってきてないから我慢しなさい」&lt;br&gt;保護者がそう言うと子どもは少し残念そうな顔をした。&lt;br&gt;そういえば防災バッグには非常食として入れてきた個包装のビスケットがあるけどどうしようか。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(300);
+});
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="92" name="3日目_持ち物_非常食使用" tags="" position="2250,4100" size="100,100">&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_food&quot;) === -1&gt;&gt;
 	&lt;&lt;run $day3CompletedEvents.push(&quot;item_food&quot;)&gt;&gt;
 	&lt;&lt;set $day3ItemHelpfulCount += 1&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
+
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
-&lt;/div&gt;
-&lt;div class=&quot;vn-ui&quot;&gt;
 
-	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[食べ終える-&gt;3日目_持ち物イベント次へ]]
-	&lt;/div&gt;
-
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;防災バッグから非常食を取り出し、封を開ける。&lt;br&gt;少し口にすると、気になっていた空腹が落ち着いていく。&lt;br&gt;特別なものではないけれど、必要なときに自分の好きなタイミングで食べられるのはありがたい。&lt;br&gt;これなら、この先避難が長引いたとしても少し安心できそうだ。&lt;br&gt;「念のため」と入れてきたものだったが、ちゃんと持ってきた意味はあったようだ。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;&lt;script&gt;&gt;
-$(document).one(&#39;:typingcomplete&#39;, function () {
-	$(&#39;#choice-after-type&#39;).fadeIn(300);
-});
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="95" name="3日目_持ち物_バッテリー" tags="" position="2375,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
-&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
+	&lt;img class=&quot;npc-sprite&quot;
+		src=&quot;images/npc_child_smile.png&quot;
 		alt=&quot;&quot;&gt;
+
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
 		&lt;div class=&quot;choice-list&quot;&gt;
-			[[モバイルバッテリーにつなぐ-&gt;3日目_持ち物_バッテリー使用]]
+
+			[[「どういたしまして」と返す-&gt;3日目_持ち物イベント次へ]]
+
+			[[笑ってうなずく-&gt;3日目_持ち物イベント次へ]]
+
+			[[「喜んでもらえてよかった」と返す-&gt;3日目_持ち物イベント次へ]]
+
 		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;スマートフォンを取り出し、画面を確認する。&lt;br&gt;スマートフォンを取り出し、画面を確認する。避難所でも情報を確認したり連絡を取ったりすることを考えると、充電には余裕を持っておきたい。&lt;br&gt;……そういえば、モバイルバッテリーを持ってきていた。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;
+		&lt;&lt;type 50ms none&gt;&gt;保護者に確認してから、防災バッグに入れていたビスケットを渡す。&lt;br&gt;「いいんですか？ありがとうございます」&lt;br&gt;
+すると、子どもの表情がぱっと明るくなった。&lt;br&gt;
+&lt;br&gt;「わあ！お菓子！ありがとう！」&lt;br&gt;子どもはこちらを見上げ、嬉しそうに笑う。&lt;br&gt;その笑顔を見ていると、こちらまで少し嬉しくなった。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5598,24 +6129,39 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="96" name="3日目_持ち物_バッテリー使用" tags="" position="2375,4100" size="100,100">&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_battery&quot;) === -1&gt;&gt;
-	&lt;&lt;run $day3CompletedEvents.push(&quot;item_battery&quot;)&gt;&gt;
-	&lt;&lt;set $day3ItemHelpfulCount += 1&gt;&gt;
-&lt;&lt;/if&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="93" name="3日目_持ち物_バッテリー" tags="" position="2375,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
+
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3_2.png&quot;
 		alt=&quot;&quot;&gt;
+
+	&lt;img class=&quot;npc-sprite&quot;
+		src=&quot;images/npc_evacuee_worried.png&quot;
+		alt=&quot;&quot;&gt;
+
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[スマートフォンを置く-&gt;3日目_持ち物イベント次へ]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+
+			[[「モバイルバッテリー使いますか？」と声をかける-&gt;3日目_持ち物_バッテリー使用]]
+
+			[[バッグからモバイルバッテリーを取り出して見せる-&gt;3日目_持ち物_バッテリー使用]]
+
+			[[「充電がないならこれを使いませんか？」と伝える-&gt;3日目_持ち物_バッテリー使用]]
+
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;防災バッグからモバイルバッテリーを取り出し、スマートフォンにつなぐ。&lt;br&gt;画面に充電中の表示が現れた。&lt;br&gt;「よし」&lt;br&gt;これなら、残りの充電をいちいち気にしながら使わなくてもよさそうだ。&lt;br&gt;必要なら家族とも連絡を取れるし、雨や避難に関する情報も確認できる。&lt;br&gt;普段なら充電が少なくてもそれほど気にしないこともあるが、今は連絡手段でもあり、大切な情報源でもある。&lt;br&gt;モバイルバッテリーを準備してきたことで、一つ心配事が減った。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;
+		&lt;&lt;type 50ms none&gt;&gt;
+近くに座っていた避難者が、何度もスマートフォンの画面を確認している。どこか不安そうな様子だ。&lt;br&gt;「家族に無事だって連絡したいのにもうほとんど充電が残ってないな…」&lt;br&gt;そういえば、防災バッグにはモバイルバッテリーを入れてきた。&lt;br&gt;どうしようか。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5623,7 +6169,51 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="97" name="3日目_持ち物_常備薬" tags="" position="2500,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="94" name="3日目_持ち物_バッテリー使用" tags="" position="2375,4100" size="100,100">&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_battery&quot;) === -1&gt;&gt;
+	&lt;&lt;run $day3CompletedEvents.push(&quot;item_battery&quot;)&gt;&gt;
+	&lt;&lt;set $day3ItemHelpfulCount += 1&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+
+	&lt;img class=&quot;scene-media scene-media-full&quot;
+		src=&quot;images/shelter_day3_2.png&quot;
+		alt=&quot;&quot;&gt;
+
+	&lt;img class=&quot;npc-sprite&quot;
+		src=&quot;images/npc_evacuee_smile.png&quot;
+		alt=&quot;&quot;&gt;
+
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		&lt;div class=&quot;choice-list&quot;&gt;
+
+			[[「どういたしまして」と返す-&gt;3日目_持ち物イベント次へ]]
+
+			[[「連絡できてよかったです」と返す-&gt;3日目_持ち物イベント次へ]]
+
+			[[笑ってうなずく-&gt;3日目_持ち物イベント次へ]]
+
+		&lt;/div&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;dialogue-box&quot;&gt;
+		&lt;&lt;type 50ms none&gt;&gt;
+モバイルバッテリーを貸すと、避難者はすぐにスマートフォンにつないだ。&lt;br&gt;画面に充電中の表示が現れる。&lt;br&gt;「よかった……！」&lt;br&gt;しばらくして、避難者は家族へ無事に避難したことを連絡できたようだ。&lt;br&gt;安心したように息をつき、モバイルバッテリーをこちらへ返す。&lt;br&gt;「本当にありがとうございます。助かりました」&lt;br&gt;
+先ほどまでの不安そうな表情が、ほっとした笑顔に変わっている。&lt;br&gt;持ってきたものが役に立って良かった。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(300);
+});
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="95" name="3日目_持ち物_常備薬" tags="" position="2500,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day3.png&quot;
@@ -5646,7 +6236,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="98" name="3日目_持ち物_常備薬確認" tags="" position="2500,4100" size="100,100">&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_medicine&quot;) === -1&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="96" name="3日目_持ち物_常備薬確認" tags="" position="2500,4100" size="100,100">&lt;&lt;if $day3CompletedEvents.indexOf(&quot;item_medicine&quot;) === -1&gt;&gt;
 	&lt;&lt;run $day3CompletedEvents.push(&quot;item_medicine&quot;)&gt;&gt;
 	&lt;&lt;set $day3ItemHelpfulCount += 1&gt;&gt;
 &lt;&lt;/if&gt;&gt;
@@ -5671,10 +6261,14 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="99" name="3日目_持ち物イベント開始" tags="" position="2000,3725" size="100,100">&lt;!-- 抽選は最初の1回だけ行う --&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="97" name="3日目_持ち物イベント開始" tags="" position="2000,3725" size="100,100">&lt;!-- 抽選は最初の1回だけ行う --&gt;
 &lt;&lt;if not $day3ItemEventsPrepared&gt;&gt;
 
-	&lt;!-- 持ってきた物だけ候補に入れる --&gt;
+	&lt;!--
+		避難所で持ち物イベントが発生する物だけ候補に入れる
+		懐中電灯・レインコートは道中で使用
+		常備薬はイベント対象外
+	--&gt;
 	&lt;&lt;set _candidates = []&gt;&gt;
 
 	&lt;&lt;if $hasWater&gt;&gt;
@@ -5693,19 +6287,21 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		&lt;&lt;run _candidates.push(&quot;towel&quot;)&gt;&gt;
 	&lt;&lt;/if&gt;&gt;
 
-	&lt;&lt;if $hasMedicine&gt;&gt;
-		&lt;&lt;run _candidates.push(&quot;medicine&quot;)&gt;&gt;
-	&lt;&lt;/if&gt;&gt;
-
-	&lt;!-- 研究記録用：候補だった持ち物を保存 --&gt;
+	&lt;!-- 研究記録用：イベント候補だった持ち物を保存 --&gt;
 	&lt;&lt;set $day3ItemEventCandidates = _candidates.slice()&gt;&gt;
 
-	&lt;!-- 候補から最大2個をランダム抽選 --&gt;
+	&lt;!--
+		持ってきた対象アイテムから1個だけランダム抽選
+	--&gt;
 	&lt;&lt;if _candidates.length &gt; 0&gt;&gt;
+
 		&lt;&lt;set $day3SelectedItemEvents =
-			_candidates.pluckMany(Math.min(2, _candidates.length))&gt;&gt;
+			_candidates.pluckMany(1)&gt;&gt;
+
 	&lt;&lt;else&gt;&gt;
+
 		&lt;&lt;set $day3SelectedItemEvents = []&gt;&gt;
+
 	&lt;&lt;/if&gt;&gt;
 
 	&lt;&lt;set $day3ItemEventIndex = 0&gt;&gt;
@@ -5713,123 +6309,113 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;&lt;/if&gt;&gt;
 
-&lt;&lt;goto &quot;3日目_持ち物イベント次へ&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="100" name="3日目_土木職員登場" tags="" position="2025,4475" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+&lt;&lt;goto &quot;3日目_持ち物イベント次へ&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="98" name="3日目_土木職員登場" tags="" position="2025,4475" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;npc-sprite npc-right&quot;
-		src=&quot;images/npc_publicworks.png&quot;
-		alt=&quot;&quot;&gt;
-
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
+	&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_publicworks.png&quot; alt=&quot;&quot;&gt;
 &lt;/div&gt;
-&lt;div class=&quot;vn-ui&quot;&gt;
 
+&lt;div class=&quot;vn-ui&quot;&gt;
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[もう少し様子を見る-&gt;3日目_土木職員道路情報]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[そのまま会話に耳を傾ける-&gt;3日目_土木職員道路情報]]
+			[[外の状況が気になり、もう少し近くで話を聞く-&gt;3日目_土木職員道路情報]]
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で過ごしていると、体育館の入口が開いた。&lt;br&gt;雨具を着た作業着姿の男性が、肩についた雨粒を払いながら中へ入ってくる。&lt;br&gt;かなり雨に当たったのか、ズボンの裾まで濡れていた。&lt;br&gt;受付にいた職員がすぐに声をかける。&lt;br&gt;「お疲れさまです。外、どうでした？」&lt;br&gt;「いやあ、思ったより早く水が増えてるね」&lt;br&gt;男性は雨具のフードを外しながら、少し険しい表情をした。&lt;br&gt;「低いところはもう水が溜まり始めてる。このまま降ったら、通れなくなる道も出てくると思うよ」&lt;br&gt;その言葉が少し気になり、思わず耳を傾ける。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で過ごしていると、体育館の入口が開いた。&lt;br&gt;雨具を着た作業着姿の男性が肩についた雨粒を払いながら中へ入ってくる。&lt;br&gt;かなり雨に当たったのか、ズボンの裾まで濡れていた。&lt;br&gt;受付にいた職員がすぐに声をかける。&lt;br&gt;「お疲れさまです。外、どうでした？」&lt;br&gt;「いやあ、思ったより早く水が増えてるね」&lt;br&gt;男性は雨具のフードを外しながら少し険しい表情をした。&lt;br&gt;「低いところはもう水が溜まり始めてる。このまま降ったら通れなくなる道も出てくると思うよ」&lt;br&gt;外の状況が気になり、その会話に耳を傾ける。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="101" name="3日目_土木職員道路情報" tags="" position="2025,4600" size="100,100">&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="99" name="3日目_土木職員道路情報" tags="" position="2025,4600" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
+	&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_publicworks.png&quot; alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[話を聞く-&gt;3日目_土木職員会話]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[道路の状況をもう少し詳しく聞いてみる-&gt;3日目_土木職員会話]]
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;職員が地図を広げると、男性は何か所かを指さしながら状況を説明し始めた。&lt;br&gt;「ここの低い道は、もう水が道路に出始めてる」&lt;br&gt;「それと、この辺りも側溝が追いついてないね。今から歩いて通るのは避けた方がいい」&lt;br&gt;&lt;&lt;if $day3CorrectedRoute&gt;&gt;その場所を見て、はっとする。&lt;br&gt;避難してくる途中、一度進みかけて引き返した道だ。&lt;br&gt;あのときはまだ少し水が出ている程度だったはずなのに、もうそんな状態になっているらしい。&lt;&lt;else&gt;&gt;その場所を見て、少し驚く。&lt;br&gt;避難してくるときに通らなかった、低い方の道だ。&lt;br&gt;あのときはまだ通れそうにも見えたが、今では状況が変わっているらしい。&lt;&lt;/if&gt;&gt;&lt;br&gt;自分が避難所へ向かっていたころより、外の状況は確実に悪くなっているようだった。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;職員が地図を広げると、男性は何か所かを指さしながら状況を説明し始めた。&lt;br&gt;「ここの低い道はもう水が道路に出始めてる。それと、この辺りも側溝が追いついてないね。今から歩いて通るのは避けた方がいい」&lt;br&gt;&lt;&lt;if $day3CorrectedRoute&gt;&gt;指さされた場所を見て、はっとする。&lt;br&gt;避難してくる途中、一度進みかけて引き返した道だ。&lt;br&gt;あのときはまだ少し水が出ている程度だったのに、今はさらに状況が悪くなっているらしい。&lt;&lt;else&gt;&gt;指さされた場所を見る。&lt;br&gt;避難してくるときには通らなかった低い方の道だ。&lt;br&gt;自分がここへ来た頃はまだ通れそうにも見えたが、今はもう状況が変わっているらしい。&lt;&lt;/if&gt;&gt;&lt;br&gt;避難所へ向かっていたときよりも、外の状況はかなり悪くなっているようだ。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="102" name="3日目_土木職員会話" tags="" position="2025,4725" size="100,100">&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="100" name="3日目_土木職員会話" tags="" position="2025,4725" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
+	&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_publicworks.png&quot; alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[話を続ける-&gt;3日目_早期避難確認]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[「そんなに早く状況が変わるんですね」と返す-&gt;3日目_早期避難確認]]
+			[[「この雨が続いたら、もっと危なくなりますか？」と尋ねる-&gt;3日目_早期避難確認]]
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;気になって、男性へ声をかける。&lt;br&gt;「あの……さっき言っていた道って、そんなに水が増えてるんですか？」&lt;br&gt;「ん？　ああ。さっき確認してきたけど、かなり増えてるよ」&lt;br&gt;男性は地図から顔を上げた。&lt;br&gt;「もしかして、あの辺から来たの？」&lt;br&gt;「はい。その近くです」&lt;br&gt;「じゃあ、結構早いうちに家を出た？」&lt;br&gt;「はい。雨がもっと強くなる前に来ました」&lt;br&gt;すると男性は、少し安心したように頷いた。&lt;br&gt;「それならよかった。早めに出てきて正解だったと思うよ」&lt;br&gt;「今の時間から同じ道を歩いて来るとなると、さっきよりずっと大変だからね」&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;地図を見ながら話を聞いていると、男性がこちらに気づいた。&lt;br&gt;「あなたも今日ここまで歩いてきたんですか？」&lt;br&gt;「はい」&lt;br&gt;「それなら早いうちに来て正解だったと思いますよ」&lt;br&gt;男性は地図の低い場所を指さす。&lt;br&gt;「雨が続くと道路の状態は短い時間でも変わります。さっき通れた道が今も安全とは限らないんです」&lt;br&gt;避難してきたときにはまだ歩けた道も、今では状況がかなり変わっているらしい。&lt;br&gt;改めて地図に目を向ける。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="103" name="3日目_早期避難確認" tags="" position="2025,4850" size="100,100">&lt;&lt;set $day3RoadFeedbackSeen = true&gt;&gt;
-
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="101" name="3日目_早期避難確認" tags="" position="2025,4850" size="100,100">&lt;&lt;set $day3RoadFeedbackSeen = true&gt;&gt;
 &lt;&lt;if $day3CompletedEvents.indexOf(&quot;road_feedback&quot;) === -1&gt;&gt;
 	&lt;&lt;run $day3CompletedEvents.push(&quot;road_feedback&quot;)&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
+	&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_publicworks.png&quot; alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[自分の場所へ戻る-&gt;3日目_避難所終盤]]
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[自分の場所へ戻る-&gt;3日目_避難所終盤]]
+		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;「こういう雨は、道路に水が出てから動こうとすると一気に大変になるんだよ」&lt;br&gt;男性はそう言って、もう一度地図へ目を落とした。&lt;br&gt;「まだ動けるうちに安全な場所へ来ておく方が、結果的にはずっと楽だからね」&lt;br&gt;「……ありがとうございます」&lt;br&gt;軽く頭を下げ、その場を離れる。&lt;br&gt;家を出たときは、少し早すぎるような気もしていた。&lt;br&gt;まだ道路も歩けたし、雨も今ほど強くはなかった。&lt;br&gt;けれど、もしあのまま家に残っていたら――今ごろは、もっと強い雨の中を歩いて避難することになっていたのかもしれない。&lt;br&gt;&lt;&lt;if $day3CorrectedRoute&gt;&gt;途中で危ない道に気づいて引き返せたのも、まだ時間に余裕があったからだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;受付にはすぐ入れた。落ち着ける場所も選べた。ここまで来る途中も、それほど濡れずに済んだ。&lt;br&gt;そして今は、安全な場所でこうして落ち着いて過ごしている。&lt;br&gt;――早めに避難しておいて、よかった。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;「そうだね。このまま雨が続けば、通れなくなる道はもっと増えるかもしれない」&lt;br&gt;男性は地図を見ながら続ける。&lt;br&gt;「道路に水が出てから動こうとすると、それだけ避難するのも大変になるからね。まだ安全に動けるうちに避難しておくのが一番だよ」&lt;br&gt;「ありがとうございます」&lt;br&gt;軽く頭を下げ、その場を離れる。&lt;br&gt;&lt;br&gt;自分が家を出た頃は道路にもまだ大きな変化はなかった。&lt;br&gt;それが今では通ると危険な道もあるらしい&lt;br&gt;あのとき早く避難することを決めて本当によかった。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="104" name="3日目_避難所終盤" tags="" position="2025,4975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="102" name="3日目_避難所終盤" tags="" position="2025,4975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 &lt;&lt;set $day3RainPhase = &quot;quiet&quot;&gt;&gt;
 &lt;&lt;updateRainSound&gt;&gt;
 &lt;&lt;audio &quot;rain01&quot; volume 0.15&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
-		alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[外の様子を見に行く-&gt;3日目_雨上がり]]
+		[[外の様子を見てみる-&gt;3日目_雨上がり]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所へ戻り、しばらく腰を下ろす。&lt;br&gt;避難所の中には、落ち着いた時間が流れていた。&lt;br&gt;ふと顔を上げる。&lt;br&gt;さっきまで体育館の屋根を叩いていた雨音が、いつの間にかずいぶん小さくなっている。&lt;br&gt;耳を澄ませても、聞こえるのは遠くで降る雨の音くらいだ。&lt;br&gt;窓の外も、先ほどより少し明るく見える。&lt;br&gt;「……雨、止んできたのかな」&lt;br&gt;少し気になって、外の様子を見に行くことにした。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;土木職員と別れ、自分の場所へ戻る。&lt;br&gt;しばらくして、さっきまで体育館の屋根を叩いていた雨音が弱くなっていることに気づいた。&lt;br&gt;耳を澄ませる、雨粒の音も少しずつ途切れるようになっている。&lt;br&gt;窓の外を見るとさっきより空が明るい。&lt;br&gt;「……雨、弱くなってきた？」&lt;br&gt;外の様子が少し気になった。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="105" name="3日目_持ち物イベント終了" tags="" position="2000,4225" size="100,100">&lt;&lt;goto &quot;3日目_土木職員登場&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="106" name="1日目_開始" tags="" position="625,375" size="100,100">&lt;&lt;set $day = 1&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="103" name="3日目_持ち物イベント終了" tags="" position="2000,4225" size="100,100">&lt;&lt;goto &quot;3日目_土木職員登場&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="104" name="1日目_開始" tags="" position="625,375" size="100,100">&lt;&lt;set $day = 1&gt;&gt;
 &lt;&lt;set $time = &quot;17:00&quot;&gt;&gt;
 &lt;&lt;set $stress = 0&gt;&gt;
 &lt;&lt;set $rainLevel = 1&gt;&gt;
@@ -5866,7 +6452,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="107" name="操作説明" tags="" position="750,375" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="105" name="操作説明" tags="" position="750,375" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
 
 	&lt;div class=&quot;pre-game-panel&quot;&gt;
 
@@ -5901,7 +6487,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="108" name="プレイヤー属性" tags="" position="875,375" size="100,100">&lt;&lt;set $participantGender = &quot;&quot;&gt;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="106" name="プレイヤー属性" tags="" position="875,375" size="100,100">&lt;&lt;set $participantGender = &quot;&quot;&gt;&gt;
 
 &lt;div class=&quot;pre-game-screen&quot;&gt;
 
@@ -5960,7 +6546,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="109" name="事前アンケート開始" tags="" position="1000,375" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="107" name="事前アンケート開始" tags="" position="1000,375" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
 
 	&lt;div class=&quot;pre-game-panel&quot;&gt;
 
@@ -5986,7 +6572,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="110" name="事前アンケート" tags="" position="1125,375" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="108" name="事前アンケート" tags="" position="1125,375" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
 
 	&lt;div class=&quot;pre-game-panel&quot;&gt;
 
@@ -6006,7 +6592,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="111" name="事前アンケート完了" tags="" position="1125,500" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="109" name="事前アンケート完了" tags="" position="1125,500" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
 
 	&lt;div class=&quot;pre-game-panel&quot;&gt;
 
@@ -6031,7 +6617,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="112" name="謎の人物_2回目" tags="" position="1500,2625" size="100,100">&lt;&lt;audio &quot;rain01&quot; stop&gt;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="110" name="謎の人物_2回目" tags="" position="1500,2625" size="100,100">&lt;&lt;audio &quot;rain01&quot; stop&gt;&gt;
 &lt;&lt;audio &quot;rain02&quot; stop&gt;&gt;
 &lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
 &lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
@@ -6076,24 +6662,140 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="113" name="3日目_雨上がり" tags="" position="2025,5100" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="111" name="3日目_雨上がり" tags="" position="2025,5100" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 &lt;&lt;set $day3RainPhase = &quot;silent&quot;&gt;&gt;
 &lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/day3_after_rain.png&quot;
-		alt=&quot;&quot;
-		onerror=&quot;this.onerror=null;this.src=&#39;images/shelter_mae_day3.png&#39;;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/day3_after_rain.png&quot; alt=&quot;&quot; onerror=&quot;this.onerror=null;this.src=&#39;images/shelter_mae_day3.png&#39;;&quot;&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[もう少し雨上がりの景色を眺める-&gt;3日目_交流の約束]]
+			[[体育館へ戻る-&gt;3日目_交流の約束]]
+		&lt;/div&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;体育館の外へ出ると、ひんやりとした空気が頬に触れた。&lt;br&gt;雨はもう止んでいる。&lt;br&gt;さっきまで空を覆っていた雲にも、少しずつ切れ間ができていた。&lt;br&gt;「……止んだ」&lt;br&gt;しばらく、雨上がりの景色を眺める。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(300);
+});
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="112" name="3日目_交流の約束" tags="" position="2025,5225" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/day3_after_rain.png&quot; alt=&quot;&quot; onerror=&quot;this.onerror=null;this.src=&#39;images/shelter_mae_day3.png&#39;;&quot;&gt;
+
+	&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;
+		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_male_smile.png&quot; alt=&quot;&quot;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_female_smile.png&quot; alt=&quot;&quot;&gt;
+	&lt;&lt;/if&gt;&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[「ぜひ。一緒にやりましょう」と答える-&gt;3日目_エンディング]]
+			[[笑って「楽しみにしてます」と返す-&gt;3日目_エンディング]]
+		&lt;/div&gt;
+	&lt;/div&gt;
+
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;もう少し雨上がりの景色を眺めていると、後ろで体育館の扉が開く音がした。&lt;br&gt;振り返るとさっき避難所で話していた&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;男性&lt;&lt;else&gt;&gt;女性&lt;&lt;/if&gt;&gt;がこちらへ歩いてくる。&lt;br&gt;「あ、ここにいたんですね」&lt;br&gt;「雨が止んだので、ちょっと外を見てました」&lt;br&gt;相手も隣に立ち、空を見上げる。&lt;br&gt;「本当だ。さっきまであんなに降ってたのに」&lt;br&gt;しばらく二人で、雨上がりの空を眺める。&lt;br&gt;&lt;br&gt;すると相手が、ふと思い出したようにこちらを向いた。&lt;br&gt;「そういえば、さっき話してたゲームなんですけど……」&lt;br&gt;少し照れたように笑う。&lt;br&gt;「災害が落ち着いたら、一緒にプレイしませんか？」&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(400);
+});
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="113" name="3日目_エンディング" tags="" position="2025,5350" size="100,100">&lt;&lt;set $day3RainPhase = &quot;silent&quot;&gt;&gt;
+&lt;&lt;updateRainSound&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/day3_sunshine.png&quot; alt=&quot;&quot; onerror=&quot;this.onerror=null;this.src=&#39;images/day3_after_rain.png&#39;;&quot;&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;vn-ui&quot;&gt;
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		&lt;div class=&quot;choice-list&quot;&gt;
+			[[この三日間のことを振り返る-&gt;3日目_振り返り]]
+		&lt;/div&gt;
+	&lt;/div&gt;
+
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 55ms none&gt;&gt;そう答えると、相手は嬉しそうに笑った。&lt;br&gt;「じゃあ、約束ですね」&lt;br&gt;少し話したあと、相手は「またあとで」と手を振り、体育館へ戻っていった。&lt;br&gt;&lt;br&gt;一人になり、もう一度雨上がりの景色を眺める。&lt;br&gt;雲の切れ間から差し込む光が、濡れた道路を照らしていた。&lt;br&gt;さっきまで降り続いていた雨が嘘のように、辺りは静かだった。&lt;br&gt;&lt;br&gt;今日は、早めにここへ来てよかった。&lt;br&gt;そう思いながら、しばらく雨上がりの空を眺めていた。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(300);
+});
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="114" name="2日目_避難判断" tags="" position="1300,1750" size="100,100">&lt;&lt;updateRainSound&gt;&gt;
+
+&lt;div class=&quot;scene&quot;&gt;
+	&lt;&lt;if $time &gt;= 18 * 60 + 30&gt;&gt;
+		&lt;video class=&quot;scene-media scene-media-window&quot;
+			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
+			&lt;source src=&quot;images/outside_rain03.mp4&quot; type=&quot;video/mp4&quot;&gt;
+		&lt;/video&gt;
+
+		&lt;img class=&quot;scene-room&quot;
+			src=&quot;images/room02.png&quot;
+			alt=&quot;&quot;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;video class=&quot;scene-media scene-media-window&quot;
+			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
+			&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
+		&lt;/video&gt;
+
+		&lt;img class=&quot;scene-room&quot;
+			src=&quot;images/room01.png&quot;
+			alt=&quot;&quot;&gt;
+	&lt;&lt;/if&gt;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[空を見上げる-&gt;3日目_陽射し]]
+
+		&lt;&lt;if $actions is $maxActions&gt;&gt;
+
+			[[少し準備してから出る-&gt;2日目_行動選択]]
+			[[それでも今すぐ避難する-&gt;2日目_避難開始]]
+
+		&lt;&lt;else&gt;&gt;
+
+			[[このまま避難する-&gt;2日目_避難開始]]
+
+			&lt;&lt;if $actions &gt; 0&gt;&gt;
+				[[もう少し準備する-&gt;2日目_行動選択]]
+			&lt;&lt;/if&gt;&gt;
+
+		&lt;&lt;/if&gt;&gt;
+
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;体育館の扉を開けると、ひんやりとした空気が頬に触れた。&lt;br&gt;雨は、もうほとんど止んでいた。&lt;br&gt;濡れた地面には小さな水たまりが残っているが、雨粒が落ちる音は聞こえない。&lt;br&gt;さっきまで空一面を覆っていた雲にも、ところどころ切れ間ができている。&lt;br&gt;避難してきたときとは、ずいぶん違う景色だ。&lt;br&gt;「……止んだんだ」&lt;br&gt;しばらく立ち止まり、静かになった外を眺める。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;
+	&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;
+
+	&lt;&lt;if $actions is $maxActions&gt;&gt;
+
+	避難しようと立ち上がったところで、昨日のことが頭をよぎる。&lt;br&gt;
+	昨日は、道路の状況もよく分からないまま、ほとんど何も準備せずに家を出た。&lt;br&gt;
+	その結果、避難する途中で身動きが取れなくなってしまった。&lt;br&gt;
+	「……今回は、このまま出て大丈夫だろうか」
+
+	&lt;&lt;else&gt;&gt;
+
+	避難しようと思い、時計を見る。&lt;br&gt;ここまでに必要だと思った確認や準備をいくつか行った。&lt;br&gt;外では雨が降り続いている。&lt;br&gt;「これで十分だろうか。それとも、もう少し準備してから出た方がいいだろうか」
+
+	&lt;&lt;/if&gt;&gt;
+
+	&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;
+	&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -6101,119 +6803,116 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="114" name="3日目_陽射し" tags="" position="2025,5225" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="115" name="3日目_避難者交流会話" tags="" position="1875,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/sky.png&quot;
-		alt=&quot;&quot;
-		onerror=&quot;this.onerror=null;this.src=&#39;images/day3_after_rain.png&#39;;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
 
-	&lt;div style=&quot;
-		position:absolute;
-		inset:0;
-		background:linear-gradient(
-			135deg,
-			rgba(255,245,190,0.20) 0%,
-			rgba(255,245,190,0.05) 45%,
-			rgba(255,255,255,0) 70%
-		);
-		z-index:3;
-		pointer-events:none;
-	&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;vn-ui&quot;&gt;
-
-	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[今日のことを思い返す-&gt;3日目_早く出てよかった]]
-	&lt;/div&gt;
-
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 65ms none&gt;&gt;空を見上げる。&lt;br&gt;そのとき、雲の切れ間から光が差し込んだ。&lt;br&gt;濡れた道路や木々が、その光を反射して静かに輝いている。&lt;br&gt;雨の中では灰色に見えていた景色が、少しずつ色を取り戻していく。&lt;br&gt;暖かな光が顔に当たる。&lt;br&gt;思わず目を細めながら、しばらく何も言わずにその景色を眺めていた。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;&lt;script&gt;&gt;
-$(document).one(&#39;:typingcomplete&#39;, function () {
-	$(&#39;#choice-after-type&#39;).fadeIn(500);
-});
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="115" name="3日目_早く出てよかった" tags="" position="2025,5350" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
-
-&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/sky.png&quot;
-		alt=&quot;&quot;
-		onerror=&quot;this.onerror=null;this.src=&#39;images/day3_after_rain.png&#39;;&quot;&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;vn-ui&quot;&gt;
-
-	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[もう少し景色を眺める-&gt;3日目_交流の約束]]
-	&lt;/div&gt;
-
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;今日のことを思い返す。&lt;br&gt;家を出たとき、外はまだ明るかった。道路にも水はたまっておらず、落ち着いて避難所まで歩くことができた。&lt;br&gt;避難所に着いてからも、受付に長い列はなかった。落ち着ける場所を選び、食料を受け取り、周りの人を手伝う余裕まであった。&lt;br&gt;避難所で話せる人もできた。&lt;br&gt;そのあとになって雨は強くなり、遅れて避難してきた人たちは濡れた服のまま体育館へ入ってきた。&lt;br&gt;もし自分もあの時間まで家に残っていたら、今日の過ごし方はまったく違っていたかもしれない。&lt;br&gt;「……早く出てきて、よかった」&lt;br&gt;口にしてみると、その言葉がすっと胸に落ちた。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;&lt;script&gt;&gt;
-$(document).one(&#39;:typingcomplete&#39;, function () {
-	$(&#39;#choice-after-type&#39;).fadeIn(400);
-});
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="116" name="3日目_三日間の振り返り" tags="" position="1750,5400" size="100,100">&lt;&lt;set $time += 10&gt;&gt;
-
-&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/day3_sunshine.png&quot;
-		alt=&quot;&quot;
-		onerror=&quot;this.onerror=null;this.src=&#39;images/day3_after_rain.png&#39;;&quot;&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;vn-ui&quot;&gt;
-
-	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-	[[もう少し外にいる-&gt;3日目_交流の約束]]
-	&lt;/div&gt;
-
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 55ms none&gt;&gt;最初のときのことを思い出す。&lt;br&gt;雨が強くなっても、「まだ大丈夫だろう」と様子を見続けた。避難しようと決めた頃には道路に水が広がり、安全に進むこともできなくなっていた。&lt;br&gt;あのときは、「もっと早く避難していれば」と後悔した。&lt;br&gt;二度目はその経験を思い出して準備をした。情報を確認し、必要なものを用意したことで今度は無事に避難所までたどり着くことができた。&lt;br&gt;けれど家を出る頃には雨も強く、避難所もすでに混み始めていた。準備はできても余裕があったとは言えなかった。&lt;br&gt;そして今度は準備をした上で、もっと早い時間から動いた。&lt;br&gt;同じ避難なのに今日はここまで違った。&lt;br&gt;危険になる前に道を歩けた。落ち着いて場所を選べた。誰かを手伝うことも、人と話すこともできた。&lt;br&gt;「次に同じような雨が降ったら……」&lt;br&gt;少し考えてから、もう一度空を見る。&lt;br&gt;「情報を確認して必要な準備をして、迷う前に動こう」&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;&lt;script&gt;&gt;
-$(document).one(&#39;:typingcomplete&#39;, function () {
-	$(&#39;#choice-after-type&#39;).fadeIn(400);
-});
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="117" name="3日目_交流の約束" tags="" position="2025,5600" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
-
-&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/day3_sunshine.png&quot;
-		alt=&quot;&quot;
-		onerror=&quot;this.onerror=null;this.src=&#39;images/day3_after_rain.png&#39;;&quot;&gt;
+	&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;
+		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_male.png&quot; alt=&quot;&quot;&gt;
+	&lt;&lt;else&gt;&gt;
+		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_female.png&quot; alt=&quot;&quot;&gt;
+	&lt;&lt;/if&gt;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[空を見上げる-&gt;3日目_エンディング]]
+	&lt;div class=&quot;choice-list&quot;&gt;
+		[[「普段休みの日は何してるんですか？」と聞いてみる-&gt;3日目_避難者交流趣味]]
+		[[自分から最近ハマっていることの話をしてみる-&gt;3日目_避難者交流趣味]]
 	&lt;/div&gt;
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;もう少しだけ雨上がりの景色を眺めている。&lt;br&gt;その時、後ろで体育館の扉が開く音がした。&lt;br&gt;振り返るとさっき避難所で話していた人が外へ出てきたところだった。&lt;br&gt;「あ、ここにいたんですね」&lt;br&gt;「うん。雨が止んできたから、ちょっと外を見に」&lt;br&gt;その人も隣まで来て、同じように空を見上げる。&lt;br&gt;「本当だ。だいぶ明るくなりましたね」&lt;br&gt;「さっきまで、あんなに降ってたのにね」&lt;br&gt;しばらく二人で、雲の切れ間から差す光を眺める。&lt;br&gt;すると、その人がふと思い出したようにこちらを向いた。&lt;br&gt;「そういえばさっき話してたゲームのことなんですけど、災害が落ち着いたら、一緒にプレイしませんか？」&lt;br&gt;思いがけない言葉に、少しだけ驚く。&lt;br&gt;けれど、すぐに笑って答えた。&lt;br&gt;「……うん。ぜひ」&lt;br&gt;「じゃあ、約束ですね」&lt;br&gt;避難してきたときには、こんなことが起こるなんて思ってもいなかった。&lt;br&gt;早くここへ来たからこそ生まれた時間の中で、こんな出会いまであった。&lt;br&gt;「じゃあ、そろそろ戻りましょうか」&lt;br&gt;「うん。でももう少しだけ見てから行くよ」&lt;br&gt;「分かりました。」&lt;br&gt;そう言ってその人は体育館の中へ戻っていった。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+	&lt;div class=&quot;dialogue-box&quot;&gt;
+		&lt;&lt;type 50ms none&gt;&gt;
+話をしてみると、思っていたよりも気さくな人だった。&lt;br&gt;
+「自分、もう少し家にいようかと思ってたんですけど……雨雲レーダーを見たら、これ絶対ひどくなるなって」&lt;br&gt;「避難所に来るのもちょっと大げさかなって思ってたんですけど、来てみたら少し安心しました」&lt;br&gt;
+相手も、少し誰かと話せたことで緊張がほぐれてきたようだ。&lt;br&gt;そのまま会話を続けているうちに、少しずつ避難とは関係のない話も混ざり始めた。
+		&lt;&lt;/type&gt;&gt;
+	&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:typingcomplete&#39;, function () {
-	$(&#39;#choice-after-type&#39;).fadeIn(400);
+	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="3日目_エンディング" tags="" position="2025,5725" size="100,100">&lt;&lt;set $day3RainPhase = &quot;silent&quot;&gt;&gt;
-&lt;&lt;updateRainSound&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="116" name="3日目_振り返り" tags="" position="2025,5475" size="100,100">&lt;!-- 2日目の避難判断時刻 --&gt;
+&lt;&lt;if $evacuationTimeDay2 &gt;= 0&gt;&gt;
+	&lt;&lt;set _d2h = Math.floor($evacuationTimeDay2 / 60)&gt;&gt;
+	&lt;&lt;set _d2m = $evacuationTimeDay2 % 60&gt;&gt;
+&lt;&lt;/if&gt;&gt;
 
-&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/day3_sunshine.png&quot;
-		alt=&quot;&quot;&gt;
+&lt;!-- 3日目の避難判断時刻 --&gt;
+&lt;&lt;if $evacuationTimeDay3 &gt;= 0&gt;&gt;
+	&lt;&lt;set _d3h = Math.floor($evacuationTimeDay3 / 60)&gt;&gt;
+	&lt;&lt;set _d3m = $evacuationTimeDay3 % 60&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;div class=&quot;recap-screen&quot;&gt;
+	&lt;div class=&quot;recap-panel&quot;&gt;
+
+		&lt;h2 class=&quot;recap-title&quot;&gt;3日間の振り返り&lt;/h2&gt;
+
+		&lt;div class=&quot;recap-day&quot;&gt;
+			&lt;h3&gt;1日目&lt;/h3&gt;
+			&lt;ul&gt;
+				&lt;li&gt;「まだ大丈夫」と様子を見続けた&lt;/li&gt;
+				&lt;li&gt;避難しようとした頃には、道路の状況が悪化していた&lt;/li&gt;
+				&lt;li&gt;もっと早く避難すればよかったと感じた&lt;/li&gt;
+			&lt;/ul&gt;
+		&lt;/div&gt;
+
+		&lt;div class=&quot;recap-day&quot;&gt;
+			&lt;h3&gt;2日目&lt;/h3&gt;
+			&lt;ul&gt;
+				&lt;li&gt;1日目の経験を踏まえ、避難のための行動を考えた&lt;/li&gt;
+				&lt;li&gt;自分で避難を始めるタイミングを判断した&lt;/li&gt;
+				&lt;&lt;if $evacuationTimeDay2 &gt;= 0&gt;&gt;
+					&lt;li class=&quot;recap-time&quot;&gt;避難を決めた時刻：&lt;&lt;print _d2h&gt;&gt;:&lt;&lt;if _d2m &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print _d2m&gt;&gt;&lt;/li&gt;
+				&lt;&lt;/if&gt;&gt;
+			&lt;/ul&gt;
+		&lt;/div&gt;
+
+		&lt;div class=&quot;recap-day&quot;&gt;
+			&lt;h3&gt;3日目&lt;/h3&gt;
+			&lt;ul&gt;
+				&lt;li&gt;まだ状況に余裕がある時間から行動を始めた&lt;/li&gt;
+				&lt;li&gt;混雑する前に避難所へ到着し、落ち着ける場所を選ぶことができた&lt;/li&gt;
+				&lt;li&gt;避難所では、人を手伝ったり交流したりする時間ができた&lt;/li&gt;
+				&lt;&lt;if $day3ItemHelpfulCount &gt; 0&gt;&gt;
+					&lt;li&gt;準備して持ってきた物が、避難所で役に立った&lt;/li&gt;
+				&lt;&lt;/if&gt;&gt;
+				&lt;&lt;if $evacuationTimeDay3 &gt;= 0&gt;&gt;
+					&lt;li class=&quot;recap-time&quot;&gt;避難を決めた時刻：&lt;&lt;print _d3h&gt;&gt;:&lt;&lt;if _d3m &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print _d3m&gt;&gt;&lt;/li&gt;
+				&lt;&lt;/if&gt;&gt;
+			&lt;/ul&gt;
+		&lt;/div&gt;
+
+		&lt;&lt;if $evacuationTimeDay2 &gt;= 0 and $evacuationTimeDay3 &gt;= 0&gt;&gt;
+			&lt;&lt;set _diff = $evacuationTimeDay2 - $evacuationTimeDay3&gt;&gt;
+
+			&lt;div class=&quot;recap-comparison&quot;&gt;
+				&lt;&lt;if _diff &gt; 0&gt;&gt;
+					3日目は、2日目より &lt;strong&gt;&lt;&lt;print _diff&gt;&gt;分早く&lt;/strong&gt; 避難を決めました。
+				&lt;&lt;elseif _diff &lt; 0&gt;&gt;
+					3日目は、2日目より &lt;strong&gt;&lt;&lt;print Math.abs(_diff)&gt;&gt;分遅く&lt;/strong&gt; 避難を決めました。
+				&lt;&lt;else&gt;&gt;
+					3日目は、2日目と &lt;strong&gt;同じ時刻&lt;/strong&gt; に避難を決めました。
+				&lt;&lt;/if&gt;&gt;
+			&lt;/div&gt;
+		&lt;&lt;/if&gt;&gt;
+
+		&lt;div class=&quot;recap-next&quot;&gt;
+			[[振り返りを終える-&gt;3日目_最後]]
+		&lt;/div&gt;
+
+	&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="117" name="3日目_最後" tags="" position="2025,5600" size="100,100">&lt;div class=&quot;scene&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/day3_sunshine.png&quot; alt=&quot;&quot; onerror=&quot;this.onerror=null;this.src=&#39;images/day3_after_rain.png&#39;;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 60ms none&gt;&gt;その人が体育館へ戻ったあと、もう一度空を見上げる。&lt;br&gt;&lt;br&gt;最初は避難が遅れて後悔した。次は準備をした。そして今日は、準備をしたうえで早く動くことができた。&lt;br&gt;そのおかげで、落ち着いて避難し、人を手伝ったり、新しい出会いを楽しんだりする余裕まであった。&lt;br&gt;&lt;br&gt;「……早く避難して、よかった」&lt;br&gt;&lt;br&gt;ふと、あの暗闇の中にいた人影を思い出す。&lt;br&gt;「これなら、あの人も満足してくれるかな」&lt;br&gt;雨上がりの風が、静かに吹き抜けた。&lt;br&gt;&lt;br&gt;次に同じようなことが起きたら、今日のことを思い出そう。&lt;br&gt;「次は、きっと大丈夫」&lt;br&gt;&lt;br&gt;&lt;span style=&quot;display:block;text-align:center;font-size:1.5em;font-weight:bold;&quot;&gt;END&lt;/span&gt;&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 55ms none&gt;&gt;三日間の経験を思い返す。&lt;br&gt;次にまた同じような大雨が降ったときは、今回のことを思い出そう。&lt;br&gt;&lt;br&gt;&lt;span style=&quot;display:block; text-align:center; font-size:1.7em; font-weight:bold; letter-spacing:0.15em;&quot;&gt;END&lt;/span&gt;&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;</tw-passagedata></tw-storydata>
 	<script id="script-sugarcube" type="text/javascript">
 	/*! SugarCube JS */
