@@ -1721,6 +1721,68 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 	margin: 0 auto;
 
 	object-fit: contain;
+}
+
+/* NPC位置の最終調整 */
+
+.npc-right {
+	left: auto !important;
+	right: 6vw !important;
+	transform: none !important;
+}
+
+.npc-left {
+	left: 6vw !important;
+	right: auto !important;
+	transform: none !important;
+}
+
+.npc-center {
+	left: 50% !important;
+	right: auto !important;
+	transform: translateX(-50%) !important;
+}
+
+/* ========================================
+   NPC立ち絵をすべて画面中央に表示
+======================================== */
+
+.npc-sprite,
+.npc-left,
+.npc-right,
+.npc-center {
+	position: absolute !important;
+
+	left: 50% !important;
+	right: auto !important;
+
+	transform: translateX(-50%) !important;
+
+	bottom: -4vh;
+
+	pointer-events: none;
+}
+/* ========================================
+   謎の人物の背景・表示
+======================================== */
+
+.mystery-scene {
+	background:
+		radial-gradient(
+			circle at 50% 38%,
+			#343842 0%,
+			#1b1e24 40%,
+			#08090b 75%,
+			#000 100%
+		) !important;
+}
+
+.npc-mystery {
+	opacity: 0;
+
+	filter:
+		drop-shadow(0 0 8px rgba(255,255,255,0.18))
+		drop-shadow(0 0 18px rgba(255,255,255,0.10));
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.macros.typeSkipKey = "Enter";
 
 // 選択肢のキーボード操作
@@ -1818,59 +1880,62 @@ $(document).on('mouseenter', '#choice-after-type a', function () {
 
 	let dialogueScrollTimer = null;
 
-	/* <<type>> が文字表示を始めたとき */
-	$(document).on(':typingstart', function (event) {
+	function stopDialogueScroll() {
+		if (dialogueScrollTimer !== null) {
+			clearInterval(dialogueScrollTimer);
+			dialogueScrollTimer = null;
+		}
+	}
 
-		/* 今文字を表示しているテキストボックスを探す */
+	/* 文字表示開始 */
+	$(document).on(':typingstart.dialogueScroll', function (event) {
+
 		const dialogueBox = $(event.target)
 			.closest('.dialogue-box')[0];
 
-		/* テキストボックスが見つからなければ何もしない */
 		if (!dialogueBox) {
 			return;
 		}
 
-		/* 古い処理が残っていたら停止 */
-		if (dialogueScrollTimer) {
-			clearInterval(dialogueScrollTimer);
-		}
+		stopDialogueScroll();
 
-		/*
-		 * 文字が表示されている間、
-		 * 50ミリ秒ごとに一番下へスクロールする
-		 */
 		dialogueScrollTimer = setInterval(function () {
 
-			dialogueBox.scrollTop =
-				dialogueBox.scrollHeight;
+			/* パッセージ移動などで要素が消えた場合 */
+			if (!document.documentElement.contains(dialogueBox)) {
+				stopDialogueScroll();
+				return;
+			}
+
+			dialogueBox.scrollTop = dialogueBox.scrollHeight;
 
 		}, 50);
 
 	});
 
+	/* 1つのタイプ表示が停止した場合 */
+	$(document).on(':typingstop.dialogueScroll', function () {
+		stopDialogueScroll();
+	});
 
-	/* <<type>> の文章表示が全部終わったとき */
-	$(document).on(':typingcomplete', function () {
+	/* 全タイプ表示終了 */
+	$(document).on(':typingcomplete.dialogueScroll', function () {
 
-		/* 自動スクロールを停止 */
-		if (dialogueScrollTimer) {
+		stopDialogueScroll();
 
-			clearInterval(dialogueScrollTimer);
-			dialogueScrollTimer = null;
-
-		}
-
-		/* 最後に一番下まで表示 */
 		const dialogueBox =
 			document.querySelector('.dialogue-box');
 
 		if (dialogueBox) {
-
 			dialogueBox.scrollTop =
 				dialogueBox.scrollHeight;
-
 		}
 
+	});
+
+	/* パッセージが切り替わるときも必ず停止 */
+	$(document).on(':passageinit.dialogueScroll', function () {
+		stopDialogueScroll();
 	});
 
 })();
@@ -2017,19 +2082,13 @@ $(document).on('mouseenter', '#choice-after-type a', function () {
 &lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
 &lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
 
-&lt;div class=&quot;scene&quot; style=&quot;background:#000;&quot;&gt;
+&lt;div class=&quot;scene mystery-scene&quot;&gt;
 
-	&lt;!--
-		謎の人物の画像。
-		後で images フォルダに
-		mystery_person.png を追加する。
-	--&gt;
-&lt;img
-	id=&quot;mystery-person&quot;
-	class=&quot;npc-sprite npc-center npc-mystery&quot;
-	src=&quot;images/mystery_person.png&quot;
-	alt=&quot;&quot;
-	onerror=&quot;this.style.visibility=&#39;hidden&#39;;&quot;&gt;
+	&lt;img
+		id=&quot;mystery-person&quot;
+		class=&quot;npc-sprite npc-center npc-mystery&quot;
+		src=&quot;images/mystery_person.png&quot;
+		alt=&quot;謎の人物&quot;&gt;
 
 &lt;/div&gt;
 
@@ -2044,26 +2103,25 @@ $(document).on('mouseenter', '#choice-after-type a', function () {
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
+$(document).one(&#39;:passagedisplay&#39;, function () {
 
-/*
- * 謎の人物を2秒かけて表示する。
- * 今は画像がなくても問題なし。
- */
-$(&quot;#mystery-person&quot;).animate({
-	opacity: 1
-}, 2000);
+	const $mystery = $(&#39;#mystery-person&#39;);
 
-
-/*
- * 文章がすべて表示されたら
- * 選択肢を表示する。
- */
-$(document).one(&#39;:typingcomplete&#39;, function () {
-
-	$(&#39;#choice-after-type&#39;).fadeIn(300);
+	$mystery
+		.stop(true, true)
+		.css({
+			opacity: 0,
+			visibility: &#39;visible&#39;
+		})
+		.animate({
+			opacity: 1
+		}, 2000);
 
 });
 
+$(document).one(&#39;:typingcomplete&#39;, function () {
+	$(&#39;#choice-after-type&#39;).fadeIn(300);
+});
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="3" name="1日目_情報確認1" tags="" position="475,375" size="100,100">&lt;&lt;set $time = &quot;17:10&quot;&gt;&gt;
 &lt;&lt;set $stress += 1&gt;&gt;
 
@@ -3998,10 +4056,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="49" name="3日目_行動選択" tags="" position="1375,2750" size="100,100">&lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-
-	&lt;&lt;if $time &gt;= 18 * 60 + 30&gt;&gt;
-
-&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-window&quot;
 		src=&quot;images/outside_day3.png&quot;
 		alt=&quot;&quot;&gt;
@@ -4009,20 +4063,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
 		alt=&quot;&quot;&gt;
-
-	&lt;&lt;else&gt;&gt;
-
-		&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-window&quot;
-		src=&quot;images/outside_day3.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;scene-room&quot;
-		src=&quot;images/room01.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;&lt;/if&gt;&gt;
-
 &lt;/div&gt;
 
 &lt;div id=&quot;clock-box&quot;&gt;
@@ -4502,26 +4542,11 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;set $day3RainPhase = &quot;quiet&quot;&gt;&gt;
 &lt;&lt;updateRainSound&gt;&gt;
 
-
 &lt;!-- ========================================
      背景
 ======================================== --&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-
-	&lt;&lt;if $time &gt;= 18 * 60 + 30&gt;&gt;
-
-&lt;img class=&quot;scene-media scene-media-window&quot;
-		src=&quot;images/outside_day3.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;scene-room&quot;
-		src=&quot;images/room01.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;&lt;else&gt;&gt;
-
-	&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-window&quot;
 		src=&quot;images/outside_day3.png&quot;
 		alt=&quot;&quot;&gt;
@@ -4529,9 +4554,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
 		alt=&quot;&quot;&gt;
-
-	&lt;&lt;/if&gt;&gt;
-
 &lt;/div&gt;
 
 
@@ -4564,10 +4586,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="57" name="3日目_行動後判定" tags="" position="1550,2875" size="100,100">&lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-
-	&lt;&lt;if $time &gt;= 18 * 60 + 30&gt;&gt;
-
-		&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-window&quot;
 		src=&quot;images/outside_day3.png&quot;
 		alt=&quot;&quot;&gt;
@@ -4575,20 +4593,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
 		alt=&quot;&quot;&gt;
-
-	&lt;&lt;else&gt;&gt;
-
-		&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-window&quot;
-		src=&quot;images/outside_day3.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;scene-room&quot;
-		src=&quot;images/room01.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;&lt;/if&gt;&gt;
-
 &lt;/div&gt;
 
 &lt;div id=&quot;clock-box&quot;&gt;
@@ -4956,10 +4960,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="60" name="3日目_靴選択" tags="" position="1375,3125" size="100,100">&lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-
-	&lt;&lt;if $time &gt;= 18 * 60 + 30&gt;&gt;
-
-	&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-window&quot;
 		src=&quot;images/outside_day3.png&quot;
 		alt=&quot;&quot;&gt;
@@ -4967,20 +4967,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
 		alt=&quot;&quot;&gt;
-
-	&lt;&lt;else&gt;&gt;
-
-	&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-window&quot;
-		src=&quot;images/outside_day3.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;scene-room&quot;
-		src=&quot;images/room01.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;&lt;/if&gt;&gt;
-
 &lt;/div&gt;
 
 &lt;div id=&quot;clock-box&quot;&gt;
@@ -5032,10 +5018,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="61" name="3日目_靴決定" tags="" position="1500,3125" size="100,100">&lt;&lt;updateRainSound&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-
-	&lt;&lt;if $time &gt;= 18 * 60 + 30&gt;&gt;
-
-	&lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-window&quot;
 		src=&quot;images/outside_day3.png&quot;
 		alt=&quot;&quot;&gt;
@@ -5043,19 +5025,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;img class=&quot;scene-room&quot;
 		src=&quot;images/room01.png&quot;
 		alt=&quot;&quot;&gt;
-
-	&lt;&lt;else&gt;&gt;
-
-	&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-window&quot;
-		src=&quot;images/outside_day3.png&quot;
-		alt=&quot;&quot;&gt;
-
-	&lt;img class=&quot;scene-room&quot;
-		src=&quot;images/room01.png&quot;
-		alt=&quot;&quot;&gt;
-	&lt;&lt;/if&gt;&gt;
-
 &lt;/div&gt;
 
 &lt;div id=&quot;clock-box&quot;&gt;
@@ -5148,7 +5117,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;分かれ道の前で足を止める。&lt;br&gt;左側の道は少し遠回りになる。右側の道は避難所への近道だ。&lt;br&gt;&lt;&lt;if $checkedMap&gt;&gt;出発前に確認したハザードマップを思い出す。&lt;br&gt;右側の道は周囲より土地が低く、水が集まりやすい区域に含まれていた。左側の道の方が、比較的安全に避難所へ向かえそうだ。&lt;&lt;else&gt;&gt;今日はまだ道路にほとんど水がなく、どちらの道も通れそうに見える。&lt;br&gt;昨日の避難を思い出しながら、進む道を決めなければならない。&lt;&lt;/if&gt;&gt;&lt;br&gt;どちらの道を進もう。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;分かれ道の前で足を止める。&lt;br&gt;左側の道は少し遠回りになる。右側の道は避難所への近道だ。&lt;br&gt;&lt;&lt;if $checkedMap or $checkedMapDay2&gt;&gt;出発前に確認したハザードマップを思い出す。&lt;br&gt;右側の道は周囲より土地が低く、水が集まりやすい区域に含まれていた。左側の道の方が、比較的安全に避難所へ向かえそうだ。&lt;&lt;else&gt;&gt;今日はまだ道路にほとんど水がなく、どちらの道も通れそうに見える。&lt;br&gt;昨日の避難を思い出しながら、進む道を決めなければならない。&lt;&lt;/if&gt;&gt;&lt;br&gt;どちらの道を進もう。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5184,7 +5153,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[避難所へ向かう-&gt;3日目_避難所前]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;&lt;&lt;if $day3CorrectedRoute&gt;&gt;右側の道から引き返し、左側の道へ進む。&lt;br&gt;少し時間はかかったが、道路の状態を確認できるうちに進路を変えることができた。&lt;&lt;else&gt;&gt;左側の道へ進む。&lt;br&gt;近道ではないが、比較的土地が高く、水が集まりにくい道だ。&lt;&lt;/if&gt;&gt;&lt;br&gt;雨は降り続いているものの、道路にはまだほとんど水がたまっていない。&lt;br&gt;&lt;&lt;if $checkedMap&gt;&gt;ハザードマップで確認したとおり、この道には目立った冠水箇所がなく、避難所へ向かって安全に進めそうだ。&lt;&lt;else&gt;&gt;少し遠回りになるが、足元や周囲を確認しながら落ち着いて歩くことができる。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $shoes is &quot;sneakers&quot;&gt;&gt;履き慣れたスニーカーなら歩きやすく、濡れた路面でも足を取られずに進める。&lt;&lt;else&gt;&gt;長靴には少し重さを感じるが、雨が強くなる前に出発したため、慌てずに歩くことができる。&lt;&lt;/if&gt;&gt;&lt;br&gt;しばらく進むと、避難所の建物が見えてきた。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;&lt;&lt;if $day3CorrectedRoute&gt;&gt;右側の道から引き返し、左側の道へ進む。&lt;br&gt;少し時間はかかったが、道路の状態を確認できるうちに進路を変えることができた。&lt;&lt;else&gt;&gt;左側の道へ進む。&lt;br&gt;近道ではないが、比較的土地が高く、水が集まりにくい道だ。&lt;&lt;/if&gt;&gt;&lt;br&gt;雨は降り続いているものの、道路にはまだほとんど水がたまっていない。&lt;br&gt;&lt;&lt;if $checkedMap or $checkedMapDay2&gt;&gt;ハザードマップで確認したとおり、この道には目立った冠水箇所がなく、避難所へ向かって安全に進めそうだ。&lt;&lt;else&gt;&gt;少し遠回りになるが、足元や周囲を確認しながら落ち着いて歩くことができる。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $shoes is &quot;sneakers&quot;&gt;&gt;履き慣れたスニーカーなら歩きやすく、濡れた路面でも足を取られずに進める。&lt;&lt;else&gt;&gt;長靴には少し重さを感じるが、雨が強くなる前に出発したため、慌てずに歩くことができる。&lt;&lt;/if&gt;&gt;&lt;br&gt;しばらく進むと、避難所の建物が見えてきた。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5251,7 +5220,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[前方の道路を確認する-&gt;3日目_右ルート判断]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;右側の道へ進む。こちらは避難所までの近道だ。&lt;br&gt;昨日よりも早い時間に家を出たため、空はまだ明るく、道路の端まで見渡すことができる。&lt;br&gt;しばらく歩くと、側溝の周囲から水があふれ始め、前方の路面へ薄く広がっているのが見えた。&lt;br&gt;&lt;&lt;if $checkedMap&gt;&gt;出発前に確認したハザードマップでは、この付近は周囲より土地が低く、水が集まりやすい区域になっていた。&lt;br&gt;地図で見た危険箇所は、この辺りだったはずだ。&lt;&lt;else&gt;&gt;今はまだ歩けそうだが、このまま雨が続けば、前方の水はさらに増えるかもしれない。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $shoes is &quot;sneakers&quot;&gt;&gt;スニーカーなら足元を確認しながら歩けるが、水の深さが増してから引き返すのは危険だ。&lt;&lt;else&gt;&gt;長靴を履いていても、水が深くなれば安全に通れるとは限らない。&lt;&lt;/if&gt;&gt;&lt;br&gt;このまま進んでよいか、道路の状態をよく確認しよう。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;右側の道へ進む。こちらは避難所までの近道だ。&lt;br&gt;昨日よりも早い時間に家を出たため、空はまだ明るく、道路の端まで見渡すことができる。&lt;br&gt;しばらく歩くと、側溝の周囲から水があふれ始め、前方の路面へ薄く広がっているのが見えた。&lt;br&gt;&lt;&lt;if $checkedMap or $checkedMapDay2&gt;&gt;出発前に確認したハザードマップでは、この付近は周囲より土地が低く、水が集まりやすい区域になっていた。&lt;br&gt;地図で見た危険箇所は、この辺りだったはずだ。&lt;&lt;else&gt;&gt;今はまだ歩けそうだが、このまま雨が続けば、前方の水はさらに増えるかもしれない。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $shoes is &quot;sneakers&quot;&gt;&gt;スニーカーなら足元を確認しながら歩けるが、水の深さが増してから引き返すのは危険だ。&lt;&lt;else&gt;&gt;長靴を履いていても、水が深くなれば安全に通れるとは限らない。&lt;&lt;/if&gt;&gt;&lt;br&gt;このまま進んでよいか、道路の状態をよく確認しよう。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5283,7 +5252,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;前方の道路を注意深く見る。&lt;br&gt;水はまだ浅いが、側溝と道路の境目に沿って、少しずつ範囲が広がっている。&lt;br&gt;&lt;&lt;if $checkedMap&gt;&gt;ハザードマップの情報どおり、この道には雨水が集まり始めていた。&lt;br&gt;近道であっても、この先へ進むべきではなさそうだ。&lt;&lt;else&gt;&gt;今なら通れるようにも見える。&lt;br&gt;しかし、雨は続いており、この先の水深までは分からない。&lt;&lt;/if&gt;&gt;&lt;br&gt;昨日よりも早く家を出たおかげで、道路が深く冠水する前に危険へ気づくことができた。&lt;br&gt;今なら、慌てずに分かれ道まで戻ることができる。&lt;br&gt;右側の道を進むのはやめ、比較的安全な左側の道へ向かうことにした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;前方の道路を注意深く見る。&lt;br&gt;水はまだ浅いが、側溝と道路の境目に沿って、少しずつ範囲が広がっている。&lt;br&gt;&lt;&lt;if $checkedMap or $checkedMapDay2&gt;&gt;ハザードマップの情報どおり、この道には雨水が集まり始めていた。&lt;br&gt;近道であっても、この先へ進むべきではなさそうだ。&lt;&lt;else&gt;&gt;今なら通れるようにも見える。&lt;br&gt;しかし、雨は続いており、この先の水深までは分からない。&lt;&lt;/if&gt;&gt;&lt;br&gt;昨日よりも早く家を出たおかげで、道路が深く冠水する前に危険へ気づくことができた。&lt;br&gt;今なら、慌てずに分かれ道まで戻ることができる。&lt;br&gt;右側の道を進むのはやめ、比較的安全な左側の道へ向かうことにした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5703,7 +5672,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;vn-ui&quot;&gt;
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
 		&lt;div class=&quot;choice-list&quot;&gt;
-			[[少し休む-&gt;3日目_避難所イベント戻り]]
+		[[少し休む-&gt;3日目_避難者交流開始]]
 		&lt;/div&gt;
 	&lt;/div&gt;
 
@@ -5805,19 +5774,19 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
 
-	&lt;!-- 交流が落ち着いたので通常表情に戻す --&gt;
-	&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;
-		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_male.png&quot; alt=&quot;&quot;&gt;
-	&lt;&lt;else&gt;&gt;
-		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_female.png&quot; alt=&quot;&quot;&gt;
-	&lt;&lt;/if&gt;&gt;
+&lt;!-- 会話を楽しんだ後なので笑顔のまま --&gt;
+&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;
+	&lt;img class=&quot;npc-sprite npc-center&quot; src=&quot;images/npc_talk_male_smile.png&quot; alt=&quot;&quot;&gt;
+&lt;&lt;else&gt;&gt;
+	&lt;img class=&quot;npc-sprite npc-center&quot; src=&quot;images/npc_talk_female_smile.png&quot; alt=&quot;&quot;&gt;
+&lt;&lt;/if&gt;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
 		&lt;div class=&quot;choice-list&quot;&gt;
-			[[「はい、またあとで」と返す-&gt;3日目_避難所イベント戻り]]
-			[[笑ってうなずく-&gt;3日目_避難所イベント戻り]]
+			[[「はい、またあとで」と返す-&gt;3日目_持ち物イベント開始]]
+			[[笑ってうなずく-&gt;3日目_持ち物イベント開始]]
 		&lt;/div&gt;
 	&lt;/div&gt;
 
@@ -6615,19 +6584,13 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
 &lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
 
-&lt;div class=&quot;scene&quot; style=&quot;background:#000;&quot;&gt;
+&lt;div class=&quot;scene mystery-scene&quot;&gt;
 
-	&lt;!--
-		謎の人物の画像。
-		終盤で images フォルダに
-		mystery_person.png を追加する。
-	--&gt;
 	&lt;img
-	id=&quot;mystery-person&quot;
-	class=&quot;npc-sprite npc-center npc-mystery&quot;
-	src=&quot;images/mystery_person.png&quot;
-	alt=&quot;&quot;
-	onerror=&quot;this.style.visibility=&#39;hidden&#39;;&quot;&gt;
+		id=&quot;mystery-person&quot;
+		class=&quot;npc-sprite npc-center npc-mystery&quot;
+		src=&quot;images/mystery_person.png&quot;
+		alt=&quot;謎の人物&quot;&gt;
 
 &lt;/div&gt;
 
@@ -6637,24 +6600,30 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[もう一度やってみる-&gt;3日目_開始]]
 	&lt;/div&gt;
 
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms start 2s none&gt;&gt;気がつくと、再びあの暗闇の中にいた。&lt;br&gt;目の前には、あの人影が立っている。&lt;br&gt;「前よりうまくできたようですね。準備したものも、役に立ったのではないでしょうか」&lt;br&gt;確かにその通りだった。準備をしていたからこそ、昨日よりは落ち着いて行動することができた。&lt;br&gt;それでも雨の中を歩いたことや、人で混み始めていた避難所の様子を思い出す。&lt;&lt;br&gt;人影は少し間を置いてこちらを見る。&lt;br&gt;「それなら今度は、これまでの準備も活かしながら、もう少し早い時間からやり直してみましょうか」&lt;br&gt;「もう少し早い時間から……？」&lt;br&gt;「はい。準備をしたうえで時間にも余裕があると、何が変わるのか確かめてみてください」&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms start 2s none&gt;&gt;気がつくと、再びあの暗闇の中にいた。&lt;br&gt;目の前には、あの人影が立っている。&lt;br&gt;「前よりうまくできたようですね。準備したものも、役に立ったのではないでしょうか」&lt;br&gt;確かにその通りだった。準備をしていたからこそ、昨日よりは落ち着いて行動することができた。&lt;br&gt;それでも雨の中を歩いたことや、人で混み始めていた避難所の様子を思い出す。&lt;br&gt;人影は少し間を置いてこちらを見る。&lt;br&gt;「それなら今度は、これまでの準備も活かしながら、もう少し早い時間からやり直してみましょうか」&lt;br&gt;「もう少し早い時間から……？」&lt;br&gt;「はい。準備をしたうえで時間にも余裕があると、何が変わるのか確かめてみてください」&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
+$(document).one(&#39;:passagedisplay&#39;, function () {
 
-/*
- * 後で mystery_person.png を追加すると、
- * ここで2秒かけて人物が現れる。
- */
-$(&quot;#mystery-person&quot;).animate({
-	opacity: 1
-}, 2000);
+	const $mystery = $(&#39;#mystery-person&#39;);
+
+	$mystery
+		.stop(true, true)
+		.css({
+			opacity: 0,
+			visibility: &#39;visible&#39;
+		})
+		.animate({
+			opacity: 1
+		}, 2000);
+
+});
 
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="111" name="3日目_雨上がり" tags="" position="2025,5100" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 &lt;&lt;set $day3RainPhase = &quot;silent&quot;&gt;&gt;
 &lt;&lt;updateRainSound&gt;&gt;
@@ -6681,12 +6650,19 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="112" name="3日目_交流の約束" tags="" position="2025,5225" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/day3_after_rain.png&quot; alt=&quot;&quot; onerror=&quot;this.onerror=null;this.src=&#39;images/shelter_mae_day3.png&#39;;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot;
+		src=&quot;images/day3_after_rain.png&quot;
+		alt=&quot;&quot;
+		onerror=&quot;this.onerror=null;this.src=&#39;images/shelter_mae_day3.png&#39;;&quot;&gt;
 
 	&lt;&lt;if $day3TalkNpcGender is &quot;male&quot;&gt;&gt;
-		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_male_smile.png&quot; alt=&quot;&quot;&gt;
+		&lt;img class=&quot;npc-sprite npc-center&quot;
+			src=&quot;images/npc_talk_male_smile.png&quot;
+			alt=&quot;&quot;&gt;
 	&lt;&lt;else&gt;&gt;
-		&lt;img class=&quot;npc-sprite npc-right&quot; src=&quot;images/npc_talk_female_smile.png&quot; alt=&quot;&quot;&gt;
+		&lt;img class=&quot;npc-sprite npc-center&quot;
+			src=&quot;images/npc_talk_female_smile.png&quot;
+			alt=&quot;&quot;&gt;
 	&lt;&lt;/if&gt;&gt;
 &lt;/div&gt;
 
