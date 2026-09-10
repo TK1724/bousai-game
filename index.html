@@ -2126,26 +2126,23 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;set $stress += 1&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-&lt;video class=&quot;scene-media scene-media-window&quot;
-		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
-&lt;/video&gt;
-&lt;img class=&quot;scene-room&quot; src=&quot;images/room01.png&quot;&gt;
-
+	&lt;video class=&quot;scene-media scene-media-window&quot; autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
+		&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
+	&lt;/video&gt;
+	&lt;img class=&quot;scene-room&quot; src=&quot;images/room01.png&quot; alt=&quot;&quot;&gt;
+	&lt;img src=&quot;images/tv_news.png&quot; alt=&quot;テレビニュース&quot; style=&quot;position:absolute; left:40%; top:40%; transform:translate(-50%,-50%); width:auto; height:auto; max-width:48vw; max-height:43vh; object-fit:contain; z-index:20;&quot;&gt;
 &lt;/div&gt;
 
 &lt;&lt;audio &quot;rain01&quot; loop play&gt;&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
+	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
+		[[窓の外を見る-&gt;1日目_窓の外][$day1FirstInfo = &quot;outside&quot;]]
+		[[スマホでSNSを見る-&gt;1日目_SNS][$day1FirstInfo = &quot;sns&quot;]]
+		&lt;span class=&quot;choice-disabled&quot;&gt;避難する&lt;/span&gt;
+	&lt;/div&gt;
 
-&lt;div id=&quot;choice-after-type&quot; style=&quot;display: none;&quot;&gt;
-[[窓の外を見る-&gt;1日目_窓の外][$day1FirstInfo = &quot;outside&quot;]]
-[[スマホでSNSを見る-&gt;1日目_SNS][$day1FirstInfo = &quot;sns&quot;]]
-&lt;span class=&quot;choice-disabled&quot;&gt;避難する&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 60ms none&gt;&gt;ニュースでは、今夜にかけて雨が強まる可能性があると伝えている。&lt;br&gt;「大雨に注意してください」とアナウンサーが繰り返している。&lt;br&gt;けれど、避難という言葉はまだ遠く感じる。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 60ms none&gt;&gt;ニュースでは、今夜にかけて雨が強まる可能性があると伝えている。&lt;br&gt;「大雨に注意してください」とアナウンサーが繰り返している。&lt;br&gt;けれど、避難という言葉はまだ遠く感じる。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -3024,7 +3021,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;時計を見る。時刻は
 &lt;span class=&quot;story-time&quot;&gt;
 &lt;&lt;print Math.floor($evacuationTimeDay2 / 60)&gt;&gt;:&lt;&lt;if $evacuationTimeDay2 % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $evacuationTimeDay2 % 60&gt;&gt;
-&lt;/span&gt;。&lt;br&gt;玄関で靴を履き、家を出る準備を整える。&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;&lt;&lt;if $bagWeight &gt;= 7&gt;&gt;防災バッグは必要な物でいっぱいになっている。&lt;br&gt;かなり重いが、背負って歩けないほどではない。&lt;&lt;elseif $bagWeight &gt;= 4&gt;&gt;防災バッグには、選んだ持ち物が入っている。&lt;br&gt;少し重さはあるが、問題なく背負えそうだ。&lt;&lt;else&gt;&gt;防災バッグは軽く、動きやすそうだ。&lt;br&gt;その一方で、持ち物が十分か少し不安が残る。&lt;&lt;/if&gt;&gt;&lt;&lt;else&gt;&gt;防災バッグは用意していない。&lt;br&gt;身軽ではあるが、避難先で必要な物が足りないかもしれない。。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $hasRaincoat&gt;&gt;レインコートを取り出して身につける。&lt;br&gt;これなら、雨の中でも多少は濡れずに歩けそうだ。&lt;&lt;else&gt;&gt;雨を防げる物は持っていない。&lt;br&gt;外へ出れば、すぐに服が濡れてしまいそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $chargedPhone&gt;&gt;スマートフォンは出発前に充電してある。&lt;&lt;elseif $hasBattery&gt;&gt;スマートフォンの電池は少ないが、モバイルバッテリーを持っている。&lt;&lt;else&gt;&gt;スマートフォンの電池残量が心細い。&lt;&lt;/if&gt;&gt;&lt;br&gt;玄関の扉を開ける。&lt;br&gt;外では、強い雨が降り続いている。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;/span&gt;。&lt;br&gt;玄関で靴を履き、家を出る準備を整える。&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;&lt;&lt;if $bagWeight &gt;= 7&gt;&gt;防災バッグは必要な物でいっぱいになっている。&lt;br&gt;かなり重いが、背負って歩けないほどではない。&lt;&lt;elseif $bagWeight &gt;= 4&gt;&gt;防災バッグには、選んだ持ち物が入っている。&lt;br&gt;少し重さはあるが、問題なく背負えそうだ。&lt;&lt;else&gt;&gt;防災バッグは軽く、動きやすそうだ。&lt;br&gt;その一方で、持ち物が十分か少し不安が残る。&lt;&lt;/if&gt;&gt;&lt;&lt;else&gt;&gt;防災バッグは用意していない。&lt;br&gt;身軽ではあるが、避難先で必要な物が足りないかもしれない。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $hasRaincoat&gt;&gt;レインコートを取り出して身につける。&lt;br&gt;これなら、雨の中でも多少は濡れずに歩けそうだ。&lt;&lt;else&gt;&gt;雨を防げる物は持っていない。&lt;br&gt;外へ出れば、すぐに服が濡れてしまいそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $chargedPhone&gt;&gt;スマートフォンは出発前に充電してある。&lt;&lt;elseif $hasBattery&gt;&gt;スマートフォンの電池は少ないが、モバイルバッテリーを持っている。&lt;&lt;else&gt;&gt;スマートフォンの電池残量が心細い。&lt;&lt;/if&gt;&gt;&lt;br&gt;玄関の扉を開ける。&lt;br&gt;外では、強い雨が降り続いている。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5187,7 +5184,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;避難所の入口が見えてきた。&lt;br&gt;時刻は&lt;span class=&quot;story-time&quot;&gt;&lt;&lt;print Math.floor($day3ArrivalTime / 60)&gt;&gt;:&lt;&lt;if $day3ArrivalTime % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $day3ArrivalTime % 60&gt;&gt;&lt;/span&gt;。&lt;br&gt;
 外はまだ明るく、建物へ向かう人の姿もはっきりと確認できる。&lt;br&gt;
-受付の前に長い列はなく、入口の周囲にも十分な余裕があるようだ。&lt;br&gt;。&lt;br&gt;&lt;&lt;if $day3CorrectedRoute&gt;&gt;途中で進路を変えたため少し遠回りになったが、危険な場所へ踏み込まずに到着できた。&lt;&lt;elseif $day3SelectedRoute is &quot;left&quot;&gt;&gt;安全な道を選んだことで、足元を確認しながら落ち着いてここまで来ることができた。&lt;&lt;else&gt;&gt;雨が強くなる前に出発したため、危険な状況になる前にここまで来ることができた。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $contactedFamily&gt;&gt;スマートフォンを確認すると、家族から「こちらも避難所へ向かっている」と連絡が届いていた。&lt;&lt;else&gt;&gt;スマートフォンはすぐに取り出せる場所にある。必要になれば、家族へ連絡できそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;防災バッグを背負い直し、入口へ向かう。準備した物も、避難所の中で役に立つかもしれない。&lt;&lt;else&gt;&gt;荷物は少ないが、その分早く移動することができた。&lt;&lt;/if&gt;&gt;&lt;br&gt;雨音を背中に聞きながら、避難所の扉へ手を伸ばした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+受付の前に長い列はなく、入口の周囲にも十分な余裕があるようだ。&lt;br&gt;&lt;&lt;if $day3CorrectedRoute&gt;&gt;途中で進路を変えたため少し遠回りになったが、危険な場所へ踏み込まずに到着できた。&lt;&lt;elseif $day3SelectedRoute is &quot;left&quot;&gt;&gt;安全な道を選んだことで、足元を確認しながら落ち着いてここまで来ることができた。&lt;&lt;else&gt;&gt;雨が強くなる前に出発したため、危険な状況になる前にここまで来ることができた。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $contactedFamily&gt;&gt;スマートフォンを確認すると、家族から「こちらも避難所へ向かっている」と連絡が届いていた。&lt;&lt;else&gt;&gt;スマートフォンはすぐに取り出せる場所にある。必要になれば、家族へ連絡できそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;防災バッグを背負い直し、入口へ向かう。準備した物も、避難所の中で役に立つかもしれない。&lt;&lt;else&gt;&gt;荷物は少ないが、その分早く移動することができた。&lt;&lt;/if&gt;&gt;&lt;br&gt;雨音を背中に聞きながら、避難所の扉へ手を伸ばした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5252,7 +5249,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;前方の道路を注意深く見る。&lt;br&gt;水はまだ浅いが、側溝と道路の境目に沿って、少しずつ範囲が広がっている。&lt;br&gt;&lt;&lt;if $checkedMap or $checkedMapDay2&gt;&gt;ハザードマップの情報どおり、この道には雨水が集まり始めていた。&lt;br&gt;近道であっても、この先へ進むべきではなさそうだ。&lt;&lt;else&gt;&gt;今なら通れるようにも見える。&lt;br&gt;しかし、雨は続いており、この先の水深までは分からない。&lt;&lt;/if&gt;&gt;&lt;br&gt;昨日よりも早く家を出たおかげで、道路が深く冠水する前に危険へ気づくことができた。&lt;br&gt;今なら、慌てずに分かれ道まで戻ることができる。&lt;br&gt;右側の道を進むのはやめ、比較的安全な左側の道へ向かうことにした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;前方の道路を注意深く見る。&lt;br&gt;水はまだ浅いが、側溝と道路の境目に沿って、少しずつ範囲が広がっている。&lt;br&gt;&lt;&lt;if $checkedMap or $checkedMapDay2&gt;&gt;ハザードマップの情報どおり、この道には雨水が集まり始めていた。&lt;br&gt;近道であっても、この先へ進むべきではなさそうだ。&lt;&lt;else&gt;&gt;今なら通れるようにも見える。&lt;br&gt;しかし、雨は続いており、この先の水深までは分からない。&lt;&lt;/if&gt;&gt;&lt;br&gt;昨日よりも早く家を出たおかげで、道路が深く冠水する前に危険に気づくことができた。&lt;br&gt;今なら、慌てずに分かれ道まで戻ることができる。&lt;br&gt;右側の道を進むのはやめ、比較的安全な左側の道へ向かうことにした。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5379,10 +5376,15 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;/div&gt;
 
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="70" name="3日目_受付" tags="" position="1625,3500" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
+
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_mae_day32.png&quot;
+		src=&quot;images/entrance_day3_clear.png&quot;
 		alt=&quot;&quot;&gt;
+
+	&lt;img class=&quot;npc-sprite npc-center npc-staff&quot;
+		src=&quot;images/npc_reception_male.png&quot;
+		alt=&quot;受付スタッフ&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
@@ -5462,8 +5464,9 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="73" name="3日目_避難所イベント開始" tags="" position="1500,3750" size="100,100">&lt;&lt;goto &quot;3日目_炊き出し発見&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="74" name="3日目_炊き出し発見" tags="" position="1625,3850" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/entrance_day3_clear.png&quot;
 		alt=&quot;&quot;&gt;
+        &lt;img class=&quot;npc-sprite npc-center npc-staff&quot; src=&quot;images/npc_reception_female.png&quot; alt=&quot;女性スタッフ&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
@@ -5472,7 +5475,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[配布場所へ行く-&gt;3日目_炊き出し受取]]
 	&lt;/div&gt;
 
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で休んでいると、体育館の入口付近が少しにぎやかになってきた。&lt;br&gt;見ると、職員たちが段ボール箱をいくつも運び込み、机の上に並べている。&lt;br&gt;箱の中には、個包装されたパンや保存食が入っていた。&lt;br&gt;「避難されている方に食料を配ります。必要な方はこちらへどうぞ」&lt;br&gt;館内に案内の声が響く。どうやら、避難所に備蓄されていた食料を配るらしい。&lt;br&gt;「避難所って、食べ物も用意されているんだ……」&lt;br&gt;少し意外に思いながら、配布場所の方を見る。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で休んでいると、体育館の入口付近が少しにぎやかになってきた。&lt;br&gt;見ると、職員たちが段ボール箱をいくつも運び込み、机の上に並べている。&lt;br&gt;箱の中には、個包装されたパンや保存食が入っていた。&lt;br&gt;「避難されている方に食料を配ります。必要な方はこちらへどうぞ」&lt;br&gt;館内に案内の声が響く。どうやら、避難所に備蓄されていた食料を配るらしい。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5483,8 +5486,9 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="75" name="3日目_炊き出し受取" tags="" position="1625,3975" size="100,100">&lt;&lt;set $time += 5&gt;&gt;
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/entrance_day3_clear.png&quot;
 		alt=&quot;&quot;&gt;
+       &lt;img class=&quot;npc-sprite npc-center npc-staff&quot; src=&quot;images/npc_reception_female.png&quot; alt=&quot;女性スタッフ&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
@@ -5502,20 +5506,18 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="76" name="3日目_炊き出し食事" tags="" position="1625,4100" size="100,100">&lt;&lt;set $time += 10&gt;&gt;
+
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
-		alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3.png&quot; alt=&quot;&quot;&gt;
+	&lt;img src=&quot;images/food_pan_kashipan.png&quot; alt=&quot;パン&quot; style=&quot;position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); width:auto; height:auto; max-width:35vw; max-height:38vh; object-fit:contain; z-index:20;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
-
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
 		[[食べ終える-&gt;3日目_配膳手伝い]]
 	&lt;/div&gt;
 
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所へ戻り、受け取ったパンの袋を開ける。&lt;br&gt;一口食べると、少し気になっていた空腹が落ち着いていく。&lt;br&gt;特別な食事というわけではない。それでも、安全な場所で落ち着いて食べられるだけで、ずいぶん安心する。&lt;br&gt;避難所には、寝る場所だけではなく、災害に備えた食料も用意されている。&lt;br&gt;「避難してきても、ちゃんと食べられるんだな」&lt;br&gt;避難所に来る前に思っていたよりも、ここで過ごすことへの不安が少し小さくなった。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
-
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所へ戻り、受け取ったパンの袋を開ける。&lt;br&gt;一口食べると、少し気になっていた空腹が落ち着いていく。&lt;br&gt;特別な食事というわけではない。それでも、安全な場所で落ち着いて食べられるだけで、ずいぶん安心する。&lt;br&gt;避難所には、寝る場所だけではなく、災害に備えた食料も用意されている。&lt;br&gt;「避難してきても、ちゃんと食べられるんだな」&lt;br&gt;避難所に来る前に思っていたよりも、ここで過ごすことへの不安が少し小さくなった。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -5526,7 +5528,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3_2.png&quot;
+		src=&quot;images/entrance_day3_clear.png&quot;
 		alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
@@ -5563,8 +5565,9 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
-		src=&quot;images/shelter_day3.png&quot;
+		src=&quot;images/entrance_day3_clear.png&quot;
 		alt=&quot;&quot;&gt;
+          &lt;img class=&quot;npc-sprite npc-center npc-staff&quot; src=&quot;images/npc_reception_female.png&quot; alt=&quot;女性スタッフ&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
@@ -5637,7 +5640,9 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="81" name="3日目_受付混雑" tags="" position="1750,3975" size="100,100">&lt;div class=&quot;scene&quot;&gt;
-	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/shelter_day3_2.png&quot; alt=&quot;&quot;&gt;
+	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/entrance_day3_rainy.png&quot; alt=&quot;&quot;&gt;
+&lt;/div&gt;
+	&lt;img class=&quot;npc-sprite npc-center npc-staff&quot; src=&quot;images/npc_reception_male_sad.png&quot; alt=&quot;受付スタッフ&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
@@ -5647,13 +5652,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;受付の方を見ると、すでに何人もの避難者が列を作っていた。&lt;br&gt;
-「受付はこちらです！　順番にお願いします！」&lt;br&gt;
-職員が声をかけながら、一人ずつ対応している。&lt;br&gt;雨に濡れたまま列の最後尾に並ぶ人や、受付を終えて空いている場所を探す人の姿も見える。&lt;br&gt;さっきまで空いていた体育館にも、いつの間にか人や荷物が増えていた。&lt;br&gt;
-&lt;&lt;if $day3ShelterSpot is &quot;wall&quot;&gt;&gt;自分が確保した壁際を見る。&lt;br&gt;周囲にも人が増え、今から同じような場所を探すのは難しそうだ。&lt;&lt;elseif $day3ShelterSpot is &quot;quiet&quot;&gt;&gt;自分が選んだ出入口から離れた場所にも、少しずつ人が増えている。&lt;br&gt;今から来た人は空いている場所を探すだけでも苦労しそうだ。&lt;&lt;else&gt;&gt;体育館の端にも人が集まり始めている。&lt;br&gt;自分が来たときのように、場所を自由に選ぶ余裕はもうあまりなさそうだ。
-&lt;&lt;/if&gt;&gt;&lt;br&gt;自分が受付を済ませたときは、待っている人もほとんどいなかった。&lt;br&gt;それからそれほど経っていないのに、避難所の様子はずいぶん変わっていた。
-		&lt;&lt;/type&gt;&gt;
-	&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;受付の方を見ると、すでに何人もの避難者が列を作っていた。&lt;br&gt;「受付はこちらです！　順番にお願いします！」&lt;br&gt;先ほど対応してくれた男性職員が、次々と避難者を案内している。&lt;br&gt;雨に濡れたまま列の最後尾に並ぶ人や、受付を終えて空いている場所を探す人の姿も見える。&lt;br&gt;さっきまで空いていた体育館にも、いつの間にか人や荷物が増えていた。&lt;br&gt;&lt;&lt;if $day3ShelterSpot is &quot;wall&quot;&gt;&gt;自分が確保した壁際を見る。&lt;br&gt;周囲にも人が増え、今から同じような場所を探すのは難しそうだ。&lt;&lt;elseif $day3ShelterSpot is &quot;quiet&quot;&gt;&gt;自分が選んだ出入口から離れた場所にも、少しずつ人が増えている。&lt;br&gt;今から来た人は空いている場所を探すだけでも苦労しそうだ。&lt;&lt;else&gt;&gt;体育館の端にも人が集まり始めている。&lt;br&gt;自分が来たときのように、場所を自由に選ぶ余裕はもうあまりなさそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;自分が受付を済ませたときは、待っている人もほとんどいなかった。&lt;br&gt;それからそれほど経っていないのに、避難所の様子はずいぶん変わっていた。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -5796,7 +5795,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 「あ、もうこんな時間なんですね」&lt;br&gt;「ほんとだ。つい話し込んじゃいました」&lt;br&gt;
 相手は少し笑いながら時計を見る。&lt;br&gt;
 &lt;br&gt;「でも、話せてよかったです。楽しかったです」&lt;br&gt;
-こちらも楽しい時間を過ごせたことに、少し嬉しくなる。&lt;br&gt;
+こちらも楽しい時間を過ごせたことを、少し嬉しくなる。&lt;br&gt;
 「またあとで話しましょう」
 	&lt;&lt;/type&gt;&gt;
 &lt;/div&gt;
@@ -6286,7 +6285,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で過ごしていると、体育館の入口が開いた。&lt;br&gt;雨具を着た作業着姿の男性が肩についた雨粒を払いながら中へ入ってくる。&lt;br&gt;かなり雨に当たったのか、ズボンの裾まで濡れていた。&lt;br&gt;受付にいた職員がすぐに声をかける。&lt;br&gt;「お疲れさまです。外、どうでした？」&lt;br&gt;「いやあ、思ったより早く水が増えてるね」&lt;br&gt;男性は雨具のフードを外しながら少し険しい表情をした。&lt;br&gt;「低いところはもう水が溜まり始めてる。このまま降ったら通れなくなる道も出てくると思うよ」&lt;br&gt;外の状況が気になり、その会話に耳を傾ける。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で過ごしていると、体育館の入口が開いた。&lt;br&gt;雨具を着た作業着姿の男性が肩についた雨粒を払いながら中へ入ってくる。&lt;br&gt;かなり雨に当たったのか、ズボンの裾まで濡れていた。&lt;br&gt;受付にいた職員がすぐに声をかける。&lt;br&gt;「お疲れさまです。外、どうでした？」&lt;br&gt;「いやあ、思ったより早く水が増えてるね」&lt;br&gt;男男性は雨具のフードを外しながら、少し心配そうな表情をした。&lt;br&gt;「低いところはもう水が溜まり始めてる。このまま降ったら通れなくなる道も出てくると思うよ」&lt;br&gt;外の状況が気になり、その会話に耳を傾ける。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -6305,7 +6304,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;職員が地図を広げると、男性は何か所かを指さしながら状況を説明し始めた。&lt;br&gt;「ここの低い道はもう水が道路に出始めてる。それと、この辺りも側溝が追いついてないね。今から歩いて通るのは避けた方がいい」&lt;br&gt;&lt;&lt;if $day3CorrectedRoute&gt;&gt;指さされた場所を見て、はっとする。&lt;br&gt;避難してくる途中、一度進みかけて引き返した道だ。&lt;br&gt;あのときはまだ少し水が出ている程度だったのに、今はさらに状況が悪くなっているらしい。&lt;&lt;else&gt;&gt;指さされた場所を見る。&lt;br&gt;避難してくるときには通らなかった低い方の道だ。&lt;br&gt;自分がここへ来た頃はまだ通れそうにも見えたが、今はもう状況が変わっているらしい。&lt;&lt;/if&gt;&gt;&lt;br&gt;避難所へ向かっていたときよりも、外の状況はかなり悪くなっているようだ。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;職員が地図を広げると、男性は何か所かを指さしながら状況を説明し始めた。&lt;br&gt;「ここの低い道はもう水が道路に出始めてる。それと、この辺りも側溝の排水能力が追いついていないね。今から歩いて通るのは避けた方がいい」&lt;br&gt;&lt;&lt;if $day3CorrectedRoute&gt;&gt;指さされた場所を見て、はっとする。&lt;br&gt;避難してくる途中、一度進みかけて引き返した道だ。&lt;br&gt;あのときはまだ少し水が出ている程度だったのに、今はさらに状況が悪くなっているらしい。&lt;&lt;else&gt;&gt;指さされた場所を見る。&lt;br&gt;避難してくるときには通らなかった低い方の道だ。&lt;br&gt;自分がここへ来た頃はまだ通れそうにも見えたが、今はもう状況が変わっているらしい。&lt;&lt;/if&gt;&gt;&lt;br&gt;避難所へ向かっていたときよりも、外の状況はかなり悪くなっているようだ。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -6370,7 +6369,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[外の様子を見てみる-&gt;3日目_雨上がり]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;土木職員と別れ、自分の場所へ戻る。&lt;br&gt;しばらくして、さっきまで体育館の屋根を叩いていた雨音が弱くなっていることに気づいた。&lt;br&gt;耳を澄ませる、雨粒の音も少しずつ途切れるようになっている。&lt;br&gt;窓の外を見るとさっきより空が明るい。&lt;br&gt;「……雨、弱くなってきた？」&lt;br&gt;外の様子が少し気になった。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;作業着の男性と別れ、自分の場所へ戻る。&lt;br&gt;しばらくして、さっきまで体育館の屋根を叩いていた雨音が弱くなっていることに気づいた。&lt;br&gt;耳を澄ませる、雨粒の音も少しずつ途切れるようになっている。&lt;br&gt;窓の外を見るとさっきより空が明るい。&lt;br&gt;「……雨、弱くなってきた？」&lt;br&gt;外の様子が少し気になった。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
