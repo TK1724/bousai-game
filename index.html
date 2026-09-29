@@ -1783,6 +1783,793 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 	filter:
 		drop-shadow(0 0 8px rgba(255,255,255,0.18))
 		drop-shadow(0 0 18px rgba(255,255,255,0.10));
+}
+
+/* =========================================
+   事前アンケート
+========================================= */
+
+.pre-game-panel.survey-panel {
+	width: min(980px, 95vw);
+	max-height: 90vh;
+	overflow-y: auto;
+
+	padding: 24px 32px;
+	box-sizing: border-box;
+
+	background: rgba(245, 245, 245, 0.97);
+
+	color: #222 !important;
+}
+
+
+/* アンケート内の文字色 */
+.survey-panel p,
+.survey-panel span,
+.survey-panel label,
+.survey-panel h2,
+.survey-panel h3 {
+	color: #222 !important;
+}
+
+
+/* 最初の説明 */
+.survey-intro {
+	margin: 0 0 16px;
+	line-height: 1.7;
+	color: #444 !important;
+}
+
+
+/* 項目のまとまり */
+.survey-section-title {
+	margin: 24px 0 4px;
+	padding: 6px 0;
+
+	border-bottom: 2px solid #999;
+
+	font-size: 1.15rem;
+	font-weight: 700;
+}
+
+
+/* 1問ずつ */
+.survey-row {
+	padding: 10px 2px 12px;
+	margin: 0;
+
+	border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+
+/* 質問文 */
+.survey-question-title {
+	margin: 0 0 7px;
+
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1.55;
+}
+
+
+/* はい・いいえなど */
+.survey-inline {
+	display: flex;
+	flex-wrap: wrap;
+
+	gap: 6px 22px;
+
+	align-items: center;
+}
+
+
+.survey-inline label {
+	display: inline-flex;
+	align-items: center;
+
+	gap: 5px;
+
+	margin: 0;
+	padding: 2px 0;
+
+	cursor: pointer;
+}
+
+
+.survey-inline input[type="radio"] {
+	margin: 0;
+}
+
+
+/* テキスト入力 */
+.survey-panel input[type="text"] {
+	width: 90px;
+
+	padding: 6px 8px;
+
+	border: 1px solid #aaa;
+	border-radius: 6px;
+
+	background: #fff;
+	color: #222;
+
+	font-size: 1rem;
+}
+
+
+/* プルダウン */
+.survey-select {
+	padding: 7px 9px;
+
+	border: 1px solid #aaa;
+	border-radius: 6px;
+
+	background: #fff;
+	color: #222;
+
+	font-size: 0.95rem;
+}
+
+
+.prefecture-select {
+	width: 220px;
+}
+
+
+.probability-select {
+	width: 180px;
+}
+
+
+.timing-select {
+	width: min(720px, 100%);
+}
+
+
+/* 5件法 */
+.likert-five {
+	display: grid;
+
+	grid-template-columns: repeat(5, 52px);
+
+	gap: 8px;
+
+	width: max-content;
+	max-width: 100%;
+}
+
+
+.likert-five label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	gap: 4px;
+
+	margin: 0;
+	padding: 5px 7px;
+
+	cursor: pointer;
+
+	border-radius: 6px;
+}
+
+
+.likert-five label:hover {
+	background: rgba(0, 0, 0, 0.05);
+}
+
+
+.likert-five input[type="radio"] {
+	margin: 0;
+}
+
+
+.likert-five span {
+	font-size: 0.95rem;
+}
+
+
+/* 5件法左右の説明 */
+.likert-end-labels {
+	display: flex;
+	justify-content: space-between;
+
+	width: 292px;
+	max-width: 100%;
+
+	margin-top: 3px;
+
+	font-size: 0.78rem;
+}
+
+
+.likert-end-labels span {
+	color: #555 !important;
+}
+
+
+/* シナリオ説明 */
+.survey-scenario {
+	margin: 10px 0 4px;
+
+	padding: 10px 14px;
+
+	border-left: 4px solid #777;
+
+	background: rgba(255, 255, 255, 0.65);
+
+	color: #222;
+
+	line-height: 1.7;
+}
+
+
+/* 補足 */
+.survey-small-note {
+	margin: 4px 0 8px;
+
+	font-size: 0.9rem;
+
+	color: #555 !important;
+}
+
+
+/* エラー */
+#pre-survey-error {
+	min-height: 22px;
+
+	margin: 14px 0 0;
+
+	text-align: center;
+}
+
+
+.survey-error {
+	color: #c62828 !important;
+	font-weight: 700;
+}
+
+
+/* 完了ボタン */
+.survey-submit {
+	margin-top: 14px;
+	padding-bottom: 5px;
+}
+
+
+/* スマホ */
+@media (max-width: 650px) {
+
+	.pre-game-panel.survey-panel {
+		padding: 20px 16px;
+	}
+
+	.likert-five {
+		grid-template-columns: repeat(5, 44px);
+		gap: 5px;
+	}
+
+	.likert-end-labels {
+		width: 240px;
+	}
+
+	.timing-select {
+		width: 100%;
+	}
+}
+
+/* =====================================================
+   事前アンケート UI 修正版
+   ※ Story Stylesheet の一番下に追加
+===================================================== */
+
+
+/* -----------------------------------------------------
+   プルダウン
+   「選択してください」を常に見えるようにする
+----------------------------------------------------- */
+
+.survey-panel .survey-select-wrap select {
+	display: block !important;
+
+	width: 320px !important;
+	max-width: 100% !important;
+
+	padding: 8px 34px 8px 12px !important;
+
+	background-color: #ffffff !important;
+
+	color: #222222 !important;
+	-webkit-text-fill-color: #222222 !important;
+
+	font-size: 1rem !important;
+	font-weight: 400 !important;
+
+	border: 1px solid #aaaaaa !important;
+	border-radius: 7px !important;
+
+	opacity: 1 !important;
+
+	cursor: pointer !important;
+}
+
+
+/* プルダウンをクリック・選択している最中も文字を黒くする */
+
+.survey-panel .survey-select-wrap select:hover,
+.survey-panel .survey-select-wrap select:focus,
+.survey-panel .survey-select-wrap select:active {
+	background-color: #ffffff !important;
+
+	color: #222222 !important;
+	-webkit-text-fill-color: #222222 !important;
+
+	opacity: 1 !important;
+}
+
+
+/* プルダウン内部の選択肢 */
+
+.survey-panel .survey-select-wrap select option {
+	background-color: #ffffff !important;
+
+	color: #222222 !important;
+	-webkit-text-fill-color: #222222 !important;
+}
+
+
+
+/* -----------------------------------------------------
+   5件法
+   必ず 1 2 3 4 5 を一直線にする
+----------------------------------------------------- */
+
+.survey-panel .likert-five {
+	display: flex !important;
+
+	flex-direction: row !important;
+	flex-wrap: nowrap !important;
+
+	justify-content: flex-start !important;
+	align-items: center !important;
+
+	gap: 12px !important;
+
+	width: 340px !important;
+	max-width: 100% !important;
+
+	margin: 8px 0 0 0 !important;
+	padding: 0 !important;
+}
+
+
+/* 1～5それぞれ */
+
+.survey-panel .likert-five label {
+	display: flex !important;
+
+	flex: 0 0 58px !important;
+
+	width: 58px !important;
+	height: 42px !important;
+
+	align-items: center !important;
+	justify-content: center !important;
+
+	gap: 5px !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	background: transparent !important;
+
+	border: none !important;
+	border-radius: 0 !important;
+
+	color: #222222 !important;
+
+	cursor: pointer !important;
+
+	box-sizing: border-box !important;
+}
+
+
+/* ラジオボタン */
+
+.survey-panel .likert-five label input[type="radio"] {
+	flex: 0 0 auto !important;
+
+	width: auto !important;
+	height: auto !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	transform: none !important;
+}
+
+
+/* 数字 */
+
+.survey-panel .likert-five label span {
+	display: inline !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	color: #222222 !important;
+
+	font-size: 1rem !important;
+	font-weight: 400 !important;
+}
+
+
+/* -----------------------------------------------------
+   5件法の左右の説明
+----------------------------------------------------- */
+
+.survey-panel .likert-end-labels {
+	display: flex !important;
+
+	flex-direction: row !important;
+
+	justify-content: space-between !important;
+	align-items: flex-start !important;
+
+	width: 340px !important;
+	max-width: 100% !important;
+
+	margin: 2px 0 0 0 !important;
+	padding: 0 !important;
+
+	font-size: 0.78rem !important;
+	line-height: 1.3 !important;
+}
+
+
+.survey-panel .likert-end-labels span {
+	display: block !important;
+
+	width: auto !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	color: #555555 !important;
+}
+
+
+/* -----------------------------------------------------
+   質問同士の間隔も少し詰める
+----------------------------------------------------- */
+
+.survey-panel .survey-row {
+	margin: 0 !important;
+
+	padding: 10px 0 12px !important;
+
+	border-bottom: 1px solid rgba(0, 0, 0, 0.10) !important;
+}
+
+
+.survey-panel .survey-question-title {
+	margin: 0 0 6px 0 !important;
+
+	color: #222222 !important;
+
+	line-height: 1.5 !important;
+}
+
+/* =====================================================
+   5件法 最終調整
+   Story Stylesheet の一番下に追加
+===================================================== */
+
+
+/* 1～5を一直線・均等配置 */
+.survey-panel .likert-five {
+	display: grid !important;
+	grid-template-columns: repeat(5, 1fr) !important;
+
+	width: 720px !important;
+	max-width: 100% !important;
+
+	gap: 0 !important;
+
+	margin: 2px 0 0 0 !important;
+	padding: 0 !important;
+
+	min-height: 0 !important;
+	height: auto !important;
+
+	align-items: center !important;
+}
+
+
+/* 各ラジオボタン */
+.survey-panel .likert-five label {
+	display: flex !important;
+
+	align-items: center !important;
+	justify-content: center !important;
+
+	width: auto !important;
+	height: 34px !important;
+	min-height: 0 !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	gap: 5px !important;
+
+	background: transparent !important;
+	border: none !important;
+
+	box-sizing: border-box !important;
+}
+
+
+/* ラジオボタン自体 */
+.survey-panel .likert-five input[type="radio"] {
+	margin: 0 !important;
+	padding: 0 !important;
+
+	width: auto !important;
+	height: auto !important;
+
+	transform: none !important;
+}
+
+
+/* 1～5の数字 */
+.survey-panel .likert-five label span {
+	margin: 0 !important;
+	padding: 0 !important;
+
+	color: #222 !important;
+
+	font-size: 1rem !important;
+}
+
+
+/* -----------------------------------------
+   左右の説明
+----------------------------------------- */
+
+.survey-panel .likert-end-labels {
+	display: grid !important;
+	grid-template-columns: repeat(5, 1fr) !important;
+
+	width: 720px !important;
+	max-width: 100% !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	min-height: 0 !important;
+	height: auto !important;
+
+	font-size: 0.78rem !important;
+	line-height: 1.3 !important;
+}
+
+
+/* 左側の説明 */
+.survey-panel .likert-end-labels span:first-child {
+	grid-column: 1 / 3 !important;
+
+	text-align: left !important;
+
+	justify-self: start !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	color: #555 !important;
+}
+
+
+/* 右側の説明 */
+.survey-panel .likert-end-labels span:last-child {
+	grid-column: 4 / 6 !important;
+
+	text-align: right !important;
+
+	justify-self: end !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	color: #555 !important;
+}
+
+
+/* -----------------------------------------
+   1問ごとの上下余白を少し縮める
+----------------------------------------- */
+
+.survey-panel .survey-row {
+	margin: 0 !important;
+
+	padding-top: 7px !important;
+	padding-bottom: 8px !important;
+
+	min-height: 0 !important;
+	height: auto !important;
+}
+
+
+/* 質問文と回答欄の間 */
+.survey-panel .survey-question-title {
+	margin-top: 0 !important;
+	margin-bottom: 4px !important;
+
+	padding: 0 !important;
+
+	line-height: 1.45 !important;
+}
+
+
+/* セクション見出しの余白も少し縮小 */
+.survey-panel .survey-section-title {
+	margin-top: 18px !important;
+	margin-bottom: 3px !important;
+
+	padding-top: 4px !important;
+	padding-bottom: 4px !important;
+}
+
+/* =====================================================
+   事前アンケート
+   質問間の余白をコンパクトにする
+===================================================== */
+
+.survey-panel .survey-row {
+	display: block !important;
+
+	width: 100% !important;
+
+	height: auto !important;
+	min-height: 0 !important;
+
+	margin: 0 !important;
+
+	padding-top: 8px !important;
+	padding-bottom: 10px !important;
+
+	box-sizing: border-box !important;
+
+	border-bottom: 1px solid rgba(0, 0, 0, 0.10) !important;
+}
+
+
+/* 質問文 */
+.survey-panel .survey-question-title {
+	display: block !important;
+
+	height: auto !important;
+	min-height: 0 !important;
+
+	margin: 0 0 6px 0 !important;
+	padding: 0 !important;
+
+	line-height: 1.5 !important;
+}
+
+
+/* はい・いいえ、住居形態などの回答欄 */
+.survey-panel .survey-inline {
+	display: flex !important;
+	flex-wrap: wrap !important;
+
+	align-items: center !important;
+
+	height: auto !important;
+	min-height: 0 !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	gap: 6px 22px !important;
+}
+
+
+/* 通常のラジオボタン選択肢 */
+.survey-panel .survey-inline label {
+	height: auto !important;
+	min-height: 0 !important;
+
+	margin: 0 !important;
+	padding: 3px 0 !important;
+
+	line-height: 1.4 !important;
+}
+
+
+/* セクション見出し */
+.survey-panel .survey-section-title {
+	height: auto !important;
+	min-height: 0 !important;
+
+	margin: 16px 0 4px 0 !important;
+	padding: 5px 0 !important;
+}
+
+
+/* シナリオ説明 */
+.survey-panel .survey-scenario {
+	height: auto !important;
+	min-height: 0 !important;
+
+	margin: 6px 0 4px 0 !important;
+	padding: 10px 14px !important;
+}
+
+/* =====================================================
+   事前アンケート
+   質問間隔を少し広げる
+===================================================== */
+
+.survey-panel .survey-row {
+	margin: 0 !important;
+
+	padding-top: 12px !important;
+	padding-bottom: 14px !important;
+
+	min-height: 0 !important;
+	height: auto !important;
+
+	border-bottom: 1px solid rgba(0, 0, 0, 0.10) !important;
+}
+
+
+/* 質問文と回答欄の間 */
+.survey-panel .survey-question-title {
+	margin-top: 0 !important;
+	margin-bottom: 8px !important;
+
+	padding: 0 !important;
+
+	line-height: 1.5 !important;
+}
+
+
+/* 通常の回答欄 */
+.survey-panel .survey-inline {
+	margin-top: 2px !important;
+	margin-bottom: 2px !important;
+}
+
+
+/* 5件法 */
+.survey-panel .likert-five {
+	margin-top: 5px !important;
+	margin-bottom: 2px !important;
+}
+
+
+/* 5件法の説明文 */
+.survey-panel .likert-end-labels {
+	margin-top: 4px !important;
+	margin-bottom: 2px !important;
+}
+
+
+/* セクション見出し */
+.survey-panel .survey-section-title {
+	margin-top: 24px !important;
+	margin-bottom: 8px !important;
+
+	padding-top: 5px !important;
+	padding-bottom: 5px !important;
+}
+
+
+/* シナリオ説明 */
+.survey-panel .survey-scenario {
+	margin-top: 8px !important;
+	margin-bottom: 8px !important;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.macros.typeSkipKey = "Enter";
 
 // 選択肢のキーボード操作
@@ -1815,62 +2602,135 @@ $(document).on('keydown', function (event) {
 
 	event.preventDefault();
 
-	let currentIndex = $choices.index($choices.filter('.keyboard-selected'));
+	let currentIndex = $choices.index(
+		$choices.filter('.keyboard-selected')
+	);
 
 	// まだ何も選ばれていない場合は、一番上を選ぶ
 	if (currentIndex === -1) {
 		currentIndex = 0;
-		$choices.removeClass('keyboard-selected');
-		$choices.eq(currentIndex).addClass('keyboard-selected');
+
+		$choices.removeClass(
+			'keyboard-selected'
+		);
+
+		$choices
+			.eq(currentIndex)
+			.addClass(
+				'keyboard-selected'
+			);
+
 		return;
 	}
 
 	// 上へ移動
-	if (key === 'ArrowUp' || key === 'w' || key === 'W') {
-		currentIndex = currentIndex - 1;
+	if (
+		key === 'ArrowUp' ||
+		key === 'w' ||
+		key === 'W'
+	) {
+
+		currentIndex =
+			currentIndex - 1;
 
 		if (currentIndex < 0) {
-			currentIndex = $choices.length - 1;
+			currentIndex =
+				$choices.length - 1;
 		}
 	}
 
 	// 下へ移動
-	if (key === 'ArrowDown' || key === 's' || key === 'S') {
-		currentIndex = currentIndex + 1;
+	if (
+		key === 'ArrowDown' ||
+		key === 's' ||
+		key === 'S'
+	) {
 
-		if (currentIndex >= $choices.length) {
+		currentIndex =
+			currentIndex + 1;
+
+		if (
+			currentIndex >=
+			$choices.length
+		) {
 			currentIndex = 0;
 		}
 	}
 
 	// 決定
-	if (key === 'Enter' || key === ' ') {
-		$choices.eq(currentIndex)[0].click();
+	if (
+		key === 'Enter' ||
+		key === ' '
+	) {
+
+		$choices
+			.eq(currentIndex)[0]
+			.click();
+
 		return;
 	}
 
 	// 見た目を更新
-	$choices.removeClass('keyboard-selected');
-	$choices.eq(currentIndex).addClass('keyboard-selected');
+	$choices.removeClass(
+		'keyboard-selected'
+	);
+
+	$choices
+		.eq(currentIndex)
+		.addClass(
+			'keyboard-selected'
+		);
 });
+
 
 // 選択肢が表示されたら、一番上を自動で選択状態にする
-$(document).on(':typingcomplete', function () {
-	setTimeout(function () {
-		const $choices = $('#choice-after-type a');
+$(document).on(
+	':typingcomplete',
+	function () {
 
-		if ($choices.length > 0) {
-			$choices.removeClass('keyboard-selected');
-			$choices.eq(0).addClass('keyboard-selected');
-		}
-	}, 350);
-});
+		setTimeout(function () {
+
+			const $choices =
+				$('#choice-after-type a');
+
+			if (
+				$choices.length > 0
+			) {
+
+				$choices.removeClass(
+					'keyboard-selected'
+				);
+
+				$choices
+					.eq(0)
+					.addClass(
+						'keyboard-selected'
+					);
+			}
+
+		}, 350);
+	}
+);
+
 
 // マウスを乗せた選択肢も選択状態にする
-$(document).on('mouseenter', '#choice-after-type a', function () {
-	$('#choice-after-type a').removeClass('keyboard-selected');
-	$(this).addClass('keyboard-selected');
-});
+$(document).on(
+	'mouseenter',
+	'#choice-after-type a',
+	function () {
+
+		$('#choice-after-type a')
+			.removeClass(
+				'keyboard-selected'
+			);
+
+		$(this)
+			.addClass(
+				'keyboard-selected'
+			);
+	}
+);
+
 
 /* ========================================
    テキストボックス自動スクロール
@@ -1878,67 +2738,117 @@ $(document).on('mouseenter', '#choice-after-type a', function () {
 
 (function () {
 
-	let dialogueScrollTimer = null;
+	let dialogueScrollTimer =
+		null;
 
 	function stopDialogueScroll() {
-		if (dialogueScrollTimer !== null) {
-			clearInterval(dialogueScrollTimer);
-			dialogueScrollTimer = null;
+
+		if (
+			dialogueScrollTimer
+			!== null
+		) {
+
+			clearInterval(
+				dialogueScrollTimer
+			);
+
+			dialogueScrollTimer =
+				null;
 		}
 	}
 
+
 	/* 文字表示開始 */
-	$(document).on(':typingstart.dialogueScroll', function (event) {
+	$(document).on(
+		':typingstart.dialogueScroll',
+		function (event) {
 
-		const dialogueBox = $(event.target)
-			.closest('.dialogue-box')[0];
+			const dialogueBox =
+				$(event.target)
+					.closest(
+						'.dialogue-box'
+					)[0];
 
-		if (!dialogueBox) {
-			return;
-		}
-
-		stopDialogueScroll();
-
-		dialogueScrollTimer = setInterval(function () {
-
-			/* パッセージ移動などで要素が消えた場合 */
-			if (!document.documentElement.contains(dialogueBox)) {
-				stopDialogueScroll();
+			if (!dialogueBox) {
 				return;
 			}
 
-			dialogueBox.scrollTop = dialogueBox.scrollHeight;
+			stopDialogueScroll();
 
-		}, 50);
+			dialogueScrollTimer =
+				setInterval(
+					function () {
 
-	});
+						/*
+							パッセージ移動などで
+							要素が消えた場合
+						*/
+						if (
+							!document
+								.documentElement
+								.contains(
+									dialogueBox
+								)
+						) {
+
+							stopDialogueScroll();
+
+							return;
+						}
+
+						dialogueBox.scrollTop =
+							dialogueBox.scrollHeight;
+
+					},
+					50
+				);
+		}
+	);
+
 
 	/* 1つのタイプ表示が停止した場合 */
-	$(document).on(':typingstop.dialogueScroll', function () {
-		stopDialogueScroll();
-	});
+	$(document).on(
+		':typingstop.dialogueScroll',
+		function () {
+
+			stopDialogueScroll();
+		}
+	);
+
 
 	/* 全タイプ表示終了 */
-	$(document).on(':typingcomplete.dialogueScroll', function () {
+	$(document).on(
+		':typingcomplete.dialogueScroll',
+		function () {
 
-		stopDialogueScroll();
+			stopDialogueScroll();
 
-		const dialogueBox =
-			document.querySelector('.dialogue-box');
+			const dialogueBox =
+				document.querySelector(
+					'.dialogue-box'
+				);
 
-		if (dialogueBox) {
-			dialogueBox.scrollTop =
-				dialogueBox.scrollHeight;
+			if (dialogueBox) {
+
+				dialogueBox.scrollTop =
+					dialogueBox.scrollHeight;
+			}
 		}
+	);
 
-	});
 
 	/* パッセージが切り替わるときも必ず停止 */
-	$(document).on(':passageinit.dialogueScroll', function () {
-		stopDialogueScroll();
-	});
+	$(document).on(
+		':passageinit.dialogueScroll',
+		function () {
+
+			stopDialogueScroll();
+		}
+	);
 
 })();
+
+
 /* ========================================
    ゲーム内音量調整
 ======================================== */
@@ -1949,117 +2859,167 @@ $(document).on('mouseenter', '#choice-after-type a', function () {
 	 * 🔊ボタンを押したら
 	 * 音量パネルを開閉する
 	 */
-	$(document).on("click.gameVolume", "#game-volume-button", function (event) {
+	$(document).on(
+		"click.gameVolume",
+		"#game-volume-button",
+		function (event) {
 
-		event.preventDefault();
-		event.stopPropagation();
+			event.preventDefault();
 
-		$("#game-volume-panel").toggleClass("open");
+			event.stopPropagation();
 
-	});
+			$("#game-volume-panel")
+				.toggleClass(
+					"open"
+				);
+		}
+	);
 
 
 	/*
 	 * 音量バーを動かしたら
 	 * SugarCube全体の音量を変更する
 	 */
-	$(document).on("input.gameVolume change.gameVolume", "#game-volume-slider", function () {
+	$(document).on(
+		"input.gameVolume change.gameVolume",
+		"#game-volume-slider",
+		function () {
 
-		var volumePercent = Number(this.value);
+			var volumePercent =
+				Number(this.value);
 
-		/*
-		 * 0～100を
-		 * SugarCube用の0～1へ変換
-		 */
-		var volume = volumePercent / 100;
+			/*
+			 * 0～100を
+			 * SugarCube用の0～1へ変換
+			 */
+			var volume =
+				volumePercent / 100;
 
-		/*
-		 * ゲーム全体の音量を変更
-		 */
-		SimpleAudio.volume(volume);
+			/*
+			 * ゲーム全体の音量を変更
+			 */
+			SimpleAudio.volume(
+				volume
+			);
 
-		/*
-		 * 50%などの表示を更新
-		 */
-		$("#game-volume-value").text(volumePercent + "%");
+			/*
+			 * 50%などの表示を更新
+			 */
+			$("#game-volume-value")
+				.text(
+					volumePercent +
+					"%"
+				);
 
-		/*
-		 * 音量をブラウザに保存
-		 */
-		localStorage.setItem(
-			"disasterGameVolume",
-			String(volumePercent)
-		);
-
-	});
+			/*
+			 * 音量をブラウザに保存
+			 */
+			localStorage.setItem(
+				"disasterGameVolume",
+				String(
+					volumePercent
+				)
+			);
+		}
+	);
 
 
 	/*
 	 * 新しいパッセージが表示されるたびに
 	 * 前回設定した音量を音量バーへ反映する
 	 */
-	$(document).on(":passagedisplay.gameVolume", function () {
+	$(document).on(
+		":passagedisplay.gameVolume",
+		function () {
 
-		var savedVolume =
-			localStorage.getItem("disasterGameVolume");
+			var savedVolume =
+				localStorage.getItem(
+					"disasterGameVolume"
+				);
 
-		var volumePercent;
+			var volumePercent;
 
-		if (savedVolume !== null) {
+			if (
+				savedVolume
+				!== null
+			) {
 
-			volumePercent = Number(savedVolume);
+				volumePercent =
+					Number(
+						savedVolume
+					);
 
-		}
-		else {
+			}
+			else {
+
+				/*
+				 * 初回はStoryInitと同じ50%
+				 */
+				volumePercent =
+					50;
+			}
 
 			/*
-			 * 初回はStoryInitと同じ50%
+			 * 念のため0～100の範囲にする
 			 */
-			volumePercent = 50;
+			volumePercent =
+				Math.max(
+					0,
+					Math.min(
+						100,
+						volumePercent
+					)
+				);
 
+			/*
+			 * 実際の音量へ反映
+			 */
+			SimpleAudio.volume(
+				volumePercent / 100
+			);
+
+			/*
+			 * バーと数字にも反映
+			 */
+			$("#game-volume-slider")
+				.val(
+					volumePercent
+				);
+
+			$("#game-volume-value")
+				.text(
+					volumePercent +
+					"%"
+				);
 		}
-
-		/*
-		 * 念のため0～100の範囲にする
-		 */
-		volumePercent =
-			Math.max(0, Math.min(100, volumePercent));
-
-		/*
-		 * 実際の音量へ反映
-		 */
-		SimpleAudio.volume(volumePercent / 100);
-
-		/*
-		 * バーと数字にも反映
-		 */
-		$("#game-volume-slider").val(volumePercent);
-
-		$("#game-volume-value")
-			.text(volumePercent + "%");
-
-	});
+	);
 
 
 	/*
 	 * 音量パネル以外をクリックしたら閉じる
 	 */
-	$(document).on("click.gameVolume", function (event) {
+	$(document).on(
+		"click.gameVolume",
+		function (event) {
 
-		if (
-			!$(event.target)
-				.closest("#game-volume-control")
-				.length
-		) {
+			if (
+				!$(event.target)
+					.closest(
+						"#game-volume-control"
+					)
+					.length
+			) {
 
-			$("#game-volume-panel")
-				.removeClass("open");
-
+				$("#game-volume-panel")
+					.removeClass(
+						"open"
+					);
+			}
 		}
-
-	});
+	);
 
 })();
+
 
 /* =========================================================
    研究用ログ記録
@@ -2067,81 +3027,115 @@ $(document).on('mouseenter', '#choice-after-type a', function () {
 ========================================================= */
 
 window.STUDY_API_URL =
-	'ここにApps ScriptのWebアプリURLを入れる';
+	'https://script.google.com/macros/s/AKfycbxPom2P13lmFhN1NNKx9XoUE_25djEafIeXeciMSL59n4CA_97bDa7rR8K_7_Roj_hZ/exec';
 
 
 /* ---------------------------------------------------------
    現在の選択肢表示開始時刻
 --------------------------------------------------------- */
 
-window.studyChoiceStartTime = null;
+window.studyChoiceStartTime =
+	null;
 
-window.studyLastClickTime = 0;
+window.studyLastClickTime =
+	0;
 
 
 /* ---------------------------------------------------------
    ゲーム内時刻を 17:00 のような文字に変換
 --------------------------------------------------------- */
 
-window.getStudyGameTime = function () {
+window.getStudyGameTime =
+	function () {
 
-	const v = State.variables;
+		const v =
+			State.variables;
 
-	if (typeof v.time === 'string') {
-		return v.time;
-	}
+		if (
+			typeof v.time ===
+			'string'
+		) {
 
-	if (typeof v.time === 'number') {
+			return v.time;
+		}
 
-		const hour =
-			Math.floor(v.time / 60);
+		if (
+			typeof v.time ===
+			'number'
+		) {
 
-		const minute =
-			v.time % 60;
+			const hour =
+				Math.floor(
+					v.time / 60
+				);
 
-		return (
-			hour +
-			':' +
-			String(minute).padStart(2, '0')
-		);
-	}
+			const minute =
+				v.time % 60;
 
-	return '';
-};
+			return (
+				hour +
+				':' +
+				String(
+					minute
+				).padStart(
+					2,
+					'0'
+				)
+			);
+		}
+
+		return '';
+	};
 
 
 /* ---------------------------------------------------------
    現在画面にある選択可能項目数
 --------------------------------------------------------- */
 
-window.countStudyChoices = function () {
+window.countStudyChoices =
+	function () {
 
-	return $('#passages a:visible, #passages button:visible')
-		.filter(function () {
+		return $(
+			'#passages a:visible, #passages button:visible'
+		)
+			.filter(
+				function () {
 
-			if ($(this).closest('#game-volume-control').length) {
-				return false;
-			}
+					if (
+						$(this)
+							.closest(
+								'#game-volume-control'
+							)
+							.length
+					) {
 
-			if (this.disabled) {
-				return false;
-			}
+						return false;
+					}
 
-			return true;
-		})
-		.length;
-};
+					if (
+						this.disabled
+					) {
+
+						return false;
+					}
+
+					return true;
+				}
+			)
+			.length;
+	};
 
 
 /* ---------------------------------------------------------
    反応時間計測開始
 --------------------------------------------------------- */
 
-window.startStudyChoiceTimer = function () {
+window.startStudyChoiceTimer =
+	function () {
 
-	window.studyChoiceStartTime =
-		performance.now();
-};
+		window.studyChoiceStartTime =
+			performance.now();
+	};
 
 
 /* ---------------------------------------------------------
@@ -2153,14 +3147,22 @@ $(document).on(
 	':typingcomplete.studyResearch',
 	function () {
 
-		setTimeout(function () {
+		setTimeout(
+			function () {
 
-			if (window.countStudyChoices() > 0) {
+				if (
+					window
+						.countStudyChoices()
+					> 0
+				) {
 
-				window.startStudyChoiceTimer();
-			}
+					window
+						.startStudyChoiceTimer();
+				}
 
-		}, 320);
+			},
+			320
+		);
 	}
 );
 
@@ -2173,29 +3175,43 @@ $(document).on(
 	':passagedisplay.studyResearch',
 	function () {
 
-		window.studyChoiceStartTime = null;
+		window.studyChoiceStartTime =
+			null;
 
-		setTimeout(function () {
+		setTimeout(
+			function () {
 
-			const $choicePanel =
-				$('#choice-after-type');
+				const $choicePanel =
+					$(
+						'#choice-after-type'
+					);
 
-			/*
-				choice-after-type がない画面、
-				または最初から表示されている画面だけ
-			*/
-			if (
-				$choicePanel.length === 0 ||
-				$choicePanel.is(':visible')
-			) {
+				/*
+					choice-after-type がない画面、
+					または最初から表示されている画面だけ
+				*/
+				if (
+					$choicePanel.length ===
+						0 ||
+					$choicePanel.is(
+						':visible'
+					)
+				) {
 
-				if (window.countStudyChoices() > 0) {
+					if (
+						window
+							.countStudyChoices()
+						> 0
+					) {
 
-					window.startStudyChoiceTimer();
+						window
+							.startStudyChoiceTimer();
+					}
 				}
-			}
 
-		}, 100);
+			},
+			100
+		);
 	}
 );
 
@@ -2210,11 +3226,14 @@ window.sendStudyChoiceToGoogle =
 		fetch(
 			window.STUDY_API_URL,
 			{
-				method: 'POST',
+				method:
+					'POST',
 
-				mode: 'no-cors',
+				mode:
+					'no-cors',
 
-				keepalive: true,
+				keepalive:
+					true,
 
 				headers: {
 					'Content-Type':
@@ -2222,24 +3241,31 @@ window.sendStudyChoiceToGoogle =
 				},
 
 				body:
-					JSON.stringify(record)
+					JSON.stringify(
+						record
+					)
 			}
 		)
-		.then(function () {
+			.then(
+				function () {
 
-			console.log(
-				'[研究ログ送信]',
-				record
-			);
-		})
-		.catch(function (error) {
+					console.log(
+						'[研究ログ送信]',
+						record
+					);
+				}
+			)
+			.catch(
+				function (error) {
 
-			console.error(
-				'[研究ログ送信エラー]',
-				error
+					console.error(
+						'[研究ログ送信エラー]',
+						error
+					);
+				}
 			);
-		});
 	};
+
 
 /* ---------------------------------------------------------
    ゲーム内の選択を記録
@@ -2248,18 +3274,31 @@ window.sendStudyChoiceToGoogle =
 
 document.addEventListener(
 	'click',
+
 	function (event) {
 
-		/* 押された場所からリンクまたはボタンを探す */
+		/*
+			押された場所から
+			リンクまたはボタンを探す
+		*/
 		const element =
-			event.target.closest('a, button');
+			event.target.closest(
+				'a, button'
+			);
 
 		if (!element) {
 			return;
 		}
 
-		/* ゲーム本文以外は記録しない */
-		if (!element.closest('#passages')) {
+		/*
+			ゲーム本文以外は記録しない
+		*/
+		if (
+			!element.closest(
+				'#passages'
+			)
+		) {
+
 			return;
 		}
 
@@ -2267,34 +3306,48 @@ document.addEventListener(
 			$(element);
 
 
-		/* 音量関係は記録しない */
+		/*
+			音量関係は記録しない
+		*/
 		if (
-			$choice.closest(
-				'#game-volume-control'
-			).length
+			$choice
+				.closest(
+					'#game-volume-control'
+				)
+				.length
 		) {
+
 			return;
 		}
 
 
-		/* 無効な選択肢は記録しない */
+		/*
+			無効な選択肢は記録しない
+		*/
 		if (
 			element.disabled ||
-			$choice.hasClass('link-disabled')
+			$choice.hasClass(
+				'link-disabled'
+			)
 		) {
+
 			return;
 		}
 
 
-		/* 二重記録防止 */
+		/*
+			二重記録防止
+		*/
 		const now =
 			performance.now();
 
 		if (
 			now -
-			window.studyLastClickTime
+				window
+					.studyLastClickTime
 			< 250
 		) {
+
 			return;
 		}
 
@@ -2306,108 +3359,148 @@ document.addEventListener(
 			State.variables;
 
 
-		/* 選択番号 */
+		/*
+			選択番号
+		*/
 		if (
-			typeof v.studyChoiceSequence
+			typeof
+				v.studyChoiceSequence
 			!== 'number'
 		) {
-			v.studyChoiceSequence = 0;
+
+			v.studyChoiceSequence =
+				0;
 		}
 
-		v.studyChoiceSequence += 1;
+		v.studyChoiceSequence +=
+			1;
 
 
-		/* 回答時間 */
-		let reactionTimeMs = null;
-		let reactionTimeSec = null;
+		/*
+			回答時間
+		*/
+		let reactionTimeMs =
+			null;
+
+		let reactionTimeSec =
+			null;
 
 		if (
-			window.studyChoiceStartTime
+			window
+				.studyChoiceStartTime
 			!== null
 		) {
 
 			reactionTimeMs =
 				Math.round(
 					performance.now() -
-					window.studyChoiceStartTime
+						window
+							.studyChoiceStartTime
 				);
 
 			reactionTimeSec =
 				Math.round(
-					(reactionTimeMs / 1000)
-					* 1000
-				) / 1000;
+					(
+						reactionTimeMs /
+						1000
+					) *
+						1000
+				) /
+				1000;
 		}
 
 
-		/* 選択肢に表示されている文字 */
-let choiceText =
-	$choice
-		.text()
-		.replace(/\s+/g, ' ')
-		.trim();
+		/*
+			選択肢に表示されている文字
+		*/
+		let choiceText =
+			$choice
+				.text()
+				.replace(
+					/\s+/g,
+					' '
+				)
+				.trim();
 
 
-/* ---------------------------------------------------------
-   防災バッグ画面の場合は、
-   「何を」入れた／外したのかも記録する
---------------------------------------------------------- */
+		/* ---------------------------------------------------------
+		   防災バッグ画面の場合は、
+		   「何を」入れた／外したのかも記録する
+		--------------------------------------------------------- */
 
-const $bagCard =
-	$choice.closest('.bag-choice-card');
+		const $bagCard =
+			$choice.closest(
+				'.bag-choice-card'
+			);
 
-if ($bagCard.length > 0) {
+		if (
+			$bagCard.length >
+			0
+		) {
 
-	/*
-		例：
-		「飲み水　容量3」
-		から「飲み水」だけ取得
-	*/
-	const $name =
-		$bagCard
-			.find('.bag-choice-name')
-			.first()
-			.clone();
+			/*
+				例：
+				「飲み水　容量3」
+				から「飲み水」だけ取得
+			*/
+			const $name =
+				$bagCard
+					.find(
+						'.bag-choice-name'
+					)
+					.first()
+					.clone();
 
-	$name
-		.children()
-		.remove();
+			$name
+				.children()
+				.remove();
 
-	const itemName =
-		$name
-			.text()
-			.replace(/\s+/g, ' ')
-			.trim();
+			const itemName =
+				$name
+					.text()
+					.replace(
+						/\s+/g,
+						' '
+					)
+					.trim();
+
+			if (
+				itemName !== ''
+			) {
+
+				choiceText =
+					itemName +
+					'：' +
+					choiceText;
+			}
+		}
 
 
-	if (itemName !== '') {
-
-		choiceText =
-			itemName +
-			'：' +
-			choiceText;
-	}
-}
-
-
-		/* Twineリンクの移動先 */
+		/*
+			Twineリンクの移動先
+		*/
 		const destination =
 			$choice.attr(
 				'data-passage'
 			) || '';
 
 
-		/* その画面にある選択肢数 */
+		/*
+			その画面にある選択肢数
+		*/
 		const optionCount =
-			window.countStudyChoices();
+			window
+				.countStudyChoices();
 
 
 		const record = {
 
-			type: 'choice',
+			type:
+				'choice',
 
 			participantId:
-				v.participantId || '',
+				v.participantId ||
+				'',
 
 			eventNo:
 				v.studyChoiceSequence,
@@ -2421,7 +3514,8 @@ if ($bagCard.length > 0) {
 				State.passage,
 
 			gameTime:
-				window.getStudyGameTime(),
+				window
+					.getStudyGameTime(),
 
 			choice:
 				choiceText,
@@ -2439,71 +3533,264 @@ if ($bagCard.length > 0) {
 				reactionTimeSec,
 
 			clientTime:
-				new Date().toISOString()
+				new Date()
+					.toISOString()
 		};
 
 
-		/* 動作確認用 */
+		/*
+			動作確認用
+		*/
 		console.log(
 			'研究用選択ログ：',
 			record
 		);
 
 
-		/* Googleへ送信 */
-		window.sendStudyChoiceToGoogle(
-			record
-		);
+		/*
+			Googleへ送信
+		*/
+		window
+			.sendStudyChoiceToGoogle(
+				record
+			);
 
 
-		/* 次の選択までリセット */
+		/*
+			次の選択までリセット
+		*/
 		window.studyChoiceStartTime =
 			null;
 
 	},
+
 	true
 );
+
 
 /* ================================
    Twine → Google 通信確認専用
 ================================ */
 
-window.STUDY_API_URL =
-'https://script.google.com/macros/s/AKfycbxPom2P13lmFhN1NNKx9XoUE_25djEafIeXeciMSL59n4CA_97bDa7rR8K_7_Roj_hZ/exec';
+window.sendTwineTest =
+	function () {
+
+		const data = {
+
+			type:
+				'choice',
+
+			participantId:
+				'TWINE_TEST001',
+
+			eventNo:
+				999,
+
+			day:
+				0,
+
+			passage:
+				State.passage,
+
+			gameTime:
+				'12:34',
+
+			choice:
+				'TWINEから送信成功',
+
+			destination:
+				'通信確認',
+
+			optionCount:
+				2,
+
+			reactionTimeMs:
+				4567,
+
+			reactionTimeSec:
+				4.567,
+
+			clientTime:
+				new Date()
+					.toISOString()
+		};
 
 
-window.sendTwineTest = function () {
+		fetch(
+			window.STUDY_API_URL,
+			{
+				method:
+					'POST',
 
-	const data = {
-		type: 'choice',
-		participantId: 'TWINE_TEST001',
-		eventNo: 999,
-		day: 0,
-		passage: State.passage,
-		gameTime: '12:34',
-		choice: 'TWINEから送信成功',
-		destination: '通信確認',
-		optionCount: 2,
-		reactionTimeMs: 4567,
-		reactionTimeSec: 4.567,
-		clientTime: new Date().toISOString()
+				mode:
+					'no-cors',
+
+				headers: {
+					'Content-Type':
+						'text/plain;charset=utf-8'
+				},
+
+				body:
+					JSON.stringify(
+						data
+					)
+			}
+		)
+			.then(
+				function () {
+
+					console.log(
+						'Twineから送信しました'
+					);
+				}
+			)
+			.catch(
+				function (error) {
+
+					console.error(
+						'送信エラー',
+						error
+					);
+				}
+			);
 	};
 
-	fetch(window.STUDY_API_URL, {
-		method: 'POST',
-		mode: 'no-cors',
-		headers: {
-			'Content-Type': 'text/plain;charset=utf-8'
-		},
-		body: JSON.stringify(data)
-	})
-	.then(function () {
-		console.log('Twineから送信しました');
-	})
-	.catch(function (error) {
-		console.error('送信エラー', error);
-	});
-};</script><tw-tag name="widget" color="purple"></tw-tag><tw-passagedata pid="1" name="Start" tags="" position="600,250" size="100,100">&lt;&lt;set $day = 0&gt;&gt;
+
+/* ========================================
+   事前アンケート送信
+======================================== */
+
+window.sendPreSurveyToGoogle =
+	function () {
+
+		const v =
+			State.variables;
+
+		const data = {
+
+			type:
+				'pre_survey',
+
+			participantId:
+				v.participantId ||
+				'',
+
+			age:
+				v.participantAge ??
+				'',
+
+			prefecture:
+				v.participantPrefecture ||
+				'',
+
+			gender:
+				v.participantGender ||
+				'',
+
+			residenceType:
+				v.residenceType ||
+				'',
+
+			residenceFloor:
+				v.residenceFloor ||
+				'',
+
+			livingAlone:
+				v.livingAlone ||
+				'',
+
+			floodDamageExp:
+				v.floodDamageExp ||
+				'',
+
+			evacuationExp:
+				v.evacuationExp ||
+				'',
+
+			hazardMapExp:
+				v.hazardMapExp ||
+				'',
+
+			riskPerception:
+				v.riskPerception ??
+				'',
+
+			disasterKnowledge:
+				v.disasterKnowledge ??
+				'',
+
+			preEvacProbability:
+				v.preEvacProbability ??
+				'',
+
+			preEvacTiming:
+				v.preEvacTiming ||
+				'',
+
+			preFalseAlarm:
+				v.preFalseAlarm ??
+				'',
+
+			tipiAgreeNegative:
+				v.tipiAgreeNegative ??
+				'',
+
+			tipiAgreePositive:
+				v.tipiAgreePositive ??
+				'',
+
+			agreeableness:
+				v.agreeableness ??
+				'',
+
+			clientTime:
+				new Date()
+					.toISOString()
+		};
+
+
+		fetch(
+			window.STUDY_API_URL,
+			{
+				method:
+					'POST',
+
+				mode:
+					'no-cors',
+
+				keepalive:
+					true,
+
+				headers: {
+					'Content-Type':
+						'text/plain;charset=utf-8'
+				},
+
+				body:
+					JSON.stringify(
+						data
+					)
+			}
+		)
+			.then(
+				function () {
+
+					console.log(
+						'事前アンケート送信',
+						data
+					);
+				}
+			)
+			.catch(
+				function (error) {
+
+					console.error(
+						'事前アンケート送信エラー',
+						error
+					);
+				}
+			);
+	};</script><tw-tag name="widget" color="purple"></tw-tag><tw-passagedata pid="1" name="Start" tags="" position="600,250" size="100,100">&lt;&lt;set $day = 0&gt;&gt;
 
 &lt;div class=&quot;title-screen&quot;&gt;
 
@@ -3892,7 +5179,38 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;set $studyChoiceSequence = 0&gt;&gt;
 
 &lt;!-- 最終データ送信管理 --&gt;
-&lt;&lt;set $finalDataSent = false&gt;&gt;</tw-passagedata><tw-passagedata pid="34" name="無題のパッセージ" tags="" position="850,250" size="100,100">&lt;video
+&lt;&lt;set $finalDataSent = false&gt;&gt;
+
+&lt;!-- =========================
+     事前アンケート
+========================= --&gt;
+
+&lt;&lt;set $participantAge = &quot;&quot;&gt;&gt;
+&lt;&lt;set $participantPrefecture = &quot;&quot;&gt;&gt;
+&lt;&lt;set $participantGender = &quot;&quot;&gt;&gt;
+
+&lt;&lt;set $residenceType = &quot;&quot;&gt;&gt;
+&lt;&lt;set $residenceFloor = &quot;&quot;&gt;&gt;
+&lt;&lt;set $livingAlone = &quot;&quot;&gt;&gt;
+
+&lt;&lt;set $floodDamageExp = &quot;&quot;&gt;&gt;
+&lt;&lt;set $evacuationExp = &quot;&quot;&gt;&gt;
+&lt;&lt;set $hazardMapExp = &quot;&quot;&gt;&gt;
+
+&lt;&lt;set $riskPerception = 0&gt;&gt;
+&lt;&lt;set $disasterKnowledge = 0&gt;&gt;
+
+&lt;&lt;set $preEvacProbability = -1&gt;&gt;
+&lt;&lt;set $preEvacTiming = &quot;&quot;&gt;&gt;
+&lt;&lt;set $preFalseAlarm = 0&gt;&gt;
+
+&lt;&lt;set $tipiAgreeNegative = 0&gt;&gt;
+&lt;&lt;set $tipiAgreePositive = 0&gt;&gt;
+&lt;&lt;set $agreeableness = 0&gt;&gt;
+
+&lt;&lt;set $preSurveySent = false&gt;&gt;
+
+</tw-passagedata><tw-passagedata pid="34" name="無題のパッセージ" tags="" position="850,250" size="100,100">&lt;video
 	autoplay
 	loop
 	muted
@@ -6892,7 +8210,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		&lt;/div&gt;
 
 		&lt;div class=&quot;pre-game-next&quot;&gt;
-			[[次へ-&gt;プレイヤー属性]]
+		[[次へ-&gt;事前アンケート開始]]
 		&lt;/div&gt;
 
 	&lt;/div&gt;
@@ -6957,52 +8275,697 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;/div&gt;
 
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="107" name="事前アンケート開始" tags="" position="1000,375" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
-
 	&lt;div class=&quot;pre-game-panel&quot;&gt;
 
-		&lt;h2&gt;アンケート&lt;/h2&gt;
+		&lt;h2&gt;事前アンケート&lt;/h2&gt;
 
-		&lt;p&gt;
-			ゲームを始める前に、いくつかの質問に回答してください。
-		&lt;/p&gt;
-
-		&lt;p&gt;
-			それぞれの項目について、
-			現在の自分に最も近いと思う回答を選んでください。
-		&lt;/p&gt;
-
-		&lt;p&gt;
-			正解・不正解はありません。
-			あまり考え込みすぎず、自分の感覚に近いものを選んでください。
-		&lt;/p&gt;
+		&lt;div class=&quot;instruction-text&quot;&gt;
+			&lt;p&gt;ゲームを始める前に、いくつかの質問に回答してください。&lt;/p&gt;
+			&lt;p&gt;それぞれの項目について、現在の自分に最も近いと思う回答を選んでください。&lt;/p&gt;
+			&lt;p&gt;正解・不正解はありません。あまり考え込みすぎず、自分の感覚に近いものを選んでください。&lt;/p&gt;
+		&lt;/div&gt;
 
 		&lt;div class=&quot;pre-game-next&quot;&gt;
 			[[回答を始める-&gt;事前アンケート]]
 		&lt;/div&gt;
 
 	&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="108" name="事前アンケート" tags="" position="1125,375" size="100,100">&lt;&lt;nobr&gt;&gt;
 
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="108" name="事前アンケート" tags="" position="1125,375" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
+&lt;div class=&quot;pre-game-screen&quot;&gt;
+&lt;div class=&quot;pre-game-panel survey-panel&quot;&gt;
 
-	&lt;div class=&quot;pre-game-panel&quot;&gt;
+&lt;h2&gt;事前アンケート&lt;/h2&gt;
 
-		&lt;h2&gt;事前アンケート&lt;/h2&gt;
+&lt;p class=&quot;survey-intro&quot;&gt;
+ゲームを始める前に、以下の質問に回答してください。&lt;br&gt;
+正解・不正解はありません。現在の自分に最も近い回答を選んでください。
+&lt;/p&gt;
 
-		&lt;p&gt;
-			ここには後ほど事前アンケートの質問項目を追加します。
-		&lt;/p&gt;
 
-		&lt;p&gt;
-			現在はゲーム動作確認用の仮画面です。
-		&lt;/p&gt;
+&lt;!-- ========================================
+     基本情報
+======================================== --&gt;
 
-		&lt;div class=&quot;pre-game-next&quot;&gt;
-			[[アンケートを完了する-&gt;事前アンケート完了]]
-		&lt;/div&gt;
+&lt;h3 class=&quot;survey-section-title&quot;&gt;基本情報&lt;/h3&gt;
+
+
+&lt;!-- 1 年齢 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		1．あなたの年齢を教えてください。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;survey-inline&quot;&gt;
+		&lt;&lt;textbox &quot;$participantAge&quot; &quot;&quot;&gt;&gt;
+		&lt;span&gt;歳&lt;/span&gt;
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 2 都道府県 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		2．現在お住まいの都道府県を選択してください。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;survey-select-wrap&quot;&gt;
+
+		&lt;&lt;listbox &quot;$participantPrefecture&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;選択してください&quot; &quot;&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;北海道&quot; &quot;北海道&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;青森県&quot; &quot;青森県&quot;&gt;&gt;
+			&lt;&lt;option &quot;岩手県&quot; &quot;岩手県&quot;&gt;&gt;
+			&lt;&lt;option &quot;宮城県&quot; &quot;宮城県&quot;&gt;&gt;
+			&lt;&lt;option &quot;秋田県&quot; &quot;秋田県&quot;&gt;&gt;
+			&lt;&lt;option &quot;山形県&quot; &quot;山形県&quot;&gt;&gt;
+			&lt;&lt;option &quot;福島県&quot; &quot;福島県&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;茨城県&quot; &quot;茨城県&quot;&gt;&gt;
+			&lt;&lt;option &quot;栃木県&quot; &quot;栃木県&quot;&gt;&gt;
+			&lt;&lt;option &quot;群馬県&quot; &quot;群馬県&quot;&gt;&gt;
+			&lt;&lt;option &quot;埼玉県&quot; &quot;埼玉県&quot;&gt;&gt;
+			&lt;&lt;option &quot;千葉県&quot; &quot;千葉県&quot;&gt;&gt;
+			&lt;&lt;option &quot;東京都&quot; &quot;東京都&quot;&gt;&gt;
+			&lt;&lt;option &quot;神奈川県&quot; &quot;神奈川県&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;新潟県&quot; &quot;新潟県&quot;&gt;&gt;
+			&lt;&lt;option &quot;富山県&quot; &quot;富山県&quot;&gt;&gt;
+			&lt;&lt;option &quot;石川県&quot; &quot;石川県&quot;&gt;&gt;
+			&lt;&lt;option &quot;福井県&quot; &quot;福井県&quot;&gt;&gt;
+			&lt;&lt;option &quot;山梨県&quot; &quot;山梨県&quot;&gt;&gt;
+			&lt;&lt;option &quot;長野県&quot; &quot;長野県&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;岐阜県&quot; &quot;岐阜県&quot;&gt;&gt;
+			&lt;&lt;option &quot;静岡県&quot; &quot;静岡県&quot;&gt;&gt;
+			&lt;&lt;option &quot;愛知県&quot; &quot;愛知県&quot;&gt;&gt;
+			&lt;&lt;option &quot;三重県&quot; &quot;三重県&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;滋賀県&quot; &quot;滋賀県&quot;&gt;&gt;
+			&lt;&lt;option &quot;京都府&quot; &quot;京都府&quot;&gt;&gt;
+			&lt;&lt;option &quot;大阪府&quot; &quot;大阪府&quot;&gt;&gt;
+			&lt;&lt;option &quot;兵庫県&quot; &quot;兵庫県&quot;&gt;&gt;
+			&lt;&lt;option &quot;奈良県&quot; &quot;奈良県&quot;&gt;&gt;
+			&lt;&lt;option &quot;和歌山県&quot; &quot;和歌山県&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;鳥取県&quot; &quot;鳥取県&quot;&gt;&gt;
+			&lt;&lt;option &quot;島根県&quot; &quot;島根県&quot;&gt;&gt;
+			&lt;&lt;option &quot;岡山県&quot; &quot;岡山県&quot;&gt;&gt;
+			&lt;&lt;option &quot;広島県&quot; &quot;広島県&quot;&gt;&gt;
+			&lt;&lt;option &quot;山口県&quot; &quot;山口県&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;徳島県&quot; &quot;徳島県&quot;&gt;&gt;
+			&lt;&lt;option &quot;香川県&quot; &quot;香川県&quot;&gt;&gt;
+			&lt;&lt;option &quot;愛媛県&quot; &quot;愛媛県&quot;&gt;&gt;
+			&lt;&lt;option &quot;高知県&quot; &quot;高知県&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;福岡県&quot; &quot;福岡県&quot;&gt;&gt;
+			&lt;&lt;option &quot;佐賀県&quot; &quot;佐賀県&quot;&gt;&gt;
+			&lt;&lt;option &quot;長崎県&quot; &quot;長崎県&quot;&gt;&gt;
+			&lt;&lt;option &quot;熊本県&quot; &quot;熊本県&quot;&gt;&gt;
+			&lt;&lt;option &quot;大分県&quot; &quot;大分県&quot;&gt;&gt;
+			&lt;&lt;option &quot;宮崎県&quot; &quot;宮崎県&quot;&gt;&gt;
+			&lt;&lt;option &quot;鹿児島県&quot; &quot;鹿児島県&quot;&gt;&gt;
+			&lt;&lt;option &quot;沖縄県&quot; &quot;沖縄県&quot;&gt;&gt;
+
+		&lt;&lt;/listbox&gt;&gt;
 
 	&lt;/div&gt;
 
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="109" name="事前アンケート完了" tags="" position="1125,500" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
+&lt;/div&gt;
+
+
+&lt;!-- 3 性別 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		3．性別を選択してください。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;survey-inline&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$participantGender&quot; &quot;male&quot;&gt;&gt;
+			男性
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$participantGender&quot; &quot;female&quot;&gt;&gt;
+			女性
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$participantGender&quot; &quot;other&quot;&gt;&gt;
+			その他・回答しない
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 4 住居形態 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		4．現在お住まいの住居の形態を選択してください。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;survey-inline&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$residenceType&quot; &quot;detached&quot;&gt;&gt;
+			戸建住宅
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$residenceType&quot; &quot;apartment&quot;&gt;&gt;
+			集合住宅
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$residenceType&quot; &quot;other&quot;&gt;&gt;
+			その他
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 5 居住階 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		5．現在お住まいの階を選択してください。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;survey-inline&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$residenceFloor&quot; &quot;1&quot;&gt;&gt;
+			1階
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$residenceFloor&quot; &quot;2&quot;&gt;&gt;
+			2階
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$residenceFloor&quot; &quot;3plus&quot;&gt;&gt;
+			3階以上
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 6 一人暮らし --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		6．現在、一人暮らしですか。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;survey-inline&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$livingAlone&quot; &quot;yes&quot;&gt;&gt;
+			はい
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$livingAlone&quot; &quot;no&quot;&gt;&gt;
+			いいえ
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;!-- ========================================
+     水害に関する経験・認識
+======================================== --&gt;
+
+&lt;h3 class=&quot;survey-section-title&quot;&gt;水害に関する経験・認識&lt;/h3&gt;
+
+
+&lt;!-- 7 被災経験 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		7．これまでに、大雨や洪水などの水害によって、生活や住居に被害・影響を受けた経験がありますか。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;survey-inline&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$floodDamageExp&quot; &quot;yes&quot;&gt;&gt;
+			ある
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$floodDamageExp&quot; &quot;no&quot;&gt;&gt;
+			ない
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 8 避難経験 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		8．これまでに、大雨や洪水などの水害によって、自宅外の安全な場所へ避難した経験がありますか。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;survey-inline&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$evacuationExp&quot; &quot;yes&quot;&gt;&gt;
+			ある
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$evacuationExp&quot; &quot;no&quot;&gt;&gt;
+			ない
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 9 ハザードマップ --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		9．現在お住まいの地域のハザードマップを見たことがありますか。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;survey-inline&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$hazardMapExp&quot; &quot;yes&quot;&gt;&gt;
+			ある
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$hazardMapExp&quot; &quot;no&quot;&gt;&gt;
+			ない
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$hazardMapExp&quot; &quot;unknown&quot;&gt;&gt;
+			覚えていない
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 10 リスク認知 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		10．現在お住まいの場所が、大雨や洪水によって被害を受ける可能性はどの程度あると思いますか。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;likert-five&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$riskPerception&quot; 1&gt;&gt;
+			&lt;span&gt;1&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$riskPerception&quot; 2&gt;&gt;
+			&lt;span&gt;2&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$riskPerception&quot; 3&gt;&gt;
+			&lt;span&gt;3&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$riskPerception&quot; 4&gt;&gt;
+			&lt;span&gt;4&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$riskPerception&quot; 5&gt;&gt;
+			&lt;span&gt;5&lt;/span&gt;
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+	&lt;div class=&quot;likert-end-labels&quot;&gt;
+		&lt;span&gt;まったくないと思う&lt;/span&gt;
+		&lt;span&gt;非常に高いと思う&lt;/span&gt;
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 11 防災知識 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		11．大雨や洪水時の避難情報や警戒レベルについて、どの程度知っていると思いますか。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;likert-five&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$disasterKnowledge&quot; 1&gt;&gt;
+			&lt;span&gt;1&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$disasterKnowledge&quot; 2&gt;&gt;
+			&lt;span&gt;2&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$disasterKnowledge&quot; 3&gt;&gt;
+			&lt;span&gt;3&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$disasterKnowledge&quot; 4&gt;&gt;
+			&lt;span&gt;4&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$disasterKnowledge&quot; 5&gt;&gt;
+			&lt;span&gt;5&lt;/span&gt;
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+	&lt;div class=&quot;likert-end-labels&quot;&gt;
+		&lt;span&gt;まったく知らない&lt;/span&gt;
+		&lt;span&gt;よく知っている&lt;/span&gt;
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;!-- ========================================
+     避難について
+======================================== --&gt;
+
+&lt;h3 class=&quot;survey-section-title&quot;&gt;避難について&lt;/h3&gt;
+
+
+&lt;div class=&quot;survey-scenario&quot;&gt;
+
+	&lt;strong&gt;次の状況を想像してください。&lt;/strong&gt;&lt;br&gt;
+
+	あなたは、大雨による浸水のおそれがある地域の住宅に住んでいるとします。現在、大雨が続いており、今後さらに雨が強くなる可能性があります。
+
+&lt;/div&gt;
+
+
+&lt;!-- 12 避難する可能性 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		12．この状況で、あなたが実際に自宅外の安全な場所へ避難する可能性はどのくらいありますか。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;survey-select-wrap&quot;&gt;
+
+		&lt;&lt;listbox &quot;$preEvacProbability&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;選択してください&quot; -1&gt;&gt;
+
+			&lt;&lt;option &quot;0％&quot; 0&gt;&gt;
+			&lt;&lt;option &quot;10％&quot; 10&gt;&gt;
+			&lt;&lt;option &quot;20％&quot; 20&gt;&gt;
+			&lt;&lt;option &quot;30％&quot; 30&gt;&gt;
+			&lt;&lt;option &quot;40％&quot; 40&gt;&gt;
+			&lt;&lt;option &quot;50％&quot; 50&gt;&gt;
+			&lt;&lt;option &quot;60％&quot; 60&gt;&gt;
+			&lt;&lt;option &quot;70％&quot; 70&gt;&gt;
+			&lt;&lt;option &quot;80％&quot; 80&gt;&gt;
+			&lt;&lt;option &quot;90％&quot; 90&gt;&gt;
+			&lt;&lt;option &quot;100％&quot; 100&gt;&gt;
+
+		&lt;&lt;/listbox&gt;&gt;
+
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 13 避難タイミング --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		13．この状況で、自宅外の安全な場所へ避難するとしたら、どの段階で避難を開始すると思いますか。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;survey-select-wrap timing-select-wrap&quot;&gt;
+
+		&lt;&lt;listbox &quot;$preEvacTiming&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;選択してください&quot; &quot;&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;A　「高齢者等避難」が発令される前&quot; &quot;A&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;B　「高齢者等避難」が発令されたとき&quot; &quot;B&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;C　「高齢者等避難」発令後～「避難指示」が発令されるまでの間&quot; &quot;C&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;D　「避難指示」が発令されたとき&quot; &quot;D&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;E　「避難指示」発令後～「緊急安全確保」が発令されるまでの間&quot; &quot;E&quot;&gt;&gt;
+
+			&lt;&lt;option &quot;F　「緊急安全確保」が発令されたとき&quot; &quot;F&quot;&gt;&gt;
+
+		&lt;&lt;/listbox&gt;&gt;
+
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 14 空振り --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		14．避難した結果、災害が発生しなかった場合、「避難しなくてもよかった」と感じると思いますか。
+	&lt;/p&gt;
+
+	&lt;div class=&quot;likert-five&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$preFalseAlarm&quot; 1&gt;&gt;
+			&lt;span&gt;1&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$preFalseAlarm&quot; 2&gt;&gt;
+			&lt;span&gt;2&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$preFalseAlarm&quot; 3&gt;&gt;
+			&lt;span&gt;3&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$preFalseAlarm&quot; 4&gt;&gt;
+			&lt;span&gt;4&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$preFalseAlarm&quot; 5&gt;&gt;
+			&lt;span&gt;5&lt;/span&gt;
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+	&lt;div class=&quot;likert-end-labels&quot;&gt;
+		&lt;span&gt;まったくそう思わない&lt;/span&gt;
+		&lt;span&gt;とてもそう思う&lt;/span&gt;
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;!-- ========================================
+     性格について
+======================================== --&gt;
+
+&lt;h3 class=&quot;survey-section-title&quot;&gt;性格について&lt;/h3&gt;
+
+&lt;p class=&quot;survey-small-note&quot;&gt;
+以下の文章が、あなた自身にどの程度当てはまるか回答してください。
+&lt;/p&gt;
+
+
+&lt;!-- 15 協調性 逆転項目 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		15．他人に不満をもち、もめごとを起こしやすいと思う
+	&lt;/p&gt;
+
+	&lt;div class=&quot;likert-five&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$tipiAgreeNegative&quot; 1&gt;&gt;
+			&lt;span&gt;1&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$tipiAgreeNegative&quot; 2&gt;&gt;
+			&lt;span&gt;2&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$tipiAgreeNegative&quot; 3&gt;&gt;
+			&lt;span&gt;3&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$tipiAgreeNegative&quot; 4&gt;&gt;
+			&lt;span&gt;4&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$tipiAgreeNegative&quot; 5&gt;&gt;
+			&lt;span&gt;5&lt;/span&gt;
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+	&lt;div class=&quot;likert-end-labels&quot;&gt;
+		&lt;span&gt;まったく当てはまらない&lt;/span&gt;
+		&lt;span&gt;とても当てはまる&lt;/span&gt;
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;!-- 16 協調性 --&gt;
+&lt;div class=&quot;survey-row&quot; style=&quot;margin-bottom: 18px !important;&quot;&gt;
+
+	&lt;p class=&quot;survey-question-title&quot;&gt;
+		16．人に気をつかう、やさしい人間だと思う
+	&lt;/p&gt;
+
+	&lt;div class=&quot;likert-five&quot;&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$tipiAgreePositive&quot; 1&gt;&gt;
+			&lt;span&gt;1&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$tipiAgreePositive&quot; 2&gt;&gt;
+			&lt;span&gt;2&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$tipiAgreePositive&quot; 3&gt;&gt;
+			&lt;span&gt;3&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$tipiAgreePositive&quot; 4&gt;&gt;
+			&lt;span&gt;4&lt;/span&gt;
+		&lt;/label&gt;
+
+		&lt;label&gt;
+			&lt;&lt;radiobutton &quot;$tipiAgreePositive&quot; 5&gt;&gt;
+			&lt;span&gt;5&lt;/span&gt;
+		&lt;/label&gt;
+
+	&lt;/div&gt;
+
+	&lt;div class=&quot;likert-end-labels&quot;&gt;
+		&lt;span&gt;まったく当てはまらない&lt;/span&gt;
+		&lt;span&gt;とても当てはまる&lt;/span&gt;
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;!-- ========================================
+     エラー表示
+======================================== --&gt;
+
+&lt;p id=&quot;pre-survey-error&quot;&gt;&lt;/p&gt;
+
+
+
+&lt;!-- ========================================
+     回答完了
+======================================== --&gt;
+
+&lt;div class=&quot;pre-game-next survey-submit&quot;&gt;
+
+&lt;&lt;button &quot;回答を完了する&quot;&gt;&gt;
+
+	&lt;&lt;if $participantAge is &quot;&quot; or Number.isNaN(Number($participantAge)) or Number($participantAge) &lt; 1 or Number($participantAge) &gt; 120 or $participantPrefecture is &quot;&quot; or $participantGender is &quot;&quot; or $residenceType is &quot;&quot; or $residenceFloor is &quot;&quot; or $livingAlone is &quot;&quot; or $floodDamageExp is &quot;&quot; or $evacuationExp is &quot;&quot; or $hazardMapExp is &quot;&quot; or $riskPerception is 0 or $disasterKnowledge is 0 or $preEvacProbability is -1 or $preEvacTiming is &quot;&quot; or $preFalseAlarm is 0 or $tipiAgreeNegative is 0 or $tipiAgreePositive is 0&gt;&gt;
+
+		&lt;&lt;replace &quot;#pre-survey-error&quot;&gt;&gt;
+
+			&lt;span class=&quot;survey-error&quot;&gt;
+				未回答の項目があります。すべての項目に回答してください。
+			&lt;/span&gt;
+
+		&lt;&lt;/replace&gt;&gt;
+
+	&lt;&lt;else&gt;&gt;
+
+		&lt;&lt;set $participantAge = Number($participantAge)&gt;&gt;
+
+		&lt;!-- 協調性得点 --&gt;
+		&lt;&lt;set $agreeableness = ((6 - $tipiAgreeNegative) + $tipiAgreePositive) / 2&gt;&gt;
+
+		&lt;!-- Googleスプレッドシートへ送信 --&gt;
+		&lt;&lt;if not $preSurveySent&gt;&gt;
+
+			&lt;&lt;run sendPreSurveyToGoogle()&gt;&gt;
+
+			&lt;&lt;set $preSurveySent = true&gt;&gt;
+
+		&lt;&lt;/if&gt;&gt;
+
+		&lt;&lt;goto &quot;事前アンケート完了&quot;&gt;&gt;
+
+	&lt;&lt;/if&gt;&gt;
+
+&lt;&lt;/button&gt;&gt;
+
+&lt;/div&gt;
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;&lt;/nobr&gt;&gt;</tw-passagedata><tw-passagedata pid="109" name="事前アンケート完了" tags="" position="1125,500" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
 
 	&lt;div class=&quot;pre-game-panel&quot;&gt;
 
