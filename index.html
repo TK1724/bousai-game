@@ -3883,6 +3883,229 @@ window.sendPreSurveyToGoogle =
 					);
 				}
 			);
+	};
+
+/* ========================================
+   事後アンケート送信
+======================================== */
+
+window.sendPostSurveyToGoogle =
+	function () {
+
+		const v =
+			State.variables;
+
+
+		const data = {
+
+			type:
+				'post_survey',
+
+
+			participantId:
+				v.participantId ||
+				'',
+
+
+			/* =========================
+			   避難について
+			========================= */
+
+			postEvacProbability:
+				v.postEvacProbability ??
+				'',
+
+			postEvacTiming:
+				v.postEvacTiming ||
+				'',
+
+			postFalseAlarm:
+				v.postFalseAlarm ??
+				'',
+
+
+			/* =========================
+			   2日目の判断理由
+			========================= */
+
+			day2ReasonWeather:
+				!!v.day2ReasonWeather,
+
+			day2ReasonInfo:
+				!!v.day2ReasonInfo,
+
+			day2ReasonDark:
+				!!v.day2ReasonDark,
+
+			day2ReasonPrepared:
+				!!v.day2ReasonPrepared,
+
+			day2ReasonRoute:
+				!!v.day2ReasonRoute,
+
+			day2ReasonExperience:
+				!!v.day2ReasonExperience,
+
+			day2ReasonWait:
+				!!v.day2ReasonWait,
+
+			day2ReasonOther:
+				!!v.day2ReasonOther,
+
+
+			/* =========================
+			   3日目の判断理由
+			========================= */
+
+			day3ReasonWeather:
+				!!v.day3ReasonWeather,
+
+			day3ReasonInfo:
+				!!v.day3ReasonInfo,
+
+			day3ReasonDark:
+				!!v.day3ReasonDark,
+
+			day3ReasonPrepared:
+				!!v.day3ReasonPrepared,
+
+			day3ReasonRoute:
+				!!v.day3ReasonRoute,
+
+			day3ReasonExperience:
+				!!v.day3ReasonExperience,
+
+			day3ReasonWait:
+				!!v.day3ReasonWait,
+
+			day3ReasonOther:
+				!!v.day3ReasonOther,
+
+
+			/* =========================
+			   TIPI-J：外向性
+			========================= */
+
+			tipiExtraversionPositive:
+				v.tipiExtraversionPositive ??
+				'',
+
+			tipiExtraversionNegative:
+				v.tipiExtraversionNegative ??
+				'',
+
+			extraversion:
+				v.extraversion ??
+				'',
+
+
+			/* =========================
+			   TIPI-J：誠実性
+			========================= */
+
+			tipiConscientiousPositive:
+				v.tipiConscientiousPositive ??
+				'',
+
+			tipiConscientiousNegative:
+				v.tipiConscientiousNegative ??
+				'',
+
+			conscientiousness:
+				v.conscientiousness ??
+				'',
+
+
+			/* =========================
+			   TIPI-J：神経症傾向
+			========================= */
+
+			tipiNeuroticPositive:
+				v.tipiNeuroticPositive ??
+				'',
+
+			tipiNeuroticNegative:
+				v.tipiNeuroticNegative ??
+				'',
+
+			neuroticism:
+				v.neuroticism ??
+				'',
+
+
+			/* =========================
+			   TIPI-J：開放性
+			========================= */
+
+			tipiOpennessPositive:
+				v.tipiOpennessPositive ??
+				'',
+
+			tipiOpennessNegative:
+				v.tipiOpennessNegative ??
+				'',
+
+			openness:
+				v.openness ??
+				'',
+
+
+			/* =========================
+			   自由記述
+			========================= */
+
+			postGameComment:
+				v.postGameComment ||
+				'',
+
+
+			clientTime:
+				new Date()
+					.toISOString()
+		};
+
+
+		return fetch(
+			window.STUDY_API_URL,
+			{
+				method:
+					'POST',
+
+				mode:
+					'no-cors',
+
+				keepalive:
+					true,
+
+				headers: {
+					'Content-Type':
+						'text/plain;charset=utf-8'
+				},
+
+				body:
+					JSON.stringify(
+						data
+					)
+			}
+		)
+			.then(
+				function () {
+
+					console.log(
+						'事後アンケート送信',
+						data
+					);
+				}
+			)
+			.catch(
+				function (error) {
+
+					console.error(
+						'事後アンケート送信エラー',
+						error
+					);
+				}
+			);
 	};</script><tw-tag name="widget" color="purple"></tw-tag><tw-passagedata pid="1" name="Start" tags="" position="600,250" size="100,100">&lt;&lt;set $day = 0&gt;&gt;
 
 &lt;div class=&quot;title-screen&quot;&gt;
@@ -5353,7 +5576,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;!-- 自由記述 --&gt;
 &lt;&lt;set $postGameComment = &quot;&quot;&gt;&gt;
 
-&lt;&lt;set $postSurveyCompleted = false&gt;&gt;</tw-passagedata><tw-passagedata pid="34" name="無題のパッセージ" tags="" position="850,250" size="100,100">&lt;video
+&lt;&lt;set $postSurveyCompleted = false&gt;&gt;
+&lt;&lt;set $postSurveySent = false&gt;&gt;</tw-passagedata><tw-passagedata pid="34" name="無題のパッセージ" tags="" position="850,250" size="100,100">&lt;video
 	autoplay
 	loop
 	muted
@@ -10014,28 +10238,62 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		or $tipiOpennessNegative is 0&gt;&gt;
 
 		&lt;&lt;replace &quot;#post-survey-error&quot;&gt;&gt;
+
 			&lt;span class=&quot;survey-error&quot;&gt;
 				未回答の項目があります。選択式の項目をすべて回答してください。
 			&lt;/span&gt;
+
 		&lt;&lt;/replace&gt;&gt;
 
 	&lt;&lt;else&gt;&gt;
 
-		&lt;!-- 性格得点を計算 --&gt;
+		&lt;!-- =========================
+		     Big Five得点計算
+		========================= --&gt;
 
+		&lt;!-- 外向性 --&gt;
 		&lt;&lt;set $extraversion =
-			($tipiExtraversionPositive + (6 - $tipiExtraversionNegative)) / 2&gt;&gt;
+			($tipiExtraversionPositive
+			+ (6 - $tipiExtraversionNegative))
+			/ 2&gt;&gt;
 
+
+		&lt;!-- 誠実性 --&gt;
 		&lt;&lt;set $conscientiousness =
-			($tipiConscientiousPositive + (6 - $tipiConscientiousNegative)) / 2&gt;&gt;
+			($tipiConscientiousPositive
+			+ (6 - $tipiConscientiousNegative))
+			/ 2&gt;&gt;
 
+
+		&lt;!-- 神経症傾向 --&gt;
 		&lt;&lt;set $neuroticism =
-			($tipiNeuroticPositive + (6 - $tipiNeuroticNegative)) / 2&gt;&gt;
+			($tipiNeuroticPositive
+			+ (6 - $tipiNeuroticNegative))
+			/ 2&gt;&gt;
 
+
+		&lt;!-- 開放性 --&gt;
 		&lt;&lt;set $openness =
-			($tipiOpennessPositive + (6 - $tipiOpennessNegative)) / 2&gt;&gt;
+			($tipiOpennessPositive
+			+ (6 - $tipiOpennessNegative))
+			/ 2&gt;&gt;
+
+
+		&lt;!-- =========================
+		     Googleへ送信
+		========================= --&gt;
+
+		&lt;&lt;if not $postSurveySent&gt;&gt;
+
+			&lt;&lt;run sendPostSurveyToGoogle()&gt;&gt;
+
+			&lt;&lt;set $postSurveySent = true&gt;&gt;
+
+		&lt;&lt;/if&gt;&gt;
+
 
 		&lt;&lt;set $postSurveyCompleted = true&gt;&gt;
+
 
 		&lt;&lt;goto &quot;事後アンケート完了&quot;&gt;&gt;
 
@@ -10044,7 +10302,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/button&gt;&gt;
 
 &lt;/div&gt;
-
 
 &lt;/div&gt;
 &lt;/div&gt;
