@@ -104,7 +104,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<tw-storydata name="防災ゲーム" startnode="104" creator="Twine" creator-version="2.12.0" format="SugarCube" format-version="2.37.3" ifid="F0B1D246-9022-4FE3-85FA-DC853CAC8C6C" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* ========================================
+	<tw-storydata name="防災ゲーム" startnode="121" creator="Twine" creator-version="2.12.0" format="SugarCube" format-version="2.37.3" ifid="F0B1D246-9022-4FE3-85FA-DC853CAC8C6C" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* ========================================
    画面右上のゲーム情報
 ======================================== */
 
@@ -2929,6 +2929,15 @@ html.pc-only-device body {
 .operation-block ul > br,
 .operation-block li > br {
 	display: none !important;
+}
+
+/* ========================================
+   振り返り画面のスクロール
+======================================== */
+
+.recap-panel {
+	overflow-y: scroll !important;
+	scrollbar-gutter: stable;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.macros.typeSkipKey = "Enter";
 
 // 選択肢のキーボード操作
@@ -4715,7 +4724,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;span class=&quot;choice-disabled&quot;&gt;避難する&lt;/span&gt;
 &lt;/div&gt;
 
-&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 60ms none&gt;&gt;いつの間にか、かなり時間が経っていた。&lt;br&gt;雨音が、会話もかき消しそうなほど強くなっている。&lt;br&gt;窓の外では、道路の端にたまった水が、少しずつ広がり始めていた。&lt;br&gt;さっきまで見慣れていた景色が、急によそよそしく見える。&lt;br&gt;「……まだ大丈夫だ。避難するなら、今からでも間に合うはず」&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 60ms none&gt;&gt;いつの間にか、かなり時間が経っていた。&lt;br&gt;雨音が、会話もかき消しそうなほど強くなっている。&lt;br&gt;窓の外では、道路の端にたまった水が、少しずつ広がり始めていた。&lt;br&gt;さっきまで見慣れていた景色が、急によそよそしく見える。&lt;br&gt;「……まだ大丈夫だ。もう少し様子を見てからでも、避難は間に合うはず」&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -5386,10 +5395,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;&lt;/if&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
-&lt;&lt;if $evacuationTimeDay2 is -1&gt;&gt;
-	&lt;&lt;set $evacuationTimeDay2 = $time&gt;&gt;
-&lt;&lt;/if&gt;&gt;
-
 &lt;&lt;updateRainSound&gt;&gt;
 
 &lt;!-- 荷物・靴・戸締まりを確認して家を出るまでの時間 --&gt;
@@ -5400,16 +5405,35 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/if&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
-	&lt;video class=&quot;scene-media scene-media-window&quot;
-		autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
-		&lt;source src=&quot;images/outside_rain03.mp4&quot; type=&quot;video/mp4&quot;&gt;
-	&lt;/video&gt;
 
-	&lt;img class=&quot;scene-room&quot; src=&quot;images/room02.png&quot; alt=&quot;&quot;&gt;
+	&lt;&lt;if $time &gt;= 18 * 60 + 30&gt;&gt;
+
+		&lt;video class=&quot;scene-media scene-media-window&quot;
+			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
+			&lt;source src=&quot;images/outside_rain03.mp4&quot; type=&quot;video/mp4&quot;&gt;
+		&lt;/video&gt;
+
+		&lt;img class=&quot;scene-room&quot;
+			src=&quot;images/room02.png&quot;
+			alt=&quot;&quot;&gt;
+
+	&lt;&lt;else&gt;&gt;
+
+		&lt;video class=&quot;scene-media scene-media-window&quot;
+			autoplay loop muted playsinline preload=&quot;auto&quot;&gt;
+			&lt;source src=&quot;images/outside_rain01.mp4&quot; type=&quot;video/mp4&quot;&gt;
+		&lt;/video&gt;
+
+		&lt;img class=&quot;scene-room&quot;
+			src=&quot;images/room01.png&quot;
+			alt=&quot;&quot;&gt;
+
+	&lt;&lt;/if&gt;&gt;
+
 &lt;/div&gt;
 
 &lt;div id=&quot;clock-box&quot;&gt;
-時刻：&lt;&lt;print Math.floor($time / 60)&gt;&gt;:&lt;&lt;if $time % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $time % 60&gt;&gt;
+	時刻：&lt;&lt;print Math.floor($time / 60)&gt;&gt;:&lt;&lt;if $time % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $time % 60&gt;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
@@ -5418,10 +5442,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		[[玄関へ向かう-&gt;2日目_靴選択]]
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;時計を見る。時刻は
-&lt;span class=&quot;story-time&quot;&gt;
-&lt;&lt;print Math.floor($evacuationTimeDay2 / 60)&gt;&gt;:&lt;&lt;if $evacuationTimeDay2 % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $evacuationTimeDay2 % 60&gt;&gt;
-&lt;/span&gt;。&lt;br&gt;玄関で靴を履き、家を出る準備を整える。&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;&lt;&lt;if $bagWeight &gt;= 7&gt;&gt;防災バッグは必要な物でいっぱいになっている。&lt;br&gt;かなり重いが、背負って歩けないほどではない。&lt;&lt;elseif $bagWeight &gt;= 4&gt;&gt;防災バッグには、選んだ持ち物が入っている。&lt;br&gt;少し重さはあるが、問題なく背負えそうだ。&lt;&lt;else&gt;&gt;防災バッグは軽く、動きやすそうだ。&lt;br&gt;その一方で、持ち物が十分か少し不安が残る。&lt;&lt;/if&gt;&gt;&lt;&lt;else&gt;&gt;防災バッグは用意していない。&lt;br&gt;身軽ではあるが、避難先で必要な物が足りないかもしれない。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $hasRaincoat&gt;&gt;レインコートを取り出して身につける。&lt;br&gt;これなら、雨の中でも多少は濡れずに歩けそうだ。&lt;&lt;else&gt;&gt;雨を防げる物は持っていない。&lt;br&gt;外へ出れば、すぐに服が濡れてしまいそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $chargedPhone&gt;&gt;スマートフォンは出発前に充電してある。&lt;&lt;elseif $hasBattery&gt;&gt;スマートフォンの電池は少ないが、モバイルバッテリーを持っている。&lt;&lt;else&gt;&gt;スマートフォンの電池残量が心細い。&lt;&lt;/if&gt;&gt;&lt;br&gt;玄関の扉を開ける。&lt;br&gt;外では、強い雨が降り続いている。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;nobr&gt;&gt;&lt;&lt;type 50ms none&gt;&gt;時計を見る。時刻は &lt;span class=&quot;story-time&quot;&gt;&lt;&lt;print Math.floor($evacuationTimeDay2 / 60)&gt;&gt;:&lt;&lt;if $evacuationTimeDay2 % 60 &lt; 10&gt;&gt;0&lt;&lt;/if&gt;&gt;&lt;&lt;print $evacuationTimeDay2 % 60&gt;&gt;&lt;/span&gt;。&lt;br&gt;玄関で靴を履き、家を出る準備を整える。&lt;br&gt;&lt;&lt;if $packedBag&gt;&gt;&lt;&lt;if $bagWeight &gt;= 7&gt;&gt;防災バッグは必要な物でいっぱいになっている。&lt;br&gt;かなり重いが、背負って歩けないほどではない。&lt;&lt;elseif $bagWeight &gt;= 4&gt;&gt;防災バッグには、選んだ持ち物が入っている。&lt;br&gt;少し重さはあるが、問題なく背負えそうだ。&lt;&lt;else&gt;&gt;防災バッグは軽く、動きやすそうだ。&lt;br&gt;その一方で、持ち物が十分か少し不安が残る。&lt;&lt;/if&gt;&gt;&lt;&lt;else&gt;&gt;防災バッグは用意していない。&lt;br&gt;身軽ではあるが、避難先で必要な物が足りないかもしれない。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $hasRaincoat&gt;&gt;レインコートを取り出して身につける。&lt;br&gt;これなら、雨の中でも多少は濡れずに歩けそうだ。&lt;&lt;else&gt;&gt;雨を防げる物は持っていない。&lt;br&gt;外へ出れば、すぐに服が濡れてしまいそうだ。&lt;&lt;/if&gt;&gt;&lt;br&gt;&lt;&lt;if $chargedPhone&gt;&gt;スマートフォンは出発前に充電してある。&lt;&lt;elseif $hasBattery&gt;&gt;スマートフォンの電池は少ないが、モバイルバッテリーを持っている。&lt;&lt;else&gt;&gt;スマートフォンの電池残量が心細い。&lt;&lt;/if&gt;&gt;&lt;br&gt;玄関の扉を開ける。&lt;br&gt;外では、強い雨が降り続いている。&lt;&lt;/type&gt;&gt;&lt;&lt;/nobr&gt;&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 
@@ -6117,7 +6138,19 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;&lt;set $postSurveyCompleted = false&gt;&gt;
 
-&lt;&lt;set $postSurveySent = false&gt;&gt;</tw-passagedata><tw-passagedata pid="33" name="無題のパッセージ" tags="" position="825,25" size="100,100">&lt;video
+&lt;&lt;set $postSurveySent = false&gt;&gt;
+
+&lt;!-- 2日目の防災バッグ内容を3日目に引き継ぐための保存用 --&gt;
+&lt;&lt;set $day2PackedBag = false&gt;&gt;
+&lt;&lt;set $day2BagWeight = 0&gt;&gt;
+
+&lt;&lt;set $day2HasWater = false&gt;&gt;
+&lt;&lt;set $day2HasFood = false&gt;&gt;
+&lt;&lt;set $day2HasLight = false&gt;&gt;
+&lt;&lt;set $day2HasBattery = false&gt;&gt;
+&lt;&lt;set $day2HasTowel = false&gt;&gt;
+&lt;&lt;set $day2HasMedicine = false&gt;&gt;
+&lt;&lt;set $day2HasRaincoat = false&gt;&gt;</tw-passagedata><tw-passagedata pid="33" name="無題のパッセージ" tags="" position="825,25" size="100,100">&lt;video
 	autoplay
 	loop
 	muted
@@ -6137,6 +6170,18 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	&lt;source src=&quot;images/outside_rain03.mp4&quot; type=&quot;video/mp4&quot;&gt;
 	動画を読み込めませんでした。
 &lt;/video&gt;</tw-passagedata><tw-passagedata pid="34" name="2日目_バッグ確認" tags="" position="1037.5,2125" size="100,100">&lt;&lt;audio &quot;rain02&quot; loop play&gt;&gt;
+
+&lt;!-- 2日目に選んだバッグの内容を保存 --&gt;
+&lt;&lt;set $day2PackedBag = true&gt;&gt;
+&lt;&lt;set $day2BagWeight = $bagWeight&gt;&gt;
+
+&lt;&lt;set $day2HasWater = $hasWater&gt;&gt;
+&lt;&lt;set $day2HasFood = $hasFood&gt;&gt;
+&lt;&lt;set $day2HasLight = $hasLight&gt;&gt;
+&lt;&lt;set $day2HasBattery = $hasBattery&gt;&gt;
+&lt;&lt;set $day2HasTowel = $hasTowel&gt;&gt;
+&lt;&lt;set $day2HasMedicine = $hasMedicine&gt;&gt;
+&lt;&lt;set $day2HasRaincoat = $hasRaincoat&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
 
@@ -7160,8 +7205,30 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;vn-ui&quot;&gt;
 
 	&lt;div id=&quot;choice-after-type&quot; style=&quot;display:none;&quot;&gt;
-		[[バッグを開く-&gt;3日目_バッグ画面]]
-	&lt;/div&gt;
+
+	[[バッグを開いて選び直す-&gt;3日目_バッグ画面]]
+
+	&lt;&lt;if $day2PackedBag&gt;&gt;
+
+		&lt;&lt;link &quot;前回と同じ内容にする&quot;&gt;&gt;
+
+			&lt;&lt;set $bagWeight = $day2BagWeight&gt;&gt;
+
+			&lt;&lt;set $hasWater = $day2HasWater&gt;&gt;
+			&lt;&lt;set $hasFood = $day2HasFood&gt;&gt;
+			&lt;&lt;set $hasLight = $day2HasLight&gt;&gt;
+			&lt;&lt;set $hasBattery = $day2HasBattery&gt;&gt;
+			&lt;&lt;set $hasTowel = $day2HasTowel&gt;&gt;
+			&lt;&lt;set $hasMedicine = $day2HasMedicine&gt;&gt;
+			&lt;&lt;set $hasRaincoat = $day2HasRaincoat&gt;&gt;
+
+			&lt;&lt;goto &quot;3日目_バッグ確認&quot;&gt;&gt;
+
+		&lt;&lt;/link&gt;&gt;
+
+	&lt;&lt;/if&gt;&gt;
+
+&lt;/div&gt;
 
 	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;押し入れから、防災用のバッグを取り出す。&lt;br&gt;昨日よりも早く動き始めたため、持ち物を落ち着いて選ぶ時間がある。&lt;br&gt;必要な物をすべて持っていきたいが、重すぎるバッグでは避難中に動きにくくなる。&lt;br&gt;持っていける量を考えながら、中身を選ぼう。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 
@@ -10246,9 +10313,14 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/if&gt;&gt;
 
 &lt;div class=&quot;recap-screen&quot;&gt;
+
 	&lt;div class=&quot;recap-panel&quot;&gt;
 
 		&lt;h2 class=&quot;recap-title&quot;&gt;3日間の振り返り&lt;/h2&gt;
+
+		&lt;div class=&quot;recap-scroll-guide&quot;&gt;
+			下に続きます &lt;span class=&quot;recap-scroll-arrow&quot;&gt;↓&lt;/span&gt;
+		&lt;/div&gt;
 
 		&lt;div class=&quot;recap-day&quot;&gt;
 			&lt;h3&gt;1日目&lt;/h3&gt;
@@ -10334,7 +10406,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete.endFinal&#39;, function () {
 	$(&#39;#end-next-button&#39;).fadeIn(500);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="115" name="通信テスト" tags="" position="925,575" size="100,100">&lt;&lt;set $day = 0&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="115" name="通信テスト" tags="" position="1200,150" size="100,100">&lt;&lt;set $day = 0&gt;&gt;
 &lt;&lt;set $time = 12 * 60&gt;&gt;
 
 &lt;div class=&quot;vn-ui&quot;&gt;
@@ -10356,7 +10428,7 @@ $(document).one(&#39;:typingcomplete.endFinal&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="116" name="通信テスト結果" tags="" position="925,700" size="100,100">&lt;p&gt;テスト終了です。&lt;/p&gt;</tw-passagedata><tw-passagedata pid="117" name="Google通信確認" tags="" position="1050,775" size="100,100">&lt;h2&gt;Google通信確認&lt;/h2&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="116" name="通信テスト結果" tags="" position="1325,150" size="100,100">&lt;p&gt;テスト終了です。&lt;/p&gt;</tw-passagedata><tw-passagedata pid="117" name="Google通信確認" tags="" position="1075,150" size="100,100">&lt;h2&gt;Google通信確認&lt;/h2&gt;
 
 &lt;p&gt;下のボタンを1回押してください。&lt;/p&gt;
 
@@ -10630,7 +10702,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;survey-row&quot;&gt;
 
 &lt;p class=&quot;survey-question-title&quot;&gt;
-7．早めに避難することの重要性を感じた。
+7．ゲームをプレイする前と比べて、早めに避難することを重要だと感じるようになった。
 &lt;/p&gt;
 
 &lt;div class=&quot;likert-five&quot;&gt;
@@ -10659,7 +10731,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;survey-row&quot;&gt;
 
 &lt;p class=&quot;survey-question-title&quot;&gt;
-8．早めに避難することで、時間に余裕が生まれると感じた。
+8．ゲームをプレイする前と比べて、早めに避難することで時間に余裕が生まれると感じるようになった。
 &lt;/p&gt;
 
 &lt;div class=&quot;likert-five&quot;&gt;
@@ -10688,7 +10760,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;survey-row&quot;&gt;
 
 &lt;p class=&quot;survey-question-title&quot;&gt;
-9．早めに避難することで、気持ちに余裕が生まれると感じた。
+9．ゲームをプレイする前と比べて、早めに避難することで気持ちに余裕が生まれると感じるようになった。
 &lt;/p&gt;
 
 &lt;div class=&quot;likert-five&quot;&gt;
@@ -10717,7 +10789,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;survey-row&quot;&gt;
 
 &lt;p class=&quot;survey-question-title&quot;&gt;
-10．災害の状況が深刻になる前に避難することが大切だと感じた。
+10．ゲームをプレイする前と比べて、災害の状況が深刻になる前に避難することを重要だと感じるようになった。
 &lt;/p&gt;
 
 &lt;div class=&quot;likert-five&quot;&gt;
@@ -11004,10 +11076,6 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;p class=&quot;survey-question-title&quot;&gt;
 19．今回のゲームプレイで感じたことや考えたことを自由に記入してください。
-&lt;/p&gt;
-
-&lt;p class=&quot;survey-small-note&quot;&gt;
-この項目は任意です。
 &lt;/p&gt;
 
 &lt;div class=&quot;post-comment-box&quot;&gt;
