@@ -2844,6 +2844,81 @@ body {
 /* 押した瞬間 */
 .end-next-button a:active {
 	transform: translateY(0);
+}
+
+/* ========================================
+   PCブラウザ限定画面
+======================================== */
+
+/* スマホ・タブレットではゲーム本体を隠す */
+html.pc-only-device #story,
+html.pc-only-device #ui-bar,
+html.pc-only-device #game-volume-control {
+	display: none !important;
+}
+
+
+/* スクロールさせない */
+html.pc-only-device,
+html.pc-only-device body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+
+/* PCで開いてください画面 */
+#pc-only-screen {
+	position: fixed;
+	inset: 0;
+	z-index: 999999;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 24px;
+
+	background: #111;
+	color: #fff;
+
+	box-sizing: border-box;
+}
+
+
+/* 中央の案内パネル */
+.pc-only-panel {
+	width: min(560px, 100%);
+
+	padding: 42px 34px;
+
+	border: 2px solid rgba(255, 255, 255, 0.75);
+	border-radius: 16px;
+
+	background: rgba(255, 255, 255, 0.06);
+
+	text-align: center;
+
+	box-sizing: border-box;
+}
+
+
+/* 見出し */
+.pc-only-panel h1 {
+	margin: 0 0 26px;
+
+	font-size: 1.6rem;
+	line-height: 1.5;
+}
+
+
+/* 説明文 */
+.pc-only-panel p {
+	margin: 14px 0;
+
+	font-size: 1rem;
+	line-height: 1.8;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.macros.typeSkipKey = "Enter";
 
 // 選択肢のキーボード操作
@@ -4037,8 +4112,8 @@ window.sendPreSurveyToGoogle = function () {
 		riskPerception:
 			v.riskPerception ?? '',
 
-		selfSafetyBelief:
-			v.selfSafetyBelief ?? '',
+	　　selfDamageRisk:
+    　　　　　v.selfDamageRisk ?? '',
 
 		disasterKnowledge:
 			v.disasterKnowledge ?? '',
@@ -4326,7 +4401,73 @@ window.sendPostSurveyToGoogle = function () {
 
 	});
 };
-</script><tw-tag name="widget" color="purple"></tw-tag><tw-passagedata pid="1" name="妖精登場" tags="" position="850,1375" size="100,100">&lt;&lt;audio &quot;rain01&quot; stop&gt;&gt;
+
+/* ========================================
+   PCブラウザ限定
+   スマートフォン・タブレットではゲームを表示しない
+======================================== */
+
+(function () {
+
+	/* スマートフォン・タブレットかどうか判定 */
+	function isMobileOrTablet() {
+
+		const ua =
+			navigator.userAgent ||
+			navigator.vendor ||
+			window.opera ||
+			'';
+
+		/* 一般的なスマホ・タブレット */
+		const mobileUA =
+			/Android|iPhone|iPod|iPad|Mobile|Tablet/i.test(ua);
+
+		/* iPadOSはMacとして判定されることがあるため別に確認 */
+		const iPadOS =
+			navigator.platform === 'MacIntel' &&
+			navigator.maxTouchPoints > 1;
+
+		return mobileUA || iPadOS;
+	}
+
+
+	/* PCなら何もしない */
+	if (!isMobileOrTablet()) {
+		return;
+	}
+
+
+	/* ゲーム画面をすぐに隠すためのクラス */
+	document.documentElement.classList.add('pc-only-device');
+
+
+	/* ページの準備ができたら案内画面を表示 */
+	$(document).ready(function () {
+
+		$('body').append(`
+			<div id="pc-only-screen">
+
+				<div class="pc-only-panel">
+
+					<h1>PCブラウザでご参加ください</h1>
+
+					<p>
+						このゲームは、パソコンでの操作を前提として設計されています。
+					</p>
+
+					<p>
+						恐れ入りますが、PCのWebブラウザから
+						このページを開いてください。
+					</p>
+
+				</div>
+
+			</div>
+		`);
+
+	});
+
+})();</script><tw-tag name="widget" color="purple"></tw-tag><tw-passagedata pid="1" name="妖精登場" tags="" position="850,1375" size="100,100">&lt;&lt;audio &quot;rain01&quot; stop&gt;&gt;
 &lt;&lt;audio &quot;rain02&quot; stop&gt;&gt;
 &lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
 &lt;&lt;audio &quot;thunder&quot; stop&gt;&gt;
@@ -5776,8 +5917,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;!-- 現在の住居の浸水可能性 --&gt;
 &lt;&lt;set $riskPerception = 0&gt;&gt;
 
-&lt;!-- 自分自身は大丈夫だと思う程度 --&gt;
-&lt;&lt;set $selfSafetyBelief = 0&gt;&gt;
+&lt;!-- 自分自身が被害を受けると思う程度 --&gt;
+&lt;&lt;set $selfDamageRisk = 0&gt;&gt;
 
 &lt;!-- 避難情報・警戒レベルの知識 --&gt;
 &lt;&lt;set $disasterKnowledge = 0&gt;&gt;
@@ -9474,16 +9615,16 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;survey-row&quot;&gt;
 
 &lt;p class=&quot;survey-question-title&quot;&gt;
-13．大雨や洪水が発生した場合でも、自分自身は深刻な被害を受けずに済むと思いますか。
+13．13．大雨や洪水が発生した場合に、自分自身も深刻な被害を受けると思いますか。
 &lt;/p&gt;
 
 &lt;div class=&quot;likert-five&quot;&gt;
 
-&lt;label&gt;&lt;&lt;radiobutton &quot;$selfSafetyBelief&quot; 1&gt;&gt;&lt;span&gt;1&lt;/span&gt;&lt;/label&gt;
-&lt;label&gt;&lt;&lt;radiobutton &quot;$selfSafetyBelief&quot; 2&gt;&gt;&lt;span&gt;2&lt;/span&gt;&lt;/label&gt;
-&lt;label&gt;&lt;&lt;radiobutton &quot;$selfSafetyBelief&quot; 3&gt;&gt;&lt;span&gt;3&lt;/span&gt;&lt;/label&gt;
-&lt;label&gt;&lt;&lt;radiobutton &quot;$selfSafetyBelief&quot; 4&gt;&gt;&lt;span&gt;4&lt;/span&gt;&lt;/label&gt;
-&lt;label&gt;&lt;&lt;radiobutton &quot;$selfSafetyBelief&quot; 5&gt;&gt;&lt;span&gt;5&lt;/span&gt;&lt;/label&gt;
+&lt;label&gt;&lt;&lt;radiobutton &quot;$selfDamageRisk&quot; 1&gt;&gt;&lt;span&gt;1&lt;/span&gt;&lt;/label&gt;
+&lt;label&gt;&lt;&lt;radiobutton &quot;$selfDamageRisk&quot; 2&gt;&gt;&lt;span&gt;2&lt;/span&gt;&lt;/label&gt;
+&lt;label&gt;&lt;&lt;radiobutton &quot;$selfDamageRisk&quot; 3&gt;&gt;&lt;span&gt;3&lt;/span&gt;&lt;/label&gt;
+&lt;label&gt;&lt;&lt;radiobutton &quot;$selfDamageRisk&quot; 4&gt;&gt;&lt;span&gt;4&lt;/span&gt;&lt;/label&gt;
+&lt;label&gt;&lt;&lt;radiobutton &quot;$selfDamageRisk&quot; 5&gt;&gt;&lt;span&gt;5&lt;/span&gt;&lt;/label&gt;
 
 &lt;/div&gt;
 
@@ -9500,7 +9641,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;div class=&quot;survey-row&quot;&gt;
 
 &lt;p class=&quot;survey-question-title&quot;&gt;
-14．大雨や洪水時の避難情報や警戒レベルについて、どの程度知っていると思いますか。
+14．2026年5月29日から運用が開始された、気象庁の「新たな防災気象情報」についてどの程度知っていますか。
 &lt;/p&gt;
 
 &lt;div class=&quot;likert-five&quot;&gt;
@@ -9712,7 +9853,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	or $hazardMapExp is &quot;&quot;
 	or $hazardZone is &quot;&quot;
 	or $riskPerception is 0
-	or $selfSafetyBelief is 0
+	or $selfDamageRisk is 0
 	or $disasterKnowledge is 0
 	or $preEvacProbability is -1
 	or $preEvacTiming is &quot;&quot;
@@ -11541,7 +11682,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		&lt;/p&gt;
 
 		&lt;p class=&quot;title-note&quot;&gt;
-			ゲームの前に、簡単な事前アンケートにご協力ください。&lt;br&gt;
+			ゲームの前に、簡単なアンケートにご協力ください。&lt;br&gt;
 			回答内容およびゲーム中の選択は、研究目的で記録されます。
 		&lt;/p&gt;
 
