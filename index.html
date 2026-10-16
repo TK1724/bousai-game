@@ -104,7 +104,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<tw-storydata name="防災ゲーム" startnode="121" creator="Twine" creator-version="2.12.0" format="SugarCube" format-version="2.37.3" ifid="F0B1D246-9022-4FE3-85FA-DC853CAC8C6C" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* ========================================
+	<tw-storydata name="防災ゲーム" startnode="104" creator="Twine" creator-version="2.12.0" format="SugarCube" format-version="2.37.3" ifid="F0B1D246-9022-4FE3-85FA-DC853CAC8C6C" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* ========================================
    画面右上のゲーム情報
 ======================================== */
 
@@ -2919,6 +2919,16 @@ html.pc-only-device body {
 
 	font-size: 1rem;
 	line-height: 1.8;
+}
+/* ========================================
+   操作説明の余計な改行を消す
+======================================== */
+
+.operation-grid > br,
+.operation-block > br,
+.operation-block ul > br,
+.operation-block li > br {
+	display: none !important;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.macros.typeSkipKey = "Enter";
 
 // 選択肢のキーボード操作
@@ -9078,63 +9088,90 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="104" name="操作説明" tags="" position="875,225" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
+
 	&lt;div class=&quot;pre-game-panel operation-panel&quot;&gt;
 
 		&lt;h2&gt;操作方法&lt;/h2&gt;
 
 		&lt;p class=&quot;operation-intro&quot;&gt;
-			ゲームでは、画面に表示される文章を読みながら、選択肢を選んで進めます。
-			キーボードとマウスのどちらでも操作できます。
+			ゲームでは、画面に表示される文章を読みながら、
+			選択肢を選んで進めます。
 		&lt;/p&gt;
 
 		&lt;div class=&quot;operation-grid&quot;&gt;
 
 			&lt;div class=&quot;operation-block&quot;&gt;
-				&lt;h3&gt;選択肢の移動&lt;/h3&gt;
+				&lt;h3&gt;マウス操作&lt;/h3&gt;
+
 				&lt;ul&gt;
-					&lt;li&gt;&lt;strong&gt;↑ / ↓ キー&lt;/strong&gt; または &lt;strong&gt;W / S キー&lt;/strong&gt; で選択肢を移動できます。&lt;/li&gt;
+					&lt;li&gt;
+						選択肢を&lt;strong&gt;クリック&lt;/strong&gt;して決定できます。
+					&lt;/li&gt;
 				&lt;/ul&gt;
 			&lt;/div&gt;
+
+
+			&lt;div class=&quot;operation-block&quot;&gt;
+				&lt;h3&gt;選択肢の移動&lt;/h3&gt;
+
+				&lt;ul&gt;
+					&lt;li&gt;
+						&lt;strong&gt;↑ / ↓ キー&lt;/strong&gt;で選択肢を移動できます。
+						（&lt;strong&gt;W / S キー&lt;/strong&gt;でも操作できます）
+					&lt;/li&gt;
+				&lt;/ul&gt;
+			&lt;/div&gt;
+
 
 			&lt;div class=&quot;operation-block&quot;&gt;
 				&lt;h3&gt;決定&lt;/h3&gt;
+
 				&lt;ul&gt;
-					&lt;li&gt;&lt;strong&gt;Enter キー&lt;/strong&gt; または &lt;strong&gt;Space キー&lt;/strong&gt; で選択できます。&lt;/li&gt;
+					&lt;li&gt;
+						&lt;strong&gt;Enter キー&lt;/strong&gt;で選択できます。
+						（&lt;strong&gt;Space キー&lt;/strong&gt;でも決定できます）
+					&lt;/li&gt;
 				&lt;/ul&gt;
 			&lt;/div&gt;
+
 
 			&lt;div class=&quot;operation-block&quot;&gt;
 				&lt;h3&gt;文章をすぐに表示&lt;/h3&gt;
+
 				&lt;ul&gt;
-					&lt;li&gt;文章の表示中に &lt;strong&gt;Enter キー&lt;/strong&gt; を押すと、残りの文章を一度に表示できます。&lt;/li&gt;
+					&lt;li&gt;
+						文章の表示中に&lt;strong&gt;Enter キー&lt;/strong&gt;を押すと、
+						残りの文章を一度に表示できます。
+					&lt;/li&gt;
 				&lt;/ul&gt;
 			&lt;/div&gt;
 
-			&lt;div class=&quot;operation-block&quot;&gt;
-				&lt;h3&gt;マウス操作&lt;/h3&gt;
-				&lt;ul&gt;
-					&lt;li&gt;選択肢を&lt;strong&gt;クリック&lt;/strong&gt;して決定できます。&lt;/li&gt;
-				&lt;/ul&gt;
-			&lt;/div&gt;
 
 			&lt;div class=&quot;operation-block&quot;&gt;
 				&lt;h3&gt;音量調整&lt;/h3&gt;
+
 				&lt;ul&gt;
-					&lt;li&gt;画面右上の&lt;strong&gt;スピーカーボタン&lt;/strong&gt;から音量を調整できます。&lt;/li&gt;
+					&lt;li&gt;
+						画面右上の&lt;strong&gt;スピーカーボタン&lt;/strong&gt;から
+						音量を調整できます。
+					&lt;/li&gt;
 				&lt;/ul&gt;
 			&lt;/div&gt;
 
 		&lt;/div&gt;
 
+
 		&lt;div class=&quot;operation-note&quot;&gt;
-			選択肢が表示された後は、&lt;strong&gt;Enterキー&lt;/strong&gt;または&lt;strong&gt;Spaceキー&lt;/strong&gt;でも決定できます。
+			基本的にはマウス操作だけでもゲームを進めることができます。
 		&lt;/div&gt;
+
 
 		&lt;div class=&quot;pre-game-next&quot; style=&quot;margin-top: 28px;&quot;&gt;
 			[[ゲームを始める-&gt;1日目_開始]]
 		&lt;/div&gt;
 
 	&lt;/div&gt;
+
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="105" name="事前アンケート開始" tags="" position="450,225" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
 	&lt;div class=&quot;pre-game-panel&quot;&gt;
 
