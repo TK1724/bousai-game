@@ -2938,7 +2938,60 @@ html.pc-only-device body {
 .recap-panel {
 	overflow-y: scroll !important;
 	scrollbar-gutter: stable;
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.macros.typeSkipKey = "Enter";
+}
+
+
+/* タイトル画面のBGM再生ボタン */
+.title-music {
+    margin-top: 14px;
+    text-align: center;
+}
+
+.title-music a {
+    color: #d6dce4;
+    font-size: 14px;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.title-music a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* BGM再生ボタンと音量ボタンを横並びにする */
+#game-volume-control {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+}
+
+/* BGM再生ボタン */
+#game-bgm-replay a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 48px;
+    padding: 0 14px;
+
+    background: rgba(0, 0, 0, 0.75);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+
+    color: white !important;
+    font-size: 14px;
+    text-decoration: none;
+    white-space: nowrap;
+
+    box-sizing: border-box;
+}
+
+/* マウスを乗せたとき */
+#game-bgm-replay a:hover {
+    background: rgba(30, 30, 30, 0.95);
+}
+</style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.macros.typeSkipKey = "Enter";
 
 // 選択肢のキーボード操作
 $(document).on('keydown', function (event) {
@@ -5858,6 +5911,13 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;cacheaudio &quot;rain02&quot; &quot;audio/rain02.mp3&quot;&gt;&gt;
 &lt;&lt;cacheaudio &quot;rain03&quot; &quot;audio/rain03.mp3&quot;&gt;&gt;
 &lt;&lt;cacheaudio &quot;thunder&quot; &quot;audio/thunder.mp3&quot;&gt;&gt;
+&lt;&lt;cacheaudio &quot;bgmOpening&quot; &quot;audio/bgm_opening.mp3&quot;&gt;&gt;
+&lt;&lt;cacheaudio &quot;bgmSunny&quot; &quot;audio/bgm_sunny.mp3&quot;&gt;&gt;
+
+&lt;&lt;cacheaudio &quot;bgmShelter&quot; &quot;audio/bgm_shelter.mp3&quot;&gt;&gt;
+&lt;&lt;cacheaudio &quot;crowd&quot; &quot;audio/crowd.mp3&quot;&gt;&gt;
+&lt;&lt;cacheaudio &quot;mysterySE&quot; &quot;audio/mystery.mp3&quot;&gt;&gt;
+
 
 &lt;&lt;run SimpleAudio.volume(0.5)&gt;&gt;
 
@@ -6150,7 +6210,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;set $day2HasBattery = false&gt;&gt;
 &lt;&lt;set $day2HasTowel = false&gt;&gt;
 &lt;&lt;set $day2HasMedicine = false&gt;&gt;
-&lt;&lt;set $day2HasRaincoat = false&gt;&gt;</tw-passagedata><tw-passagedata pid="33" name="無題のパッセージ" tags="" position="825,25" size="100,100">&lt;video
+&lt;&lt;set $day2HasRaincoat = false&gt;&gt;
+
+
+</tw-passagedata><tw-passagedata pid="33" name="無題のパッセージ" tags="" position="825,25" size="100,100">&lt;video
 	autoplay
 	loop
 	muted
@@ -6465,6 +6528,9 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="42" name="2日目_避難所結果" tags="" position="1375,2375" size="100,100">&lt;&lt;audio &quot;rain03&quot; stop&gt;&gt;
 &lt;&lt;audio &quot;rain01&quot; loop play&gt;&gt;
 
+&lt;&lt;audio &quot;crowd&quot; volume 0 loop fadeoverto 2 0.35&gt;&gt;
+
+
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_day2.png&quot;
@@ -6489,7 +6555,11 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 $(document).one(&#39;:typingcomplete&#39;, function () {
 	$(&#39;#choice-after-type&#39;).fadeIn(300);
 });
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="43" name="2日目_振り返り" tags="" position="1375,2500" size="100,100">&lt;&lt;audio &quot;rain01&quot; loop play&gt;&gt;
+&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="43" name="2日目_振り返り" tags="" position="1375,2500" size="100,100">
+&lt;&lt;audio &quot;crowd&quot; fadeoverto 3 0&gt;&gt;
+
+
+&lt;&lt;audio &quot;rain01&quot; loop play&gt;&gt;
 
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
@@ -8007,6 +8077,10 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="67" name="3日目_避難所到着" tags="" position="1625,3375" size="100,100">&lt;!-- 避難所到着時の状態を記録 --&gt;
 &lt;&lt;set $day3ShelterSpot = &quot;&quot;&gt;&gt;
 
+
+&lt;&lt;audio &quot;crowd&quot; volume 0 loop fadeoverto 3 0.08&gt;&gt;
+
+
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot;
 		src=&quot;images/shelter_mae_day32.png&quot;
@@ -8061,6 +8135,17 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;&lt;/if&gt;&gt;
 &lt;div id=&quot;game-volume-control&quot;&gt;
+
+&lt;!-- タイトル画面専用のBGM再生ボタン --&gt;
+&lt;&lt;if passage() is &quot;タイトル&quot;&gt;&gt;
+
+    &lt;span id=&quot;game-bgm-replay&quot;&gt;
+        &lt;&lt;link &quot;♪ BGM再生&quot;&gt;&gt;
+            &lt;&lt;audio &quot;bgmOpening&quot; volume 0.6 loop play&gt;&gt;
+        &lt;&lt;/link&gt;&gt;
+    &lt;/span&gt;
+
+&lt;&lt;/if&gt;&gt;
 
 &lt;button
 	id=&quot;game-volume-button&quot;
@@ -9026,7 +9111,7 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 		&lt;/div&gt;
 	&lt;/div&gt;
 
-	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で過ごしていると、体育館の入口が開いた。&lt;br&gt;雨具を着た作業着姿の男性が肩についた雨粒を払いながら中へ入ってくる。&lt;br&gt;かなり雨に当たったのか、ズボンの裾まで濡れていた。&lt;br&gt;受付にいた職員がすぐに声をかける。&lt;br&gt;「お疲れさまです。外、どうでした？」&lt;br&gt;「いやあ、思ったより早く水が増えてるね」&lt;br&gt;男男性は雨具のフードを外しながら、少し心配そうな表情をした。&lt;br&gt;「低いところはもう水が溜まり始めてる。このまま降ったら通れなくなる道も出てくると思うよ」&lt;br&gt;外の状況が気になり、その会話に耳を傾ける。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
+	&lt;div class=&quot;dialogue-box&quot;&gt;&lt;&lt;type 50ms none&gt;&gt;自分の場所で過ごしていると、体育館の入口が開いた。&lt;br&gt;雨具を着た作業着姿の男性が肩についた雨粒を払いながら中へ入ってくる。&lt;br&gt;かなり雨に当たったのか、ズボンの裾まで濡れていた。&lt;br&gt;受付にいた職員がすぐに声をかける。&lt;br&gt;「お疲れさまです。外、どうでした？」&lt;br&gt;「いやあ、思ったより早く水が増えてるね」&lt;br&gt;男性は雨具のフードを外しながら、少し心配そうな表情をした。&lt;br&gt;「低いところはもう水が溜まり始めてる。このまま降ったら通れなくなる道も出てくると思うよ」&lt;br&gt;外の状況が気になり、その会話に耳を傾ける。&lt;&lt;/type&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;&lt;script&gt;&gt;
@@ -10179,6 +10264,13 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="110" name="3日目_エンディング" tags="" position="2025,5350" size="100,100">&lt;&lt;set $day3RainPhase = &quot;silent&quot;&gt;&gt;
 &lt;&lt;updateRainSound&gt;&gt;
 
+
+&lt;&lt;set $day3RainPhase = &quot;silent&quot;&gt;&gt;
+&lt;&lt;updateRainSound&gt;&gt;
+
+&lt;&lt;audio &quot;bgmSunny&quot; volume 0 loop fadeoverto 3 0.35&gt;&gt;
+
+
 &lt;div class=&quot;scene&quot;&gt;
 	&lt;img class=&quot;scene-media scene-media-full&quot; src=&quot;images/day3_sunshine.png&quot; alt=&quot;&quot; onerror=&quot;this.onerror=null;this.src=&#39;images/day3_after_rain.png&#39;;&quot;&gt;
 &lt;/div&gt;
@@ -10434,7 +10526,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 
 &lt;&lt;button &quot;Twineから送信する&quot;&gt;&gt;
 	&lt;&lt;run sendTwineTest()&gt;&gt;
-&lt;&lt;/button&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="事後アンケート" tags="" position="1750,5400" size="100,100">&lt;&lt;nobr&gt;&gt;
+&lt;&lt;/button&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="事後アンケート" tags="" position="1750,5400" size="100,100">&lt;&lt;audio &quot;bgmSunny&quot; stop&gt;&gt;
+&lt;&lt;nobr&gt;&gt;
 
 &lt;div class=&quot;pre-game-screen&quot;&gt;
 &lt;div class=&quot;pre-game-panel survey-panel&quot;&gt;
@@ -11163,7 +11256,8 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;&lt;/nobr&gt;&gt;</tw-passagedata><tw-passagedata pid="119" name="ゲーム終了" tags="" position="1875,5400" size="100,100">&lt;div class=&quot;pre-game-screen&quot;&gt;
+&lt;&lt;/nobr&gt;&gt;</tw-passagedata><tw-passagedata pid="119" name="ゲーム終了" tags="" position="1875,5400" size="100,100">&lt;&lt;audio &quot;bgmSunny&quot; fadeoverto 3 0&gt;&gt;
+&lt;div class=&quot;pre-game-screen&quot;&gt;
 &lt;div class=&quot;pre-game-panel&quot;&gt;
 
 &lt;h2&gt;ゲーム終了&lt;/h2&gt;
@@ -11775,27 +11869,45 @@ $(document).one(&#39;:typingcomplete&#39;, function () {
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;&lt;/nobr&gt;&gt;</tw-passagedata><tw-passagedata pid="121" name="タイトル" tags="" position="325,225" size="100,100">&lt;div class=&quot;title-screen&quot;&gt;
-	&lt;div class=&quot;title-overlay&quot;&gt;&lt;/div&gt;
+&lt;&lt;/nobr&gt;&gt;</tw-passagedata><tw-passagedata pid="121" name="タイトル" tags="" position="325,225" size="100,100">
+&lt;&lt;audio &quot;bgmOpening&quot; volume 0.35 loop play&gt;&gt;
 
-	&lt;div class=&quot;title-card&quot;&gt;
-		&lt;h1 class=&quot;title-heading&quot;&gt;防災避難ゲーム&lt;/h1&gt;
+&lt;div class=&quot;title-screen&quot;&gt;
+    &lt;div class=&quot;title-overlay&quot;&gt;&lt;/div&gt;
 
-		&lt;p class=&quot;title-subtext&quot;&gt;
-			大雨による水害を題材に、避難の判断や行動を疑似体験するゲームです。&lt;br&gt;
-			場面ごとの情報を確認しながら、どのように行動するかを選んで進めてください。
-		&lt;/p&gt;
+    &lt;div class=&quot;title-card&quot;&gt;
+        &lt;h1 class=&quot;title-heading&quot;&gt;防災避難ゲーム&lt;/h1&gt;
 
-		&lt;p class=&quot;title-note&quot;&gt;
-			ゲームの前に、簡単なアンケートにご協力ください。&lt;br&gt;
-			回答内容およびゲーム中の選択は、研究目的で記録されます。
-		&lt;/p&gt;
+        &lt;p class=&quot;title-subtext&quot;&gt;
+            大雨による水害を題材に、避難の判断や行動を疑似体験するゲームです。&lt;br&gt;
+            場面ごとの情報を確認しながら、どのように行動するかを選んで進めてください。
+        &lt;/p&gt;
 
-		&lt;div class=&quot;title-start&quot;&gt;
-			[[はじめる-&gt;事前アンケート開始]]
-		&lt;/div&gt;
-	&lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="122" name="事後アンケート完了" tags="" position="1750,5525" size="100,100">&lt;&lt;nobr&gt;&gt;
+        &lt;p class=&quot;title-note&quot;&gt;
+            ゲームの前に、簡単なアンケートにご協力ください。&lt;br&gt;
+            回答内容およびゲーム中の選択は、研究目的で記録されます。
+        &lt;/p&gt;
+
+        &lt;div class=&quot;title-start&quot;&gt;
+            &lt;&lt;link &quot;はじめる&quot;&gt;&gt;
+                &lt;&lt;audio &quot;bgmOpening&quot; fadeoverto 3 0&gt;&gt;
+                &lt;&lt;goto &quot;事前アンケート開始&quot;&gt;&gt;
+            &lt;&lt;/link&gt;&gt;
+        &lt;/div&gt;
+
+    &lt;/div&gt;
+&lt;/div&gt;
+
+
+
+&lt;!-- 開発中だけ使用するテスト用リンク --&gt;
+&lt;&lt;link &quot;【テスト用】3日目のエンディングへ&quot;&gt;&gt;
+    &lt;&lt;set $day = 3&gt;&gt;
+    &lt;&lt;audio &quot;bgmOpening&quot; stop&gt;&gt;
+    &lt;&lt;audio &quot;bgmSunny&quot; volume 0 loop play&gt;&gt;
+    &lt;&lt;goto &quot;3日目_エンディング&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;
+</tw-passagedata><tw-passagedata pid="122" name="事後アンケート完了" tags="" position="1750,5525" size="100,100">&lt;&lt;nobr&gt;&gt;
 
 &lt;&lt;audio &quot;rain01&quot; stop&gt;&gt;
 &lt;&lt;audio &quot;rain02&quot; stop&gt;&gt;
